@@ -33,9 +33,9 @@ const TestPage2: React.FC = () => {
             <img src={CatAppLogo} alt='Cat App logo' className='w-full h-full' />
           </section>
 
-          <section className='relative grid h-full w-full bg-yellow-400'>
-            <div className='grid w-[65%] mx-auto h-full items-center bg-pink-300'>
-              <section className='bg-blue-200 grid grid-rows-4 gap-2 w-full h-fit'>
+          <section className='relative grid h-full w-full'>
+            <div className='grid w-[65%] mx-auto h-full items-center'>
+              <section className='grid grid-rows-4 gap-2 w-full h-fit'>
                 <div>
                   <button
                     className='px-2 py-2 rounded-lg w-full bg-orange-400 text-white text-2xl font-semibold active:scale-95 active:bg-orange-500'
