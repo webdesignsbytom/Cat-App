@@ -51,6 +51,7 @@ import '@ionic/react/css/palettes/dark.system.css';
 import './theme/variables.css';
 import './styles/reset.css';
 import './styles/tailwind.css';
+import MenuPage from './pages/menu/MenuPage';
 
 setupIonicReact();
 
@@ -86,6 +87,9 @@ const App: React.FC = () => {
           </Route>
           <Route exact path='/drawing'>
             <DrawingPage />
+          </Route>
+          <Route exact path='/menu'>
+            <MenuPage />
           </Route>
           <Route exact path='/login'>
             <LoginPage />
