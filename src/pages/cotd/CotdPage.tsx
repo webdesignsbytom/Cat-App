@@ -13,7 +13,8 @@ import {
   IonBackButton
 } from '@ionic/react';
 import { volumeMute, volumeHigh, playForward, playBack } from 'ionicons/icons';
-// CSS
+// Videos
+import Video1 from '../../assets/Video/cat_video1.mp4'
 
 const CotdPage: React.FC = () => {
   const videoRef = useRef<HTMLVideoElement>(null);
@@ -40,18 +41,10 @@ const CotdPage: React.FC = () => {
 
   return (
     <IonPage>
-      <IonHeader>
-        <IonToolbar>
-          <IonButtons slot="start">
-            <IonBackButton defaultHref="/home" />
-          </IonButtons>
-          <IonTitle>Video Player</IonTitle>
-        </IonToolbar>
-      </IonHeader>
       <IonContent className="ion-padding" fullscreen>
         <div className="video-container">
           <video ref={videoRef} controls style={{ width: '100%', height: '100%' }}>
-            <source src="http://localhost:3000/video" type="video/mp4" />
+            <source src={Video1} type="video/mp4" />
             Your browser does not support the video tag.
           </video>
           <IonFab vertical="bottom" horizontal="center" slot="fixed">

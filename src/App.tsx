@@ -14,9 +14,8 @@ import AiCatsPage from './pages/ai_cats/AiCatsPage';
 import DrawingPage from './pages/drawing/DrawingPage';
 import LoginPage from './user/LoginPage';
 import RegisterPage from './user/RegisterPage';
-
-/* Icons */
-import { ellipse, square, triangle } from 'ionicons/icons';
+import TestPage from './pages/test/TestPage';
+import TestPage2 from './pages/test/TestPage2';
 
 /* Analytics */
 import { trackPage } from './analytics/analytics';
@@ -94,24 +93,16 @@ const App: React.FC = () => {
           <Route exact path='/register'>
             <RegisterPage />
           </Route>
+          <Route exact path='/test'>
+            <TestPage />
+          </Route>
+          <Route exact path='/test2'>
+            <TestPage2 />
+          </Route>
           <Route exact path='/'>
             <Redirect to='/home' />
           </Route>
         </IonRouterOutlet>
-        <IonTabBar slot='bottom'>
-          <IonTabButton tab='home' href='/home'>
-            <IonIcon aria-hidden='true' icon={triangle} />
-            <IonLabel>Home</IonLabel>
-          </IonTabButton>
-          <IonTabButton tab='cotd' href='/cotd'>
-            <IonIcon aria-hidden='true' icon={ellipse} />
-            <IonLabel>Cat of the Day</IonLabel>
-          </IonTabButton>
-          <IonTabButton tab='test' href='/test'>
-            <IonIcon aria-hidden='true' icon={square} />
-            <IonLabel>Test</IonLabel>
-          </IonTabButton>
-        </IonTabBar>
       </IonReactRouter>
     </IonApp>
   );
