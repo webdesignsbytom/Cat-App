@@ -23,7 +23,7 @@ const MyCatsPage: React.FC = () => {
           <IonRow>
             {[...Array(6)].map((_, index) => (
               <IonCol key={index} size="4">
-                <div className="cat-profile-box" onClick={handleAddCat}>
+                <div className="" onClick={handleAddCat}>
                   <IonIcon icon={addCircleOutline} />
                 </div>
               </IonCol>

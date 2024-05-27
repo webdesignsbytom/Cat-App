@@ -52,6 +52,8 @@ import './theme/variables.css';
 import './styles/reset.css';
 import './styles/tailwind.css';
 import MenuPage from './pages/menu/MenuPage';
+import MyCatsPage from './pages/user/MyCatsPage';
+import SponsorPage from './pages/sponsor/SponsorPage';
 
 setupIonicReact();
 
@@ -88,8 +90,14 @@ const App: React.FC = () => {
           <Route exact path='/drawing'>
             <DrawingPage />
           </Route>
+          <Route exact path='/my-cats'>
+            <MyCatsPage />
+          </Route>
           <Route exact path='/menu'>
             <MenuPage />
+          </Route>
+          <Route exact path='/sponsor'>
+            <SponsorPage />
           </Route>
           <Route exact path='/login'>
             <LoginPage />

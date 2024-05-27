@@ -2,7 +2,18 @@ module.exports = {
   purge: ['./src/**/*.{js,jsx,ts,tsx}', './public/index.html'],
   darkMode: false, // or 'media' or 'class'
   theme: {
-    extend: {},
+    extend: {
+      gridTemplateRows: {
+        reg: 'auto 1fr',
+        rev: '1fr auto',
+        foursix: '40% 60%'
+      },
+      colors: {
+        'main-colour': '#ffa500',
+        'main-colour-alt': '#fc8b00',
+        'main-bg-colour': '#ffffff',
+      }
+    },
   },
   variants: {
     extend: {},
