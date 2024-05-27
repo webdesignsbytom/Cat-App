@@ -55,6 +55,7 @@ import './theme/variables.css';
 import './styles/reset.css';
 import './styles/tailwind.css';
 import './styles/video_player.css';
+import AddEditCatPage from './pages/user/AddEditCatPage';
 
 setupIonicReact();
 
@@ -93,6 +94,9 @@ const App: React.FC = () => {
           </Route>
           <Route exact path='/my-cats'>
             <MyCatsPage />
+          </Route>
+          <Route exact path='/add-edit-cat'>
+            <AddEditCatPage />
           </Route>
           <Route exact path='/menu'>
             <MenuPage />

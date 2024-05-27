@@ -1,8 +1,6 @@
 // src/pages/DrawingPage.tsx
 import React, { useRef, useEffect, useState } from 'react';
-import {
-  IonPage,
-} from '@ionic/react';
+import { IonPage } from '@ionic/react';
 
 const DrawingPage: React.FC = () => {
   const canvasRef = useRef<HTMLCanvasElement | null>(null);
@@ -113,7 +111,12 @@ const DrawingPage: React.FC = () => {
 
   return (
     <IonPage>
-      <main className='grid h-full w-full'>
+      <main className='grid grid-rows-reg h-full w-full'>
+        <header className='border-solid border-b-2 border-gray-600'>
+          <div>Colour Select:</div>
+        </header>
+
+        {/* Main Canvas */}
         <canvas
           ref={canvasRef}
           onMouseDown={startDrawing}

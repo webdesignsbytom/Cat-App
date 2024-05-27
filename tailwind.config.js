@@ -8,6 +8,10 @@ module.exports = {
         rev: '1fr auto',
         foursix: '40% 60%'
       },
+      gridTemplateColumns: {
+        reg: 'auto 1fr',
+        rev: '1fr auto',
+      },
       colors: {
         'main-colour': '#ffa500',
         'main-colour-alt': '#fc8b00',

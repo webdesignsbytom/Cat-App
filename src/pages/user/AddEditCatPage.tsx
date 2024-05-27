@@ -1,29 +1,23 @@
-// src/pages/AddEditCatPage.tsx
 import React, { useState } from 'react';
-import {
-  IonPage,
-  IonHeader,
-  IonToolbar,
-  IonTitle,
-  IonContent,
-  IonItem,
-  IonLabel,
-  IonInput,
-  IonButton,
-  IonImg,
-  IonToast,
-} from '@ionic/react';
-import { useHistory } from 'react-router-dom';
+import { useHistory, useLocation } from 'react-router-dom';
+import { IonPage } from '@ionic/react';
 
 const AddEditCatPage: React.FC = () => {
-  const [catName, setCatName] = useState('');
-  const [catAge, setCatAge] = useState('');
+  const history = useHistory();
+  const location = useLocation<{
+    cat: { name: string; age: number; image: string };
+  }>();
+  const cat = location.state?.cat || { name: '', age: 0, image: '' };
+
+  const [catName, setCatName] = useState(cat.name || '');
+  const [catAge, setCatAge] = useState(cat.age ? cat.age.toString() : '');
   const [catBreed, setCatBreed] = useState('');
   const [catImage, setCatImage] = useState<File | null>(null);
-  const [previewImage, setPreviewImage] = useState<string | ArrayBuffer | null>(null);
+  const [previewImage, setPreviewImage] = useState<string | ArrayBuffer | null>(
+    cat.image || null
+  );
   const [showToast, setShowToast] = useState(false);
   const [toastMessage, setToastMessage] = useState('');
-  const history = useHistory();
 
   const handleImageUpload = (event: React.ChangeEvent<HTMLInputElement>) => {
     const file = event.target.files?.[0];
@@ -74,41 +68,42 @@ const AddEditCatPage: React.FC = () => {
 
   return (
     <IonPage>
-      <IonHeader>
-        <IonToolbar>
-          <IonTitle>Add/Edit Cat</IonTitle>
-        </IonToolbar>
-      </IonHeader>
-      <IonContent className="ion-padding">
-        <IonItem>
-          <IonLabel position="floating">Cat Name</IonLabel>
-          <IonInput value={catName} onIonChange={(e) => setCatName(e.detail.value!)} />
-        </IonItem>
-        <IonItem>
-          <IonLabel position="floating">Cat Age</IonLabel>
-          <IonInput value={catAge} onIonChange={(e) => setCatAge(e.detail.value!)} />
-        </IonItem>
-        <IonItem>
-          <IonLabel position="floating">Cat Breed</IonLabel>
-          <IonInput value={catBreed} onIonChange={(e) => setCatBreed(e.detail.value!)} />
-        </IonItem>
-        <IonItem>
-          <IonLabel>Cat Image</IonLabel>
-          <input type="file" accept="image/*" onChange={handleImageUpload} />
-        </IonItem>
-        {previewImage && (
-          <IonImg src={previewImage as string} />
-        )}
-        <IonButton expand="full" className="ion-margin-top" onClick={handleSaveCat}>
-          Save
-        </IonButton>
-        <IonToast
-          isOpen={showToast}
-          message={toastMessage}
-          duration={2000}
-          onDidDismiss={() => setShowToast(false)}
-        />
-      </IonContent>
+      <div className='grid grid-rows-reg h-full w-full'>
+        <header className='grid py-4 px-4'>
+          <h1>Add/Edit Cat</h1>
+        </header>
+
+        <main className='grid py-4'>
+          <div>
+            <label>Cat Name</label>
+            <input
+              type='text'
+              value={catName}
+              onChange={(e) => setCatName(e.target.value)}
+            />
+          </div>
+          <div>
+            <label>Cat Age</label>
+            <input
+              type='number'
+              value={catAge}
+              onChange={(e) => setCatAge(e.target.value)}
+            />
+          </div>
+          <div>
+            <label>Cat Breed</label>
+            <input
+              type='text'
+              value={catBreed}
+              onChange={(e) => setCatBreed(e.target.value)}
+            />
+          </div>
+          <div>
+            <label>Cat Image</label>
+            <input type='file' accept='image/*' onChange={handleImageUpload} />
+          </div>
+        </main>
+      </div>
     </IonPage>
   );
 };
