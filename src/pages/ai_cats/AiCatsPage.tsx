@@ -38,7 +38,7 @@ const AiCatsPage: React.FC = () => {
   };
 
   const navigateHome = () => {
-    history.push('/home'); // Navigate to the home page
+    history.push('/menu');
   };
 
   const likeImage = () => {};

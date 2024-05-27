@@ -70,6 +70,11 @@ const AddEditCatPage: React.FC = () => {
     }
   };
 
+  const navigateHome = () => {
+    history.push('/my-cats');
+  };
+
+
   return (
     <IonPage>
       <div className='grid grid-rows-reg h-full w-full bg-white overflow-hidden'>
@@ -88,7 +93,7 @@ const AddEditCatPage: React.FC = () => {
               <img
                 src={catPicture as string}
                 alt={cat.name}
-                className='w-full h-full object-cover'
+                className='w-full h-full object-contain'
               />
             ) : (
               <div className='flex items-center justify-center w-full h-full bg-gray-200'>
@@ -97,52 +102,53 @@ const AddEditCatPage: React.FC = () => {
             )}
           </section>
 
-          <section className='grid h-full w-full pt-4 pb-8'>
+          <section className='grid h-full w-full pt-4 pb-6'>
             <form className='grid gap-2 h-full w-full px-4 py-4'>
-              <div className='grid grid-cols-reg gap-4'>
+              
+              <div className='grid grid-cols-reg gap-4 items-center'>
                 <label htmlFor='catName'>Cat Name</label>
                 <div className='grid justify-end'>
                   <input
                     type='text'
                     id='catName'
                     value={catName}
-                    className='outline outline-1 outline-gray-600 shadow-md rounded-lg px-1 w-full max-w-[200px]'
+                    className='outline outline-1 outline-gray-600 shadow-md rounded-lg px-1 py-1 h-fit w-full max-w-[200px]'
                     onChange={(e) => setCatName(e.target.value)}
                   />
                 </div>
               </div>
-              <div className='grid grid-cols-reg gap-4'>
+              <div className='grid grid-cols-reg gap-4 items-center'>
                 <label htmlFor='catAge'>Cat Age</label>
                 <div className='grid justify-end'>
                   <input
                     type='number'
                     id='catAge'
                     value={catAge}
-                    className='outline outline-1 outline-gray-600 shadow-md rounded-lg px-1 w-full max-w-[200px]'
+                    className='outline outline-1 outline-gray-600 shadow-md rounded-lg px-1 py-1 h-fit w-full max-w-[200px]'
                     onChange={(e) => setCatAge(e.target.value)}
                   />
                 </div>
               </div>
-              <div className='grid grid-cols-reg gap-4'>
+              <div className='grid grid-cols-reg gap-4 items-center'>
                 <label htmlFor='catBreed'>Cat Breed</label>
                 <div className='grid justify-end'>
                   <input
                     type='text'
                     id='catBreed'
                     value={catBreed}
-                    className='outline outline-1 outline-gray-600 shadow-md rounded-lg px-1 w-full max-w-[200px]'
+                    className='outline outline-1 outline-gray-600 shadow-md rounded-lg px-1 py-1 h-fit w-full max-w-[200px]'
                     onChange={(e) => setCatBreed(e.target.value)}
                   />
                 </div>
               </div>
-              <div className='grid grid-cols-reg gap-4'>
+              <div className='grid grid-cols-reg gap-4 items-center'>
                 <label htmlFor='uploadCatImage'>Cat Image</label>
                 <div className='grid justify-end'>
                   <input
                     type='file'
                     id='uploadCatImage'
                     accept='image/*'
-                    className='outline outline-1 outline-gray-600 shadow-md rounded-lg px-1 w-full max-w-[200px]'
+                    className='outline outline-1 outline-gray-600 shadow-md rounded-lg px-1 py-1 h-fit w-full max-w-[200px]'
                     onChange={handleImageUpload}
                   />
                 </div>
@@ -150,13 +156,21 @@ const AddEditCatPage: React.FC = () => {
               <div className='grid grid-cols-reg gap-4'>
                 <label>Cotd Wins</label>
                 <div className='grid justify-end'>
-                  <span className='outline outline-1 outline-gray-600 shadow-md rounded-lg px-1 w-full max-w-[200px]'>
+                  <span className='outline outline-1 outline-gray-600 shadow-md rounded-lg px-1 py-1 h-fit w-full max-w-[200px]'>
                     0
                   </span>
                 </div>
               </div>
 
-              <section className='grid h-full items-end'>
+              <section className='grid grid-cols-2 gap-2 w-full h-full items-end'>
+                <div>
+                  <button
+                    onClick={navigateHome}
+                    className='px-2 py-2 rounded-lg w-full h-[52px] bg-main-colour text-white text-2xl font-semibold active:scale-95 active:bg-main-colour-alt shadow-xl'
+                  >
+                    Back
+                  </button>
+                </div>
                 <div>
                   <button
                     onClick={handleSaveCat}

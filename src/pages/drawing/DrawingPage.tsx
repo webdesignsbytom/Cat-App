@@ -36,13 +36,22 @@ const DrawingPage: React.FC = () => {
     }
   }, [colour]);
 
+  const startDrawing = ({
+    nativeEvent,
+  }: React.TouchEvent | React.MouseEvent) => {
+    const { offsetX, offsetY } = nativeEvent as MouseEvent;
+    contextRef.current?.beginPath();
+    contextRef.current?.moveTo(offsetX, offsetY);
+    setDrawing(true);
+  };
+
   const finishDrawing = () => {
     contextRef.current?.closePath();
     setDrawing(false);
   };
 
   const draw = ({ nativeEvent }: React.TouchEvent | React.MouseEvent) => {
-    // if (!drawing) return;
+    if (!drawing) return;
     const { offsetX, offsetY } = nativeEvent as MouseEvent;
     contextRef.current?.lineTo(offsetX, offsetY);
     contextRef.current?.stroke();
@@ -110,9 +119,12 @@ const DrawingPage: React.FC = () => {
         {/* Main Canvas */}
         <canvas
           ref={canvasRef}
+          onMouseDown={startDrawing}
+          onMouseUp={finishDrawing}
           onMouseMove={draw}
+          onTouchStart={startDrawing}
+          onTouchEnd={finishDrawing}
           onTouchMove={draw}
-          onDrag={draw}
           className='h-full w-full bg-teal-100'
         />
       </main>
