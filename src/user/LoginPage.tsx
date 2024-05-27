@@ -46,11 +46,6 @@ const LoginPage: React.FC = () => {
 
   return (
     <IonPage>
-      <IonHeader>
-        <IonToolbar>
-          <IonTitle>Login</IonTitle>
-        </IonToolbar>
-      </IonHeader>
       <IonContent className="ion-padding">
         <IonItem>
           <IonLabel position="floating">Username</IonLabel>

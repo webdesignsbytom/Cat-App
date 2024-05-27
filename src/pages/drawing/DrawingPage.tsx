@@ -2,17 +2,6 @@
 import React, { useRef, useEffect, useState } from 'react';
 import {
   IonPage,
-  IonHeader,
-  IonToolbar,
-  IonTitle,
-  IonContent,
-  IonButton,
-  IonToast,
-  IonLoading,
-  IonItem,
-  IonLabel,
-  IonSelect,
-  IonSelectOption,
 } from '@ionic/react';
 
 const DrawingPage: React.FC = () => {
@@ -22,7 +11,7 @@ const DrawingPage: React.FC = () => {
   const [showToast, setShowToast] = useState(false);
   const [toastMessage, setToastMessage] = useState('');
   const [showLoading, setShowLoading] = useState(false);
-  const [color, setColor] = useState('black');
+  const [colour, setColour] = useState('black');
 
   useEffect(() => {
     const canvas = canvasRef.current;
@@ -36,7 +25,7 @@ const DrawingPage: React.FC = () => {
       if (context) {
         context.scale(2, 2);
         context.lineCap = 'round';
-        context.strokeStyle = color;
+        context.strokeStyle = colour;
         context.lineWidth = 5;
         contextRef.current = context;
       }
@@ -45,11 +34,13 @@ const DrawingPage: React.FC = () => {
 
   useEffect(() => {
     if (contextRef.current) {
-      contextRef.current.strokeStyle = color;
+      contextRef.current.strokeStyle = colour;
     }
-  }, [color]);
+  }, [colour]);
 
-  const startDrawing = ({ nativeEvent }: React.TouchEvent | React.MouseEvent) => {
+  const startDrawing = ({
+    nativeEvent,
+  }: React.TouchEvent | React.MouseEvent) => {
     const { offsetX, offsetY } = nativeEvent as MouseEvent;
     contextRef.current?.beginPath();
     contextRef.current?.moveTo(offsetX, offsetY);
@@ -69,7 +60,12 @@ const DrawingPage: React.FC = () => {
   };
 
   const clearCanvas = () => {
-    contextRef.current?.clearRect(0, 0, canvasRef.current?.width!, canvasRef.current?.height!);
+    contextRef.current?.clearRect(
+      0,
+      0,
+      canvasRef.current?.width!,
+      canvasRef.current?.height!
+    );
   };
 
   const saveDrawing = () => {
@@ -117,22 +113,7 @@ const DrawingPage: React.FC = () => {
 
   return (
     <IonPage>
-      <IonHeader>
-        <IonToolbar>
-          <IonTitle>Draw</IonTitle>
-        </IonToolbar>
-      </IonHeader>
-      <IonContent className="ion-padding">
-        <IonItem>
-          <IonLabel>Color</IonLabel>
-          <IonSelect value={color} onIonChange={(e) => setColor(e.detail.value)}>
-            <IonSelectOption value="black">Black</IonSelectOption>
-            <IonSelectOption value="red">Red</IonSelectOption>
-            <IonSelectOption value="green">Green</IonSelectOption>
-            <IonSelectOption value="blue">Blue</IonSelectOption>
-            <IonSelectOption value="yellow">Yellow</IonSelectOption>
-          </IonSelect>
-        </IonItem>
+      <main className='grid h-full w-full'>
         <canvas
           ref={canvasRef}
           onMouseDown={startDrawing}
@@ -141,25 +122,9 @@ const DrawingPage: React.FC = () => {
           onTouchStart={startDrawing}
           onTouchEnd={finishDrawing}
           onTouchMove={draw}
-          className="drawing-canvas"
+          className='h-full w-full bg-teal-100'
         />
-        <IonButton expand="full" onClick={clearCanvas} className="ion-margin-top">
-          Clear
-        </IonButton>
-        <IonButton expand="full" onClick={saveDrawing} className="ion-margin-top">
-          Save
-        </IonButton>
-        <IonButton expand="full" onClick={submitDrawing} className="ion-margin-top">
-          Submit
-        </IonButton>
-        <IonLoading isOpen={showLoading} message={'Submitting drawing...'} />
-        <IonToast
-          isOpen={showToast}
-          message={toastMessage}
-          duration={2000}
-          onDidDismiss={() => setShowToast(false)}
-        />
-      </IonContent>
+      </main>
     </IonPage>
   );
 };

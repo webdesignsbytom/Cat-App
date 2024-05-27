@@ -84,11 +84,6 @@ const RegisterPage: React.FC = () => {
 
   return (
     <IonPage>
-      <IonHeader>
-        <IonToolbar>
-          <IonTitle>Register</IonTitle>
-        </IonToolbar>
-      </IonHeader>
       <IonContent className="ion-padding">
         <IonItem>
           <IonLabel position="floating">Email</IonLabel>
