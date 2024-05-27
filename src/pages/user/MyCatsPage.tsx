@@ -31,12 +31,12 @@ const MyCatsPage: React.FC = () => {
   return (
     <IonPage>
       <div className='grid grid-rows-reg w-full h-full bg-white py-4'>
-        <header className='grid grid-cols-reg py-4 px-4 border-solid border-b-2 border-gray-600'>
+        <header className='grid grid-cols-rev py-4 px-4 border-solid border-b-2 border-gray-600'>
           <div className='w-full'>
             <h1 className='text-2xl font-semibold'>My Cats</h1>
           </div>
           <div>
-            <img src={BlueCat1} alt="Blue cat" className='w-20 h-auto' />
+            <img src={BlueCat1} alt="Blue cat" className='w-12 h-auto' />
           </div>
         </header>
 
@@ -50,7 +50,7 @@ const MyCatsPage: React.FC = () => {
                   className='border-solid border-2 border-gray-600'
                 >
                   {cat.name ? (
-                    <img src={cat.image} alt={cat.name} className='w-full h-full' />
+                    <img src={cat.image} alt={cat.name} className='w-full h-full aspect-square' />
                   ) : (
                     <div>{index + 1}</div>
                   )}

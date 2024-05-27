@@ -1,6 +1,8 @@
 import React, { useState } from 'react';
 import { useHistory, useLocation } from 'react-router-dom';
 import { IonPage } from '@ionic/react';
+// Images
+import WhiteCat1 from '../../assets/images/background/small_cat_white_1.png';
 
 const AddEditCatPage: React.FC = () => {
   const history = useHistory();
@@ -68,9 +70,14 @@ const AddEditCatPage: React.FC = () => {
 
   return (
     <IonPage>
-      <div className='grid grid-rows-reg h-full w-full'>
-        <header className='grid py-4 px-4'>
-          <h1>Add/Edit Cat</h1>
+      <div className='grid grid-rows-reg h-full w-full bg-white'>
+      <header className='grid grid-cols-rev py-4 px-4 border-solid border-b-2 border-gray-600'>
+          <div className='w-full'>
+            <h1 className='text-2xl font-semibold'>My Cats</h1>
+          </div>
+          <div>
+            <img src={WhiteCat1} alt="White cat" className='w-12 h-auto' />
+          </div>
         </header>
 
         <main className='grid py-4'>
