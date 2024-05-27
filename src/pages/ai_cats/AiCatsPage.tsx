@@ -20,7 +20,7 @@ import Image4 from '../../assets/images/Ai/cat_ai_image_4.png';
 
 const AiCatsPage: React.FC = () => {
   const [currentIndex, setCurrentIndex] = useState(0);
-  const [images, setImages] = useState([Image1, Image2, Image3, Image4]);
+  const [images] = useState([Image1, Image2, Image3, Image4]);
   const [muted, setMuted] = useState(false);
 
   const history = useHistory();
@@ -42,15 +42,13 @@ const AiCatsPage: React.FC = () => {
   };
 
   const likeImage = () => {};
-  
+
   const toggleMute = () => {
-    if (muted) {
-      setMuted(!muted);
-    }
+    setMuted(!muted);
   };
 
   return (
-    <IonPage onClick={() => setCurrentIndex(currentIndex)}>
+    <IonPage>
       <div className='relative h-full w-full bg-white'>
         <img
           src={images[currentIndex]}
