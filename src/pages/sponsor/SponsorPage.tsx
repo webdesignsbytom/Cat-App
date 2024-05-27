@@ -17,12 +17,7 @@ const SponsorPage: React.FC = () => {
 
   return (
     <IonPage>
-      <IonHeader>
-        <IonToolbar>
-          <IonTitle>Sponsor</IonTitle>
-        </IonToolbar>
-      </IonHeader>
-      <IonContent className="ion-padding">
+      <IonContent className="ion-padding bg-white">
         <IonText>
           <h2>Our Sponsor</h2>
           <p>

@@ -7,15 +7,18 @@ export const UserCats = [
         name: 'Tingles',
         age: 6,
         image: Cat1,
+        breed: 'Calico'
     },
     {
         name: 'Snowball',
         age: 2,
         image: Cat2,
+        breed: 'Calico'
     },
     {
         name: 'Tubs',
         age: 3,
         image: Cat3,
+        breed: 'Calico'
     },
 ]

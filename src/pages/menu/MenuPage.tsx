@@ -1,8 +1,6 @@
 import React, { useState } from 'react';
-import {
-  IonPage,
-} from '@ionic/react';
 import { useHistory } from 'react-router-dom';
+import { IonPage } from '@ionic/react';
 // Images
 import BlueCat1 from '../../assets/images/background/small_cat_blue_1.png';
 import BlueCat2 from '../../assets/images/background/small_cat_blue_2.png';
@@ -22,6 +20,10 @@ const MenuPage: React.FC = () => {
     {
       title: 'Drawing',
       link: '/drawing',
+    },
+    {
+      title: 'Catigotchi',
+      link: '/catigotchi',
     },
     {
       title: 'My Cats',
@@ -92,7 +94,11 @@ const MenuPage: React.FC = () => {
         {/* Background images top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2  */}
         {/* Top */}
         <div className='absolute top-0 left-0'>
-          <img src={YellowCat1} alt='Blue cat one' className='z-10 w-20 h-auto' />
+          <img
+            src={YellowCat1}
+            alt='Blue cat one'
+            className='z-10 w-20 h-auto'
+          />
         </div>
 
         <div className='absolute top-0 right-0'>

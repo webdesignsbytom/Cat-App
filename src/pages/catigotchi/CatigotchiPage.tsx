@@ -2,10 +2,6 @@
 import React, { useState, useEffect } from 'react';
 import {
   IonPage,
-  IonHeader,
-  IonToolbar,
-  IonTitle,
-  IonContent,
   IonButton,
   IonLabel,
   IonProgressBar,
@@ -15,7 +11,7 @@ import {
   IonToast,
 } from '@ionic/react';
 
-const PetCatPage: React.FC = () => {
+const CatigotchiPage: React.FC = () => {
   const [hunger, setHunger] = useState(100);
   const [happiness, setHappiness] = useState(100);
   const [health, setHealth] = useState(100);
@@ -26,16 +22,16 @@ const PetCatPage: React.FC = () => {
   useEffect(() => {
     const lastCheck = localStorage.getItem('lastCheck');
     const now = new Date().getTime();
-    
+
     if (lastCheck) {
       const elapsedTime = (now - parseInt(lastCheck)) / 1000; // Time in seconds
       const hungerDecrease = Math.floor(elapsedTime / 60); // Decrease hunger by 1 every minute
       const happinessDecrease = Math.floor(elapsedTime / 120); // Decrease happiness by 1 every 2 minutes
       const healthDecrease = Math.floor(elapsedTime / 180); // Decrease health by 1 every 3 minutes
 
-      setHunger(prev => Math.max(prev - hungerDecrease, 0));
-      setHappiness(prev => Math.max(prev - happinessDecrease, 0));
-      setHealth(prev => Math.max(prev - healthDecrease, 0));
+      setHunger((prev) => Math.max(prev - hungerDecrease, 0));
+      setHappiness((prev) => Math.max(prev - happinessDecrease, 0));
+      setHealth((prev) => Math.max(prev - healthDecrease, 0));
     }
 
     localStorage.setItem('lastCheck', now.toString());
@@ -52,36 +48,31 @@ const PetCatPage: React.FC = () => {
 
   useEffect(() => {
     if (hunger === 0 || happiness === 0) {
-      setHealth(prev => Math.max(prev - 2, 0));
+      setHealth((prev) => Math.max(prev - 2, 0));
     }
   }, [hunger, happiness]);
 
   const feedCat = () => {
-    setHunger(prev => Math.min(prev + 20, 100));
+    setHunger((prev) => Math.min(prev + 20, 100));
     setMessage('You fed your cat!');
     setShowToast(true);
   };
 
   const playWithCat = () => {
-    setHappiness(prev => Math.min(prev + 20, 100));
+    setHappiness((prev) => Math.min(prev + 20, 100));
     setMessage('You played with your cat!');
     setShowToast(true);
   };
 
   const giveMedicine = () => {
-    setHealth(prev => Math.min(prev + 20, 100));
+    setHealth((prev) => Math.min(prev + 20, 100));
     setMessage('You gave your cat medicine!');
     setShowToast(true);
   };
 
   return (
     <IonPage>
-      <IonHeader>
-        <IonToolbar>
-          <IonTitle>Pet Cat Tamagotchi</IonTitle>
-        </IonToolbar>
-      </IonHeader>
-      <IonContent className="ion-padding">
+      <div className='grid h-full w-full overflow-hidden bg-white'>
         <IonGrid>
           <IonRow>
             <IonCol>
@@ -102,14 +93,14 @@ const PetCatPage: React.FC = () => {
             </IonCol>
           </IonRow>
         </IonGrid>
-        <div className="button-container">
-          <IonButton expand="full" onClick={feedCat}>
+        <div className='button-container'>
+          <IonButton expand='full' onClick={feedCat}>
             Feed
           </IonButton>
-          <IonButton expand="full" onClick={playWithCat}>
+          <IonButton expand='full' onClick={playWithCat}>
             Play
           </IonButton>
-          <IonButton expand="full" onClick={giveMedicine}>
+          <IonButton expand='full' onClick={giveMedicine}>
             Give Medicine
           </IonButton>
         </div>
@@ -119,9 +110,9 @@ const PetCatPage: React.FC = () => {
           duration={2000}
           onDidDismiss={() => setShowToast(false)}
         />
-      </IonContent>
+      </div>
     </IonPage>
   );
 };
 
-export default PetCatPage;
+export default CatigotchiPage;

@@ -3,19 +3,21 @@ import { useHistory, useLocation } from 'react-router-dom';
 import { IonPage } from '@ionic/react';
 // Images
 import WhiteCat1 from '../../assets/images/background/small_cat_white_1.png';
+// Icons
+import { FaRegImage } from 'react-icons/fa6';
 
 const AddEditCatPage: React.FC = () => {
   const history = useHistory();
   const location = useLocation<{
-    cat: { name: string; age: number; image: string };
+    cat: { name: string; age: number; image: string; breed: string };
   }>();
   const cat = location.state?.cat || { name: '', age: 0, image: '' };
 
   const [catName, setCatName] = useState(cat.name || '');
   const [catAge, setCatAge] = useState(cat.age ? cat.age.toString() : '');
-  const [catBreed, setCatBreed] = useState('');
-  const [catImage, setCatImage] = useState<File | null>(null);
-  const [previewImage, setPreviewImage] = useState<string | ArrayBuffer | null>(
+  const [catBreed, setCatBreed] = useState(cat.breed || '');
+  const [uploadCatImage, setUploadCatImage] = useState<File | null>(null);
+  const [catPicture, setCatPicture] = useState<string | ArrayBuffer | null>(
     cat.image || null
   );
   const [showToast, setShowToast] = useState(false);
@@ -24,22 +26,22 @@ const AddEditCatPage: React.FC = () => {
   const handleImageUpload = (event: React.ChangeEvent<HTMLInputElement>) => {
     const file = event.target.files?.[0];
     if (file) {
-      setCatImage(file);
+      setUploadCatImage(file);
       const reader = new FileReader();
       reader.onloadend = () => {
-        setPreviewImage(reader.result);
+        setCatPicture(reader.result);
       };
       reader.readAsDataURL(file);
     }
   };
 
   const handleSaveCat = async () => {
-    if (catImage) {
+    if (uploadCatImage) {
       const formData = new FormData();
       formData.append('catName', catName);
       formData.append('catAge', catAge);
       formData.append('catBreed', catBreed);
-      formData.append('catImage', catImage);
+      formData.append('uploadCatImage', uploadCatImage);
 
       try {
         const response = await fetch('/api/upload-cat', {
@@ -70,45 +72,102 @@ const AddEditCatPage: React.FC = () => {
 
   return (
     <IonPage>
-      <div className='grid grid-rows-reg h-full w-full bg-white'>
-      <header className='grid grid-cols-rev py-4 px-4 border-solid border-b-2 border-gray-600'>
-          <div className='w-full'>
+      <div className='grid grid-rows-reg h-full w-full bg-white overflow-hidden'>
+        <header className='grid grid-cols-rev py-4 px-4 border-solid border-b-2 border-gray-600'>
+          <div className='grid items-center w-full'>
             <h1 className='text-2xl font-semibold'>My Cats</h1>
           </div>
-          <div>
-            <img src={WhiteCat1} alt="White cat" className='w-12 h-auto' />
+          <div className='grid items-center'>
+            <img src={WhiteCat1} alt='White cat' className='w-12 h-auto' />
           </div>
         </header>
 
-        <main className='grid py-4'>
-          <div>
-            <label>Cat Name</label>
-            <input
-              type='text'
-              value={catName}
-              onChange={(e) => setCatName(e.target.value)}
-            />
-          </div>
-          <div>
-            <label>Cat Age</label>
-            <input
-              type='number'
-              value={catAge}
-              onChange={(e) => setCatAge(e.target.value)}
-            />
-          </div>
-          <div>
-            <label>Cat Breed</label>
-            <input
-              type='text'
-              value={catBreed}
-              onChange={(e) => setCatBreed(e.target.value)}
-            />
-          </div>
-          <div>
-            <label>Cat Image</label>
-            <input type='file' accept='image/*' onChange={handleImageUpload} />
-          </div>
+        <main className='grid grid-rows-2 overflow-hidden'>
+          <section className='grid h-full w-full overflow-hidden py-4'>
+            {catPicture ? (
+              <img
+                src={catPicture as string}
+                alt={cat.name}
+                className='w-full h-full object-cover'
+              />
+            ) : (
+              <div className='flex items-center justify-center w-full h-full bg-gray-200'>
+                <FaRegImage className='text-gray-500 text-6xl' />
+              </div>
+            )}
+          </section>
+
+          <section className='grid h-full w-full pt-4 pb-8'>
+            <form className='grid gap-2 h-full w-full px-4 py-4'>
+              <div className='grid grid-cols-reg gap-4'>
+                <label htmlFor='catName'>Cat Name</label>
+                <div className='grid justify-end'>
+                  <input
+                    type='text'
+                    id='catName'
+                    value={catName}
+                    className='outline outline-1 outline-gray-600 shadow-md rounded-lg px-1 w-full max-w-[200px]'
+                    onChange={(e) => setCatName(e.target.value)}
+                  />
+                </div>
+              </div>
+              <div className='grid grid-cols-reg gap-4'>
+                <label htmlFor='catAge'>Cat Age</label>
+                <div className='grid justify-end'>
+                  <input
+                    type='number'
+                    id='catAge'
+                    value={catAge}
+                    className='outline outline-1 outline-gray-600 shadow-md rounded-lg px-1 w-full max-w-[200px]'
+                    onChange={(e) => setCatAge(e.target.value)}
+                  />
+                </div>
+              </div>
+              <div className='grid grid-cols-reg gap-4'>
+                <label htmlFor='catBreed'>Cat Breed</label>
+                <div className='grid justify-end'>
+                  <input
+                    type='text'
+                    id='catBreed'
+                    value={catBreed}
+                    className='outline outline-1 outline-gray-600 shadow-md rounded-lg px-1 w-full max-w-[200px]'
+                    onChange={(e) => setCatBreed(e.target.value)}
+                  />
+                </div>
+              </div>
+              <div className='grid grid-cols-reg gap-4'>
+                <label htmlFor='uploadCatImage'>Cat Image</label>
+                <div className='grid justify-end'>
+                  <input
+                    type='file'
+                    id='uploadCatImage'
+                    accept='image/*'
+                    className='outline outline-1 outline-gray-600 shadow-md rounded-lg px-1 w-full max-w-[200px]'
+                    onChange={handleImageUpload}
+                  />
+                </div>
+              </div>
+              <div className='grid grid-cols-reg gap-4'>
+                <label>Cotd Wins</label>
+                <div className='grid justify-end'>
+                  <span className='outline outline-1 outline-gray-600 shadow-md rounded-lg px-1 w-full max-w-[200px]'>
+                    0
+                  </span>
+                </div>
+              </div>
+
+              <section className='grid h-full items-end'>
+                <div>
+                  <button
+                    onClick={handleSaveCat}
+                    className='px-2 py-2 rounded-lg w-full h-[52px] bg-main-colour text-white text-2xl font-semibold active:scale-95 active:bg-main-colour-alt shadow-xl'
+                  >
+                    Save
+                  </button>
+                </div>
+              </section>
+            </form>
+          </section>
         </main>
       </div>
     </IonPage>

@@ -7,8 +7,8 @@ import MainButtonsComponent from '../../components/buttons/MainButtonsComponent'
 import { FaBackward, FaForward, FaHome } from 'react-icons/fa';
 import { FcLike } from 'react-icons/fc';
 // Images
-import Image1 from '../../assets/images/background/small_cat_blue_1.png'
-import Image2 from '../../assets/images/background/small_cat_blue_2.png'
+import Image1 from '../../assets/images/Ai/cat_ai_image_1.png'
+import Image2 from '../../assets/images/Ai/cat_ai_image_2.png'
 
 const AiCatsPage: React.FC = () => {
   const [currentIndex, setCurrentIndex] = useState(0);
@@ -27,11 +27,11 @@ const AiCatsPage: React.FC = () => {
 
   return (
     <IonPage onClick={() => setCurrentIndex(currentIndex)}>
-      <div className='relative h-full w-full'>
+      <div className='relative h-full w-full bg-white'>
         <img
           src={images[currentIndex]}
           alt="cat"
-          style={{ width: '100%', height: '100%', objectFit: 'cover' }}
+          className='w-full h-full object-cover'
         />
 
         <MainButtonsComponent />

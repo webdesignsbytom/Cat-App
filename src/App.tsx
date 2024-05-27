@@ -1,6 +1,6 @@
 import { useEffect } from 'react';
 import { Redirect, Route } from 'react-router-dom';
-import { IonApp, IonIcon, IonLabel, IonRouterOutlet, IonTabBar, IonTabButton, setupIonicReact } from '@ionic/react';
+import { IonApp, IonRouterOutlet, setupIonicReact } from '@ionic/react';
 import { IonReactRouter } from '@ionic/react-router';
 
 /* Pages */
@@ -18,7 +18,8 @@ import MenuPage from './pages/menu/MenuPage';
 import MyCatsPage from './pages/user/MyCatsPage';
 import SponsorPage from './pages/sponsor/SponsorPage';
 import TestPage from './pages/test/TestPage';
-import TestPage2 from './pages/test/TestPage2';
+import AddEditCatPage from './pages/user/AddEditCatPage';
+import CatigotchiPage from './pages/catigotchi/CatigotchiPage';
 
 /* Analytics */
 import { trackPage } from './analytics/analytics';
@@ -50,16 +51,15 @@ import '@ionic/react/css/display.css';
 /* import '@ionic/react/css/palettes/dark.class.css'; */
 import '@ionic/react/css/palettes/dark.system.css';
 
-/* Theme variables */
-import './theme/variables.css';
+/* Style */
 import './styles/reset.css';
 import './styles/tailwind.css';
 import './styles/video_player.css';
-import AddEditCatPage from './pages/user/AddEditCatPage';
 
 setupIonicReact();
 
 const App: React.FC = () => {
+  
   useEffect(() => {
     trackPage(location.pathname);
   }, [location]);
@@ -92,6 +92,9 @@ const App: React.FC = () => {
           <Route exact path='/drawing'>
             <DrawingPage />
           </Route>
+          <Route exact path='/catigotchi'>
+            <CatigotchiPage />
+          </Route>
           <Route exact path='/my-cats'>
             <MyCatsPage />
           </Route>
@@ -112,9 +115,6 @@ const App: React.FC = () => {
           </Route>
           <Route exact path='/test'>
             <TestPage />
-          </Route>
-          <Route exact path='/test2'>
-            <TestPage2 />
           </Route>
           <Route exact path='/'>
             <Redirect to='/home' />

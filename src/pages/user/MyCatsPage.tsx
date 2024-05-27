@@ -1,9 +1,6 @@
 import React, { useState } from 'react';
-import {
-  IonPage,
-} from '@ionic/react';
-import { addCircleOutline } from 'ionicons/icons';
 import { useHistory } from 'react-router-dom';
+import { IonPage } from '@ionic/react';
 // Data
 import { UserCats } from '../../utils/temp/TempData';
 // Images
@@ -13,10 +10,15 @@ const MyCatsPage: React.FC = () => {
   const history = useHistory();
   const [userCats, setUserCats] = useState(UserCats);
 
-  const handleAddEditCat = (cat: { name: string, age: number, image: string }) => {
+  const handleAddEditCat = (cat: {
+    name: string;
+    age: number;
+    image: string;
+    breed: string;
+  }) => {
     history.push({
       pathname: '/add-edit-cat',
-      state: { cat }
+      state: { cat },
     });
   };
 
@@ -25,18 +27,22 @@ const MyCatsPage: React.FC = () => {
 
   // Fill the array to ensure there are 16 items
   while (catsToShow.length < totalBoxes) {
-    catsToShow.push({ name: '', age: 0, image: '' });
+    catsToShow.push({ name: '', age: 0, image: '', breed: '' });
   }
+
+  const navigateTo = (path: string) => {
+    history.push(path);
+  };
 
   return (
     <IonPage>
-      <div className='grid grid-rows-reg w-full h-full bg-white py-4'>
+      <div className='grid grid-rows-reg w-full h-full bg-white'>
         <header className='grid grid-cols-rev py-4 px-4 border-solid border-b-2 border-gray-600'>
-          <div className='w-full'>
+          <div className='grid items-center w-full'>
             <h1 className='text-2xl font-semibold'>My Cats</h1>
           </div>
-          <div>
-            <img src={BlueCat1} alt="Blue cat" className='w-12 h-auto' />
+          <div className='grid items-center'>
+            <img src={BlueCat1} alt='White cat' className='w-12 h-auto' />
           </div>
         </header>
 
@@ -50,13 +56,26 @@ const MyCatsPage: React.FC = () => {
                   className='border-solid border-2 border-gray-600'
                 >
                   {cat.name ? (
-                    <img src={cat.image} alt={cat.name} className='w-full h-full aspect-square' />
+                    <img
+                      src={cat.image}
+                      alt={cat.name}
+                      className='w-full h-full aspect-square object-cover'
+                    />
                   ) : (
                     <div>{index + 1}</div>
                   )}
                 </article>
               );
             })}
+          </div>
+
+          <div className='grid items-center h-full w-full px-4'>
+            <button
+              className='px-2 py-2 rounded-lg w-full h-[52px] bg-main-colour text-white text-2xl font-semibold active:scale-95 active:bg-main-colour-alt shadow-xl'
+              onClick={() => navigateTo('/menu')}
+            >
+              Back
+            </button>
           </div>
         </main>
       </div>
