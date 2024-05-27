@@ -1,71 +1,51 @@
-// src/pages/VideoPlayer.tsx
-import React, { useState, useRef } from 'react';
-import {
-  IonPage,
-  IonHeader,
-  IonToolbar,
-  IonTitle,
-  IonContent,
-  IonFab,
-  IonFabButton,
-  IonIcon,
-  IonButtons,
-  IonBackButton
-} from '@ionic/react';
-import { volumeMute, volumeHigh, playForward, playBack } from 'ionicons/icons';
+import React, { useState, useRef, useEffect } from 'react';
+import { IonPage } from '@ionic/react';
+// Components
+import MainButtonsComponent from '../../components/buttons/MainButtonsComponent';
+// Videos
+import Video1 from '../../assets/Video/cat_video1.mp4';
 
 const EndlessCatsPage: React.FC = () => {
   const videoRef = useRef<HTMLVideoElement>(null);
-  const [muted, setMuted] = useState(false);
+  const [buttonsVisible, setButtonsVisible] = useState(true);
 
-  const toggleMute = () => {
+  useEffect(() => {
     if (videoRef.current) {
-      videoRef.current.muted = !videoRef.current.muted;
-      setMuted(!muted);
+      videoRef.current.muted = true; // Start muted
     }
-  };
 
-  const goBack = () => {
-    if (videoRef.current) {
-      videoRef.current.currentTime -= 10; // Go back 10 seconds
-    }
-  };
+    // Timer to hide buttons after 5 seconds
+    const timer = setTimeout(() => {
+      setButtonsVisible(false);
+    }, 5000);
 
-  const goForward = () => {
-    if (videoRef.current) {
-      videoRef.current.currentTime += 10; // Go forward 10 seconds
-    }
+    return () => clearTimeout(timer);
+  }, []);
+
+  const handleScreenTap = () => {
+    setButtonsVisible(true);
+
+    // Reset the timer to hide buttons after 5 seconds
+    setTimeout(() => {
+      setButtonsVisible(false);
+    }, 5000);
   };
 
   return (
-    <IonPage>
-      <IonHeader>
-        <IonToolbar>
-          <IonButtons slot="start">
-            <IonBackButton defaultHref="/home" />
-          </IonButtons>
-          <IonTitle>Endless Cats</IonTitle>
-        </IonToolbar>
-      </IonHeader>
-      <IonContent className="ion-padding" fullscreen>
-        <div className="video-container">
-          <video ref={videoRef} controls style={{ width: '100%', height: '100%' }}>
-            <source src="http://localhost:3000/video" type="video/mp4" />
-            Your browser does not support the video tag.
-          </video>
-          <IonFab vertical="bottom" horizontal="center" slot="fixed">
-            <IonFabButton onClick={goBack}>
-              <IonIcon icon={playBack} />
-            </IonFabButton>
-            <IonFabButton onClick={toggleMute}>
-              <IonIcon icon={muted ? volumeMute : volumeHigh} />
-            </IonFabButton>
-            <IonFabButton onClick={goForward}>
-              <IonIcon icon={playForward} />
-            </IonFabButton>
-          </IonFab>
-        </div>
-      </IonContent>
+    <IonPage onClick={handleScreenTap}>
+      <div className='video-container'>
+        <video
+          ref={videoRef}
+          autoPlay
+          muted
+          style={{ width: '100%', height: '100%', objectFit: 'cover' }}
+        >
+          <source src={Video1} type='video/mp4' />
+          Your browser does not support the video tag.
+        </video>
+
+        {buttonsVisible && <MainButtonsComponent />}
+      </div>
     </IonPage>
   );
 };

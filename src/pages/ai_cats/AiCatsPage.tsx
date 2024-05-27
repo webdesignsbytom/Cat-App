@@ -1,71 +1,41 @@
-// src/pages/VideoPlayer.tsx
-import React, { useState, useRef } from 'react';
-import {
-  IonPage,
-  IonHeader,
-  IonToolbar,
-  IonTitle,
-  IonContent,
-  IonFab,
-  IonFabButton,
-  IonIcon,
-  IonButtons,
-  IonBackButton
-} from '@ionic/react';
-import { volumeMute, volumeHigh, playForward, playBack } from 'ionicons/icons';
+import React, { useState } from 'react';
+import { IonPage } from '@ionic/react';
+import { useHistory } from 'react-router-dom';
+// Components
+import MainButtonsComponent from '../../components/buttons/MainButtonsComponent';
+// Icons
+import { FaBackward, FaForward, FaHome } from 'react-icons/fa';
+import { FcLike } from 'react-icons/fc';
+// Images
+import Image1 from '../../assets/images/background/small_cat_blue_1.png'
+import Image2 from '../../assets/images/background/small_cat_blue_2.png'
 
 const AiCatsPage: React.FC = () => {
-  const videoRef = useRef<HTMLVideoElement>(null);
-  const [muted, setMuted] = useState(false);
-
-  const toggleMute = () => {
-    if (videoRef.current) {
-      videoRef.current.muted = !videoRef.current.muted;
-      setMuted(!muted);
-    }
-  };
+  const [currentIndex, setCurrentIndex] = useState(0);
+  const [images, setImages] = useState([
+    Image1, Image2
+  ]);
+  const history = useHistory();
 
   const goBack = () => {
-    if (videoRef.current) {
-      videoRef.current.currentTime -= 10; // Go back 10 seconds
-    }
+    setCurrentIndex((prevIndex) => (prevIndex > 0 ? prevIndex - 1 : images.length - 1));
   };
 
   const goForward = () => {
-    if (videoRef.current) {
-      videoRef.current.currentTime += 10; // Go forward 10 seconds
-    }
+    setCurrentIndex((prevIndex) => (prevIndex < images.length - 1 ? prevIndex + 1 : 0));
   };
 
   return (
-    <IonPage>
-      <IonHeader>
-        <IonToolbar>
-          <IonButtons slot="start">
-            <IonBackButton defaultHref="/home" />
-          </IonButtons>
-          <IonTitle>AI Cats</IonTitle>
-        </IonToolbar>
-      </IonHeader>
-      <IonContent className="ion-padding" fullscreen>
-        <div className="video-container">
-          <video ref={videoRef} controls style={{ width: '100%', height: '100%' }}>
-            <source src="http://localhost:3000/video" type="video/mp4" />
-            Your browser does not support the video tag.
-          </video>
-          <IonFab vertical="bottom" horizontal="center" slot="fixed">
-            <IonFabButton onClick={goBack}>
-              <IonIcon icon={playBack} />
-            </IonFabButton>
-            <IonFabButton onClick={toggleMute}>
-              <IonIcon icon={muted ? volumeMute : volumeHigh} />
-            </IonFabButton>
-            <IonFabButton onClick={goForward}>
-              <IonIcon icon={playForward} />
-            </IonFabButton>
-          </IonFab>
-        </div>
-      </IonContent>
+    <IonPage onClick={() => setCurrentIndex(currentIndex)}>
+      <div className='relative h-full w-full'>
+        <img
+          src={images[currentIndex]}
+          alt="cat"
+          style={{ width: '100%', height: '100%', objectFit: 'cover' }}
+        />
+
+        <MainButtonsComponent />
+      </div>
     </IonPage>
   );
 };

@@ -14,6 +14,9 @@ import AiCatsPage from './pages/ai_cats/AiCatsPage';
 import DrawingPage from './pages/drawing/DrawingPage';
 import LoginPage from './user/LoginPage';
 import RegisterPage from './user/RegisterPage';
+import MenuPage from './pages/menu/MenuPage';
+import MyCatsPage from './pages/user/MyCatsPage';
+import SponsorPage from './pages/sponsor/SponsorPage';
 import TestPage from './pages/test/TestPage';
 import TestPage2 from './pages/test/TestPage2';
 
@@ -51,9 +54,7 @@ import '@ionic/react/css/palettes/dark.system.css';
 import './theme/variables.css';
 import './styles/reset.css';
 import './styles/tailwind.css';
-import MenuPage from './pages/menu/MenuPage';
-import MyCatsPage from './pages/user/MyCatsPage';
-import SponsorPage from './pages/sponsor/SponsorPage';
+import './styles/video_player.css';
 
 setupIonicReact();
 
