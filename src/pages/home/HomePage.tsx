@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import {
   IonPage,
   IonHeader,
@@ -16,6 +16,7 @@ import BlueCat3 from '../../assets/images/background/small_cat_blue_3.png';
 import WhiteCat1 from '../../assets/images/background/small_cat_white_1.png';
 import WhiteCat2 from '../../assets/images/background/small_cat_white_2.png';
 import RedCat1 from '../../assets/images/background/small_cat_red_1.png';
+import { useVideo } from '../../context/VideoContext';
 
 const HomePage: React.FC = () => {
   const history = useHistory();
@@ -38,9 +39,30 @@ const HomePage: React.FC = () => {
     },
   ]);
 
+  const { setVideoUrl } = useVideo();
+
+  useEffect(() => {
+    const videoUrl = `../../assets/Video/cat_video1.mp4`;    
+    
+    setVideoUrl(videoUrl);
+
+    // Preload the video
+    const link = document.createElement('link');
+    link.rel = 'preload';
+    link.as = 'video';
+    link.href = videoUrl;
+    document.head.appendChild(link);
+
+    return () => {
+      document.head.removeChild(link);
+    };
+  }, [setVideoUrl]);
+
   const navigateTo = (path: string) => {
     history.push(path);
   };
+
+
 
   return (
     <IonPage>
