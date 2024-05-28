@@ -1,16 +1,32 @@
 import React, { useState, useEffect, useRef } from 'react';
 import { IonPage, IonToast } from '@ionic/react';
+import GameMenuComponent from '../../components/game/GameMenuComponent';
 
 const CatigotchiPage: React.FC = () => {
   const canvasRef = useRef<HTMLCanvasElement | null>(null);
   const contextRef = useRef<CanvasRenderingContext2D | null>(null);
 
-  const [hunger, setHunger] = useState(23);
-  const [happiness, setHappiness] = useState(100);
-  const [health, setHealth] = useState(100);
+  const [catigotchiStats, setCatigotchiStats] = useState<CatigotchiStats>({
+    name: 'PetCat',
+    hunger: 200,
+    health: 100,
+    happiness: 100,
+    intelligence: 5,
+    playfulness: 5,
+    age: 50,
+    dob: new Date('2023-01-01')
+  });
+
+  // Menus and shops
+  const [isFoodMenuOpen, setIsFoodMenuOpen] = useState(false);
+  const [isMedicineMenuOpen, setIsMedicineMenuOpen] = useState(false);
+  const [isPlayMenuOpen, setIsPlayMenuOpen] = useState(false);
+
+  // Messages
   const [message, setMessage] = useState('');
   const [showToast, setShowToast] = useState(false);
   const [drawingColour, setDrawingColour] = useState('red');
+  const [minHungerLevel, setMinHungerLevel] = useState(1);
 
   useEffect(() => {
     const lastCheck = localStorage.getItem('lastCheck');
@@ -22,9 +38,12 @@ const CatigotchiPage: React.FC = () => {
       const happinessDecrease = Math.floor(elapsedTime / 120); // Decrease happiness by 1 every 2 minutes
       const healthDecrease = Math.floor(elapsedTime / 180); // Decrease health by 1 every 3 minutes
 
-      setHunger((prev) => Math.max(prev - hungerDecrease, 0));
-      setHappiness((prev) => Math.max(prev - happinessDecrease, 0));
-      setHealth((prev) => Math.max(prev - healthDecrease, 0));
+      setCatigotchiStats((prevStats) => ({
+        ...prevStats,
+        hunger: Math.max(prevStats.hunger - hungerDecrease, 0),
+        happiness: Math.max(prevStats.happiness - happinessDecrease, 0),
+        health: Math.max(prevStats.health - healthDecrease, 0),
+      }));
     }
 
     localStorage.setItem('lastCheck', now.toString());
@@ -36,8 +55,8 @@ const CatigotchiPage: React.FC = () => {
     if (canvas) {
       canvas.style.width = `100%`;
       canvas.style.height = `100%`;
-  
-      canvas.style.background = 'blue'
+
+      canvas.style.background = 'blue';
 
       const context = canvas.getContext('2d');
 
@@ -58,7 +77,7 @@ const CatigotchiPage: React.FC = () => {
         context.fillRect(190, 110, 20, 20); // Right arm
       }
     }
-  }, []);
+  }, [drawingColour]);
 
   useEffect(() => {
     const interval = setInterval(() => {
@@ -70,25 +89,53 @@ const CatigotchiPage: React.FC = () => {
   }, []);
 
   useEffect(() => {
-    if (hunger === 0 || happiness === 0) {
-      setHealth((prev) => Math.max(prev - 2, 0));
+    if (catigotchiStats.hunger === 0 || catigotchiStats.happiness === 0) {
+      setCatigotchiStats((prevStats) => ({
+        ...prevStats,
+        health: Math.max(prevStats.health - 2, 0),
+      }));
     }
-  }, [hunger, happiness]);
+  }, [catigotchiStats.hunger, catigotchiStats.happiness]);
 
   const feedCat = () => {
-    setHunger((prev) => Math.min(prev + 20, 100));
+    setIsFoodMenuOpen(true);
+    setCatigotchiStats((prevStats) => ({
+      ...prevStats,
+      hunger: Math.min(prevStats.hunger + 20, 100),
+    }));
     setMessage('You fed your cat!');
     setShowToast(true);
   };
 
   const playWithCat = () => {
-    setHappiness((prev) => Math.min(prev + 20, 100));
+    const rnd = Math.random();
+
+    // Map the random number to one of four possible outcomes
+    let plafulDiff;
+    if (rnd < 0.25) {
+      plafulDiff = 1;
+    } else if (rnd < 0.5) {
+      plafulDiff = -3;
+    } else if (rnd < 0.9) {
+      plafulDiff = 0;
+    } else {
+      plafulDiff = 5;
+    }
+        setCatigotchiStats((prevStats) => ({
+      ...prevStats,
+      happiness: Math.min(prevStats.happiness + 20, 100),
+      intelligence: parseFloat((prevStats.intelligence + 0.1).toFixed(1)),
+      playfulness: parseFloat((prevStats.playfulness + plafulDiff).toFixed(1)),
+    }));
     setMessage('You played with your cat!');
     setShowToast(true);
   };
 
   const giveMedicine = () => {
-    setHealth((prev) => Math.min(prev + 20, 100));
+    setCatigotchiStats((prevStats) => ({
+      ...prevStats,
+      health: Math.min(prevStats.health + 20, 100),
+    }));
     setMessage('You gave your cat medicine!');
     setShowToast(true);
   };
@@ -96,20 +143,27 @@ const CatigotchiPage: React.FC = () => {
   return (
     <IonPage>
       <div className='grid h-full w-full overflow-hidden bg-white'>
-        <main className='grid grid-rows-a1a w-full h-full overflow-hidden'>
-
+        <main className='relative grid grid-rows-a1a w-full h-full overflow-hidden'>
           <section className='grid grid-cols-3 bg-pink-300 h-fit w-full py-4 px-2 overflow-hidden'>
             <div className='grid grid-cols-2'>
               <label htmlFor='health'>Health</label>
-              <input type='text' value={health} readOnly />
+              <input type='text' value={catigotchiStats.health.toFixed(0)} readOnly />
             </div>
             <div className='grid grid-cols-2'>
               <label htmlFor='hunger'>Hunger</label>
-              <input type='text' value={hunger} readOnly />
+              <input type='text' value={catigotchiStats.hunger.toFixed(0)} readOnly />
             </div>
             <div className='grid grid-cols-2'>
               <label htmlFor='happiness'>Happiness</label>
-              <input type='text' value={happiness} readOnly />
+              <input type='text' value={catigotchiStats.happiness.toFixed(0)} readOnly />
+            </div>
+            <div className='grid grid-cols-2'>
+              <label htmlFor='intelligence'>Intelligence</label>
+              <input type='text' value={catigotchiStats.intelligence.toFixed(0)} readOnly />
+            </div>
+            <div className='grid grid-cols-2'>
+              <label htmlFor='playfulness'>Playfulness</label>
+              <input type='text' value={catigotchiStats.playfulness.toFixed(0)} readOnly />
             </div>
           </section>
 
@@ -139,6 +193,8 @@ const CatigotchiPage: React.FC = () => {
               </button>
             </div>
           </section>
+
+          {isFoodMenuOpen && <GameMenuComponent />}
         </main>
       </div>
       <IonToast

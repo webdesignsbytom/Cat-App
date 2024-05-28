@@ -3,7 +3,7 @@ import { IonPage } from '@ionic/react';
 // Components
 import MainButtonsComponent from '../../components/buttons/MainButtonsComponent';
 // Videos
-import Video1 from '../../assets/Video/cat_video1.mp4';
+import Video1 from '../../assets/video/cat_video1.mp4';
 
 const CotdPage: React.FC = () => {
   const videoRef = useRef<HTMLVideoElement>(null);

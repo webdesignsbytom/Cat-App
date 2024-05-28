@@ -13,10 +13,10 @@ import {
 } from 'react-icons/fa';
 import { FcLike } from 'react-icons/fc';
 // Images
-import Image1 from '../../assets/images/Ai/cat_ai_image_1.png';
-import Image2 from '../../assets/images/Ai/cat_ai_image_2.png';
-import Image3 from '../../assets/images/Ai/cat_ai_image_3.png';
-import Image4 from '../../assets/images/Ai/cat_ai_image_4.png';
+import Image1 from '../../assets/images/ai/cat_ai_image_1.png';
+import Image2 from '../../assets/images/ai/cat_ai_image_2.png';
+import Image3 from '../../assets/images/ai/cat_ai_image_3.png';
+import Image4 from '../../assets/images/ai/cat_ai_image_4.png';
 
 const AiCatsPage: React.FC = () => {
   const [currentIndex, setCurrentIndex] = useState(0);
