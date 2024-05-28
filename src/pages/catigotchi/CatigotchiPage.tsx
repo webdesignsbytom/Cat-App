@@ -1,26 +1,17 @@
 import React, { useState, useEffect, useRef } from 'react';
-import {
-  IonPage,
-  IonButton,
-  IonLabel,
-  IonProgressBar,
-  IonGrid,
-  IonRow,
-  IonCol,
-  IonToast,
-} from '@ionic/react';
+import { IonPage, IonToast } from '@ionic/react';
 
 const CatigotchiPage: React.FC = () => {
   const canvasRef = useRef<HTMLCanvasElement | null>(null);
   const contextRef = useRef<CanvasRenderingContext2D | null>(null);
 
-  const [hunger, setHunger] = useState(100);
+  const [hunger, setHunger] = useState(23);
   const [happiness, setHappiness] = useState(100);
   const [health, setHealth] = useState(100);
   const [message, setMessage] = useState('');
   const [showToast, setShowToast] = useState(false);
+  const [drawingColour, setDrawingColour] = useState('red');
 
-  // Update the cat's status based on real-world time
   useEffect(() => {
     const lastCheck = localStorage.getItem('lastCheck');
     const now = new Date().getTime();
@@ -41,17 +32,19 @@ const CatigotchiPage: React.FC = () => {
 
   useEffect(() => {
     const canvas = canvasRef.current;
+
     if (canvas) {
-      canvas.width = window.innerWidth * 2;
-      canvas.height = window.innerHeight * 2;
-      canvas.style.width = `${window.innerWidth}px`;
-      canvas.style.height = `${window.innerHeight}px`;
+      canvas.style.width = `100%`;
+      canvas.style.height = `100%`;
+  
+      canvas.style.background = 'blue'
 
       const context = canvas.getContext('2d');
+
       if (context) {
-        context.scale(2, 2);
+        context.scale(1, 1);
         context.lineCap = 'round';
-        context.strokeStyle = 'black';
+        context.strokeStyle = drawingColour;
         context.lineWidth = 5;
         contextRef.current = context;
 
@@ -102,15 +95,10 @@ const CatigotchiPage: React.FC = () => {
 
   return (
     <IonPage>
-      <IonToast
-        isOpen={showToast}
-        onDidDismiss={() => setShowToast(false)}
-        message={message}
-        duration={2000}
-      />
       <div className='grid h-full w-full overflow-hidden bg-white'>
-        <main className='grid grid-rows-3 px-2'>
-          <section>
+        <main className='grid grid-rows-a1a w-full h-full overflow-hidden'>
+
+          <section className='grid grid-cols-3 bg-pink-300 h-fit w-full py-4 px-2 overflow-hidden'>
             <div className='grid grid-cols-2'>
               <label htmlFor='health'>Health</label>
               <input type='text' value={health} readOnly />
@@ -124,12 +112,13 @@ const CatigotchiPage: React.FC = () => {
               <input type='text' value={happiness} readOnly />
             </div>
           </section>
-          <section>
-            {/* Main Canvas */}
-            <canvas ref={canvasRef} className='h-full w-full bg-teal-100' />
+
+          <section className='bg-yellow-400 h-full w-full overflow-hidden'>
+            <canvas ref={canvasRef} className='w-full h-full' />
           </section>
-          <section>
-            <div>
+
+          <section className='grid h-fit w-full bg-purple-400 py-4 px-2 overflow-hidden'>
+            <div className='grid grid-cols-3 gap-2 w-full'>
               <button
                 className='px-2 py-2 rounded-lg w-full h-[52px] bg-main-colour text-white text-2xl font-semibold active:scale-95 active:bg-main-colour-alt shadow-xl'
                 onClick={feedCat}
@@ -152,6 +141,12 @@ const CatigotchiPage: React.FC = () => {
           </section>
         </main>
       </div>
+      <IonToast
+        isOpen={showToast}
+        onDidDismiss={() => setShowToast(false)}
+        message={message}
+        duration={2000}
+      />
     </IonPage>
   );
 };

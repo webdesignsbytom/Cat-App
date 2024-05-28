@@ -1,4 +1,3 @@
-// src/pages/DrawingPage.tsx
 import React, { useRef, useEffect, useState } from 'react';
 import { IonPage } from '@ionic/react';
 
@@ -9,15 +8,27 @@ const DrawingPage: React.FC = () => {
   const [showToast, setShowToast] = useState(false);
   const [toastMessage, setToastMessage] = useState('');
   const [showLoading, setShowLoading] = useState(false);
-  const [colour, setColour] = useState('black');
+  const [colour, setColour] = useState('#000000');
+  const [listOfColours, setListOfColours] = useState([
+    { name: 'black', hex: '#000000' },
+    { name: 'red', hex: '#FF0000' },
+    { name: 'green', hex: '#008000' },
+    { name: 'yellow', hex: '#FFFF00' },
+    { name: 'pink', hex: '#FFC0CB' },
+    { name: 'orange', hex: '#FFA500' },
+    { name: 'blue', hex: '#0000FF' },
+  ]);
 
   useEffect(() => {
     const canvas = canvasRef.current;
     if (canvas) {
-      canvas.width = window.innerWidth * 2;
-      canvas.height = window.innerHeight * 2;
-      canvas.style.width = `${window.innerWidth}px`;
-      canvas.style.height = `${window.innerHeight}px`;
+      const width = window.innerWidth;
+      const height = window.innerHeight;
+
+      canvas.width = width * 2;
+      canvas.height = height * 2;
+      canvas.style.width = `${width}px`;
+      canvas.style.height = `${height}px`;
 
       const context = canvas.getContext('2d');
       if (context) {
@@ -28,20 +39,34 @@ const DrawingPage: React.FC = () => {
         contextRef.current = context;
       }
     }
-  }, []);
-
-  useEffect(() => {
-    if (contextRef.current) {
-      contextRef.current.strokeStyle = colour;
-    }
   }, [colour]);
 
-  const startDrawing = ({
-    nativeEvent,
-  }: React.TouchEvent | React.MouseEvent) => {
-    const { offsetX, offsetY } = nativeEvent as MouseEvent;
+  const getMousePos = (canvas: HTMLCanvasElement, event: MouseEvent) => {
+    const rect = canvas.getBoundingClientRect();
+    return {
+      x: (event.clientX - rect.left) * 2,
+      y: (event.clientY - rect.top) * 2,
+    };
+  };
+
+  const getTouchPos = (canvas: HTMLCanvasElement, touchEvent: TouchEvent) => {
+    const rect = canvas.getBoundingClientRect();
+    return {
+      x: (touchEvent.touches[0].clientX - rect.left) * 2,
+      y: (touchEvent.touches[0].clientY - rect.top) * 2,
+    };
+  };
+
+  const startDrawing = (event: React.TouchEvent | React.MouseEvent) => {
+    const canvas = canvasRef.current;
+    if (!canvas) return;
+
+    const pos = 'touches' in event.nativeEvent
+      ? getTouchPos(canvas, event.nativeEvent)
+      : getMousePos(canvas, event.nativeEvent as MouseEvent);
+
     contextRef.current?.beginPath();
-    contextRef.current?.moveTo(offsetX, offsetY);
+    contextRef.current?.moveTo(pos.x, pos.y);
     setDrawing(true);
   };
 
@@ -50,20 +75,22 @@ const DrawingPage: React.FC = () => {
     setDrawing(false);
   };
 
-  const draw = ({ nativeEvent }: React.TouchEvent | React.MouseEvent) => {
+  const draw = (event: React.TouchEvent | React.MouseEvent) => {
     if (!drawing) return;
-    const { offsetX, offsetY } = nativeEvent as MouseEvent;
-    contextRef.current?.lineTo(offsetX, offsetY);
+
+    const canvas = canvasRef.current;
+    if (!canvas) return;
+
+    const pos = 'touches' in event.nativeEvent
+      ? getTouchPos(canvas, event.nativeEvent)
+      : getMousePos(canvas, event.nativeEvent as MouseEvent);
+
+    contextRef.current?.lineTo(pos.x, pos.y);
     contextRef.current?.stroke();
   };
 
   const clearCanvas = () => {
-    contextRef.current?.clearRect(
-      0,
-      0,
-      canvasRef.current?.width!,
-      canvasRef.current?.height!
-    );
+    contextRef.current?.clearRect(0, 0, canvasRef.current?.width!, canvasRef.current?.height!);
   };
 
   const saveDrawing = () => {
@@ -112,21 +139,40 @@ const DrawingPage: React.FC = () => {
   return (
     <IonPage>
       <main className='grid grid-rows-reg h-full w-full'>
-        <header className='border-solid border-b-2 border-gray-600'>
+        <header className='grid grid-cols-rev items-center py-2 px-2 border-solid border-b-2 border-gray-600'>
           <div>Colour Select:</div>
+          <div className='grid grid-flow-col gap-2 pr-2 '>
+            {listOfColours.map((color, index) => {
+              return (
+                <div
+                  key={index}
+                  className='shadow-md cursor-pointer active:scale-110'
+                  style={{
+                    backgroundColor: color.hex,
+                    width: '20px',
+                    height: '20px',
+                    borderRadius: '50%',
+                  }}
+                  onClick={() => setColour(color.hex)}
+                ></div>
+              );
+            })}
+          </div>
         </header>
 
         {/* Main Canvas */}
-        <canvas
-          ref={canvasRef}
-          onMouseDown={startDrawing}
-          onMouseUp={finishDrawing}
-          onMouseMove={draw}
-          onTouchStart={startDrawing}
-          onTouchEnd={finishDrawing}
-          onTouchMove={draw}
-          className='h-full w-full bg-teal-100'
-        />
+        <section className='w-full h-full overflow-hidden'>
+          <canvas
+            ref={canvasRef}
+            onMouseDown={startDrawing}
+            onMouseUp={finishDrawing}
+            onMouseMove={draw}
+            onTouchStart={startDrawing}
+            onTouchEnd={finishDrawing}
+            onTouchMove={draw}
+            className='h-full w-full bg-teal-100'
+          />
+        </section>
       </main>
     </IonPage>
   );
