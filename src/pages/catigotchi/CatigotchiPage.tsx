@@ -22,6 +22,11 @@ import CryingCat from '../../assets/images/game/crying.png'
 import KeenCat from '../../assets/images/game/keen.png'
 import WeirdCat from '../../assets/images/game/weird.png'
 
+const imagesArray = [
+  AmazedCat, NappingCat, SleepingCat, PleasedCat, WavingCat,
+  FoodCat, MadCat, BasketCat, CryingCat, KeenCat, WeirdCat
+];
+
 const CatigotchiPage: React.FC = () => {
   const canvasRef = useRef<HTMLCanvasElement | null>(null);
   const contextRef = useRef<CanvasRenderingContext2D | null>(null);
@@ -94,28 +99,22 @@ const CatigotchiPage: React.FC = () => {
     const canvas = canvasRef.current;
     if (canvas) {
       const context = canvas.getContext('2d');
-  
-      if (context) {
-        context.scale(1, 1);
-        context.lineCap = 'round';
-        context.strokeStyle = 'black';
-        context.lineWidth = 5;
-        contextRef.current = context;
-  
+      contextRef.current = context;
+
+      const drawImage = (imageSrc: string) => {
         const image = new Image();
-        image.src = AmazedCat; // Set the source to your image path
+        image.src = imageSrc;
         image.onload = () => {
           if (canvas && context) {
             const canvasWidth = canvas.width;
             const canvasHeight = canvas.height;
             const imageWidth = image.width;
             const imageHeight = image.height;
-  
-            // Calculate the new image dimensions to fit within the canvas
+
             let drawWidth = imageWidth;
             let drawHeight = imageHeight;
             const aspectRatio = imageWidth / imageHeight;
-  
+
             if (imageWidth > canvasWidth || imageHeight > canvasHeight) {
               if (canvasWidth / canvasHeight > aspectRatio) {
                 drawHeight = canvasHeight;
@@ -125,19 +124,28 @@ const CatigotchiPage: React.FC = () => {
                 drawHeight = canvasWidth / aspectRatio;
               }
             }
-  
-            // Reduce the image size by 10%
+
             drawWidth *= 0.9;
-            drawHeight *= 0.9;
-  
+            drawHeight *= 0.75;
+
             const x = (canvasWidth - drawWidth) / 2;
             const y = (canvasHeight - drawHeight) / 2;
-  
-            context.clearRect(0, 0, canvasWidth, canvasHeight); // Clear the canvas
-            context.drawImage(image, x, y, drawWidth, drawHeight); // Draw the image
+
+            context.clearRect(0, 0, canvasWidth, canvasHeight);
+            context.drawImage(image, x, y, drawWidth, drawHeight);
           }
         };
-      }
+      };
+
+      let currentIndex = 0;
+      drawImage(imagesArray[currentIndex]);
+
+      const interval = setInterval(() => {
+        currentIndex = (currentIndex + 1) % imagesArray.length;
+        drawImage(imagesArray[currentIndex]);
+      }, 10000);
+
+      return () => clearInterval(interval);
     }
   }, []);
   
@@ -242,7 +250,7 @@ const CatigotchiPage: React.FC = () => {
       <div className='grid h-full w-full overflow-hidden bg-white'>
         <main className='relative grid grid-rows-a1a w-full h-full overflow-hidden'>
           {/* Top bar */}
-          <section className='grid grid-cols-3 gap-y-1 border-solid border-b-2 border-black h-fit w-full py-2 overflow-hidden items-center'>
+          <section className='grid grid-cols-3 gap-y-1 bg-slate-200 border-solid border-2 border-black h-fit w-full py-2 overflow-hidden items-center'>
             {topBarDataSet.map((item, index) => (
               <div
                 className='grid items-center w-full px-1'
@@ -269,7 +277,7 @@ const CatigotchiPage: React.FC = () => {
           </section>
 
           {/* Bottom bar */}
-          <section className='grid h-fit w-full border-solid border-t-2 border-black py-4 px-2 overflow-hidden'>
+          <section className='grid h-fit w-full bg-slate-200 border-solid border-2 border-black py-4 px-2 overflow-hidden'>
             <div className='grid grid-cols-4 gap-2 w-full'>
               {bottomBarDataSet.map((button, index) => (
                 <button
@@ -277,9 +285,9 @@ const CatigotchiPage: React.FC = () => {
                   onClick={button.onClick}
                   key={index}
                 >
-                  <div className='grid grid-cols-reg gap-2 items-center'>
-                    <div className='text-4xl grid items-center'>{button.icon}</div>
-                    <div className='text-sm'>{button.label}</div>
+                  <div className='grid grid-cols-reg gap-1 items-center'>
+                    <div className='text-2xl grid items-center'>{button.icon}</div>
+                    <div className='text-sm font-semibold'>{button.label}</div>
                   </div>
                 </button>
               ))}

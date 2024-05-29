@@ -14,13 +14,15 @@ const CategoriesPage: React.FC = () => {
 
   return (
     <IonPage>
-      <div className='grid grid-rows-reg h-full w-full'>
+      <div className='grid grid-rows-reg h-full w-full bg-white'>
         <header className='grid grid-cols-rev items-center py-2 px-2 border-solid border-b-2 border-gray-600'>
-          <div>Select by category</div>
+          <div>
+            <h1 className='text-xl font-medium'>Select by category</h1>
+          </div>
         </header>
 
         <main className='grid '>
-          <div className='grid grid-cols-3 gap-2 pr-2 '>
+          <div className='grid grid-cols-3 gap-2 pr-2 hfit'>
             {categoriesArray.map((cat, index) => {
               return (
                 <div
