@@ -24,7 +24,8 @@ const CatigotchiPage: React.FC = () => {
     age: 50,
     dob: new Date('2023-01-01'),
   });
-  const [petItemsOwned, setPetItemsOwned] = useState([]);
+  const [petItemsOwned, setPetItemsOwned] = useState<{ id: number; name: string; title: string; imageUrl: string; price: number; effect: number; quantity: number }[]>([]);
+  const [bank, setBank] = useState(5000);
 
   // Menus and shops
   const [isFoodMenuOpen, setIsFoodMenuOpen] = useState(false);
@@ -46,6 +47,7 @@ const CatigotchiPage: React.FC = () => {
     { label: 'Happiness', value: catigotchiStats.happiness },
     { label: 'Intelligence', value: catigotchiStats.intelligence },
     { label: 'Playfulness', value: catigotchiStats.playfulness },
+    { label: 'Bank', value: bank },
   ];
 
   const bottomBarDataSet = [
@@ -126,12 +128,6 @@ const CatigotchiPage: React.FC = () => {
 
   const openFoodMenu = () => {
     setIsFoodMenuOpen(true);
-    setCatigotchiStats((prevStats) => ({
-      ...prevStats,
-      hunger: Math.min(prevStats.hunger + 20, 100),
-    }));
-    setMessage('You fed your cat!');
-    setShowToast(true);
   };
 
   const playWithCatx = () => {
@@ -164,12 +160,6 @@ const CatigotchiPage: React.FC = () => {
 
   const openMedicineMenu = () => {
     setIsMedicineMenuOpen(true);
-    setCatigotchiStats((prevStats) => ({
-      ...prevStats,
-      health: Math.min(prevStats.health + 20, 100),
-    }));
-    setMessage('You gave your cat medicine!');
-    setShowToast(true);
   };
 
   const openItems = () => {
@@ -184,8 +174,23 @@ const CatigotchiPage: React.FC = () => {
     price: number;
     effect: number;
   }) => {
-    // Logic to handle buying an item
-    console.log('Bought item:', item);
+    if (bank >= item.price) {
+      setBank((prevBank) => prevBank - item.price);
+      setPetItemsOwned((prevItems) => {
+        const existingItem = prevItems.find((i) => i.id === item.id);
+        if (existingItem) {
+          return prevItems.map((i) =>
+            i.id === item.id ? { ...i, quantity: i.quantity + 1 } : i
+          );
+        } else {
+          return [...prevItems, { ...item, quantity: 1 }];
+        }
+      });
+      setMessage(`You bought ${item.title}!`);
+    } else {
+      setMessage("You don't have enough money!");
+    }
+    setShowToast(true);
   };
 
   const handleUseItem = (item: {
@@ -195,12 +200,17 @@ const CatigotchiPage: React.FC = () => {
     imageUrl: string;
     price: number;
     effect: number;
+    quantity: number;
   }) => {
-    // Logic to handle buying an item
-    console.log('Bought item:', item);
+    setPetItemsOwned((prevItems) =>
+      prevItems.map((i) =>
+        i.id === item.id ? { ...i, quantity: i.quantity - 1 } : i
+      ).filter(i => i.quantity > 0)
+    );
+    // Apply item effect logic here
+    setMessage(`You used ${item.title}!`);
+    setShowToast(true);
   };
-
-
 
   const closeMenu = () => {
     setIsFoodMenuOpen(false);
@@ -242,7 +252,7 @@ const CatigotchiPage: React.FC = () => {
 
           {/* Bottom bar */}
           <section className='grid h-fit w-full border-solid border-t-2 border-black py-4 px-2 overflow-hidden'>
-            <div className='grid grid-cols-3 gap-2 w-full'>
+            <div className='grid grid-cols-4 gap-2 w-full'>
               {bottomBarDataSet.map((button, index) => (
                 <button
                   className='px-2 py-2 rounded-lg w-full h-[52px] bg-main-colour text-white text-2xl font-semibold active:scale-95 active:bg-main-colour-alt shadow-xl'

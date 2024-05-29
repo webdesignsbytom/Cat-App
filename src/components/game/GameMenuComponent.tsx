@@ -45,7 +45,7 @@ const GameMenuComponent: React.FC<GameMenuComponentProps> = ({
               <article
                 key={item.id}
                 onClick={() => onBuyItem(item)}
-                className='grid shadow-lg border-2 border-black border-solid rounded-lg p-2'
+                className='grid shadow-lg border-2 border-black border-solid rounded-lg p-2 active:scale-95 active:brightness-110'
               >
                 <div className='grid grid-rows-2 gap-2 w-full h-full'>
                   <div className='grid w-full h-full justify-center items-center'>

@@ -56,7 +56,7 @@ const ItemsMenuComponent: React.FC<ItemsMenuComponentProps> = ({
                   </div>
                   <div className='grid grid-rows-2 gap-2 py-1 w-full h-full text-center leading-5'>
                     <div className='grid bg-main-colour rounded-lg items-center p-1'>{item.title}</div>
-                    <div className='grid bg-main-colour-alt rounded-lg items-center p-1'>£{item.quantity}</div>
+                    <div className='grid bg-main-colour-alt rounded-lg items-center p-1'>{item.quantity}</div>
                   </div>
                 </div>
               </article>
