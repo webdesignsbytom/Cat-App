@@ -40,20 +40,24 @@ const GameMenuComponent: React.FC<GameMenuComponentProps> = ({
         </header>
 
         <section className='grid h-full w-full overflow-hidden py-4'>
-          <div className='grid grid-cols-3 gap-x-2 gap-y-2 overflow-y-auto'>
+          <div className='grid grid-cols-3 gap-x-2 gap-y-2 overflow-y-auto '>
             {items.map((item) => (
               <article
                 key={item.id}
                 onClick={() => onBuyItem(item)}
-                className='grid shadow-lg border-2 border-black border-solid rounded-lg p-2 active:scale-95 active:brightness-110'
+                className='grid shadow-lg border-2 border-black border-solid rounded-lg p-2 active:scale-95 active:brightness-110 no__highlights'
               >
                 <div className='grid grid-rows-2 gap-2 w-full h-full'>
                   <div className='grid w-full h-full justify-center items-center'>
                     <span className='text-5xl'>{item.imageUrl}</span>
                   </div>
                   <div className='grid grid-rows-2 gap-2 py-1 w-full h-full text-center leading-5'>
-                    <div className='grid bg-main-colour rounded-lg items-center p-1'>{item.title}</div>
-                    <div className='grid bg-main-colour-alt rounded-lg items-center p-1'>£{item.price}</div>
+                    <div className='grid bg-main-colour rounded-lg items-center p-1'>
+                      {item.title}
+                    </div>
+                    <div className='grid bg-main-colour-alt rounded-lg items-center p-1'>
+                      £{item.price}
+                    </div>
                   </div>
                 </div>
               </article>
