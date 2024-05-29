@@ -34,6 +34,10 @@ const HomePage: React.FC = () => {
       link: '/therapy-mode',
     },
     {
+      title: 'Categories',
+      link: '/categories',
+    },
+    {
       title: 'Menu',
       link: '/menu',
     },

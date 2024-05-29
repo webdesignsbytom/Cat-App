@@ -7,7 +7,7 @@ module.exports = {
         reg: 'auto 1fr',
         rev: '1fr auto',
         a1a: 'auto 1fr auto',
-        foursix: '40% 60%'
+        foursix: '40% 60%',
       },
       gridTemplateColumns: {
         reg: 'auto 1fr',

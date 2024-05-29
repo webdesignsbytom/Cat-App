@@ -1,6 +1,14 @@
 import React, { useState, useEffect, useRef } from 'react';
 import { IonPage, IonToast } from '@ionic/react';
+// Components
 import GameMenuComponent from '../../components/game/GameMenuComponent';
+// Data
+import {
+  foodItemsArray,
+  catGamesArray,
+  catMedicinesArray,
+} from '../../utils/game/PurchasableGameItems';
+import ItemsMenuComponent from '../../components/game/ItemsMenuComponent';
 
 const CatigotchiPage: React.FC = () => {
   const canvasRef = useRef<HTMLCanvasElement | null>(null);
@@ -14,19 +22,38 @@ const CatigotchiPage: React.FC = () => {
     intelligence: 5,
     playfulness: 5,
     age: 50,
-    dob: new Date('2023-01-01')
+    dob: new Date('2023-01-01'),
   });
+  const [petItemsOwned, setPetItemsOwned] = useState([]);
 
   // Menus and shops
   const [isFoodMenuOpen, setIsFoodMenuOpen] = useState(false);
   const [isMedicineMenuOpen, setIsMedicineMenuOpen] = useState(false);
   const [isPlayMenuOpen, setIsPlayMenuOpen] = useState(false);
+  const [isItemMenuOpen, setIsItemMenuOpen] = useState(false);
 
   // Messages
   const [message, setMessage] = useState('');
   const [showToast, setShowToast] = useState(false);
-  const [drawingColour, setDrawingColour] = useState('red');
+
+  // Stats and effects
   const [minHungerLevel, setMinHungerLevel] = useState(1);
+
+  // Game needs
+  const topBarDataSet = [
+    { label: 'Health', value: catigotchiStats.health },
+    { label: 'Hunger', value: catigotchiStats.hunger },
+    { label: 'Happiness', value: catigotchiStats.happiness },
+    { label: 'Intelligence', value: catigotchiStats.intelligence },
+    { label: 'Playfulness', value: catigotchiStats.playfulness },
+  ];
+
+  const bottomBarDataSet = [
+    { label: 'Feed', onClick: () => openFoodMenu() },
+    { label: 'Play', onClick: () => openCatToysMenu() },
+    { label: 'Medicine', onClick: () => openMedicineMenu() },
+    { label: 'Items', onClick: () => openItems() },
+  ];
 
   useEffect(() => {
     const lastCheck = localStorage.getItem('lastCheck');
@@ -63,7 +90,7 @@ const CatigotchiPage: React.FC = () => {
       if (context) {
         context.scale(1, 1);
         context.lineCap = 'round';
-        context.strokeStyle = drawingColour;
+        context.strokeStyle = 'black';
         context.lineWidth = 5;
         contextRef.current = context;
 
@@ -77,7 +104,7 @@ const CatigotchiPage: React.FC = () => {
         context.fillRect(190, 110, 20, 20); // Right arm
       }
     }
-  }, [drawingColour]);
+  }, []);
 
   useEffect(() => {
     const interval = setInterval(() => {
@@ -97,7 +124,7 @@ const CatigotchiPage: React.FC = () => {
     }
   }, [catigotchiStats.hunger, catigotchiStats.happiness]);
 
-  const feedCat = () => {
+  const openFoodMenu = () => {
     setIsFoodMenuOpen(true);
     setCatigotchiStats((prevStats) => ({
       ...prevStats,
@@ -107,7 +134,7 @@ const CatigotchiPage: React.FC = () => {
     setShowToast(true);
   };
 
-  const playWithCat = () => {
+  const playWithCatx = () => {
     const rnd = Math.random();
 
     // Map the random number to one of four possible outcomes
@@ -121,7 +148,7 @@ const CatigotchiPage: React.FC = () => {
     } else {
       plafulDiff = 5;
     }
-        setCatigotchiStats((prevStats) => ({
+    setCatigotchiStats((prevStats) => ({
       ...prevStats,
       happiness: Math.min(prevStats.happiness + 20, 100),
       intelligence: parseFloat((prevStats.intelligence + 0.1).toFixed(1)),
@@ -131,7 +158,12 @@ const CatigotchiPage: React.FC = () => {
     setShowToast(true);
   };
 
-  const giveMedicine = () => {
+  const openCatToysMenu = () => {
+    setIsPlayMenuOpen(true);
+  };
+
+  const openMedicineMenu = () => {
+    setIsMedicineMenuOpen(true);
     setCatigotchiStats((prevStats) => ({
       ...prevStats,
       health: Math.min(prevStats.health + 20, 100),
@@ -140,61 +172,124 @@ const CatigotchiPage: React.FC = () => {
     setShowToast(true);
   };
 
+  const openItems = () => {
+    setIsItemMenuOpen(true);
+  };
+
+  const handleBuyItem = (item: {
+    id: number;
+    name: string;
+    title: string;
+    imageUrl: string;
+    price: number;
+    effect: number;
+  }) => {
+    // Logic to handle buying an item
+    console.log('Bought item:', item);
+  };
+
+  const handleUseItem = (item: {
+    id: number;
+    name: string;
+    title: string;
+    imageUrl: string;
+    price: number;
+    effect: number;
+  }) => {
+    // Logic to handle buying an item
+    console.log('Bought item:', item);
+  };
+
+
+
+  const closeMenu = () => {
+    setIsFoodMenuOpen(false);
+    setIsPlayMenuOpen(false);
+    setIsItemMenuOpen(false);
+    setIsMedicineMenuOpen(false);
+  };
+
   return (
     <IonPage>
       <div className='grid h-full w-full overflow-hidden bg-white'>
         <main className='relative grid grid-rows-a1a w-full h-full overflow-hidden'>
-          <section className='grid grid-cols-3 bg-pink-300 h-fit w-full py-4 px-2 overflow-hidden'>
-            <div className='grid grid-cols-2'>
-              <label htmlFor='health'>Health</label>
-              <input type='text' value={catigotchiStats.health.toFixed(0)} readOnly />
-            </div>
-            <div className='grid grid-cols-2'>
-              <label htmlFor='hunger'>Hunger</label>
-              <input type='text' value={catigotchiStats.hunger.toFixed(0)} readOnly />
-            </div>
-            <div className='grid grid-cols-2'>
-              <label htmlFor='happiness'>Happiness</label>
-              <input type='text' value={catigotchiStats.happiness.toFixed(0)} readOnly />
-            </div>
-            <div className='grid grid-cols-2'>
-              <label htmlFor='intelligence'>Intelligence</label>
-              <input type='text' value={catigotchiStats.intelligence.toFixed(0)} readOnly />
-            </div>
-            <div className='grid grid-cols-2'>
-              <label htmlFor='playfulness'>Playfulness</label>
-              <input type='text' value={catigotchiStats.playfulness.toFixed(0)} readOnly />
-            </div>
+          {/* Top bar */}
+          <section className='grid grid-cols-3 md:grid-cols-5 gap-y-2 border-solid border-b-2 border-black h-fit w-full py-2 overflow-hidden items-center justify-between'>
+            {topBarDataSet.map((item, index) => (
+              <div
+                className='grid justify-center items-center w-full'
+                key={index}
+              >
+                <div
+                  className='grid grid-flow-col justify-center gap-2 w-fit bg-yellow-400 rounded p-2'
+                  key={index}
+                >
+                  <label className='w-fit' htmlFor={item.label.toLowerCase()}>
+                    {item.label}
+                  </label>
+                  <span className='w-[35px] text-center rounded bg-slate-50'>
+                    {item.value.toFixed(0)}
+                  </span>
+                </div>
+              </div>
+            ))}
           </section>
 
-          <section className='bg-yellow-400 h-full w-full overflow-hidden'>
+          {/* Main game canvas */}
+          <section className=' h-full w-full overflow-hidden'>
             <canvas ref={canvasRef} className='w-full h-full' />
           </section>
 
-          <section className='grid h-fit w-full bg-purple-400 py-4 px-2 overflow-hidden'>
+          {/* Bottom bar */}
+          <section className='grid h-fit w-full border-solid border-t-2 border-black py-4 px-2 overflow-hidden'>
             <div className='grid grid-cols-3 gap-2 w-full'>
-              <button
-                className='px-2 py-2 rounded-lg w-full h-[52px] bg-main-colour text-white text-2xl font-semibold active:scale-95 active:bg-main-colour-alt shadow-xl'
-                onClick={feedCat}
-              >
-                Feed
-              </button>
-              <button
-                className='px-2 py-2 rounded-lg w-full h-[52px] bg-main-colour text-white text-2xl font-semibold active:scale-95 active:bg-main-colour-alt shadow-xl'
-                onClick={playWithCat}
-              >
-                Play
-              </button>
-              <button
-                className='px-2 py-2 rounded-lg w-full h-[52px] bg-main-colour text-white text-2xl font-semibold active:scale-95 active:bg-main-colour-alt shadow-xl'
-                onClick={giveMedicine}
-              >
-                Medicine
-              </button>
+              {bottomBarDataSet.map((button, index) => (
+                <button
+                  className='px-2 py-2 rounded-lg w-full h-[52px] bg-main-colour text-white text-2xl font-semibold active:scale-95 active:bg-main-colour-alt shadow-xl'
+                  onClick={button.onClick}
+                  key={index}
+                >
+                  {button.label}
+                </button>
+              ))}
             </div>
           </section>
 
-          {isFoodMenuOpen && <GameMenuComponent />}
+          {isFoodMenuOpen && (
+            <GameMenuComponent
+              menuTitle='Food Menu'
+              items={foodItemsArray}
+              onClose={closeMenu}
+              onBuyItem={handleBuyItem}
+            />
+          )}
+
+          {isPlayMenuOpen && (
+            <GameMenuComponent
+              menuTitle='Play Menu'
+              items={catGamesArray}
+              onClose={closeMenu}
+              onBuyItem={handleBuyItem}
+            />
+          )}
+
+          {isMedicineMenuOpen && (
+            <GameMenuComponent
+              menuTitle='Medicine'
+              items={catMedicinesArray}
+              onClose={closeMenu}
+              onBuyItem={handleBuyItem}
+            />
+          )}
+
+          {isItemMenuOpen && (
+            <ItemsMenuComponent
+              menuTitle='Items'
+              items={petItemsOwned}
+              onClose={closeMenu}
+              onUseItem={handleUseItem}
+            />
+          )}
         </main>
       </div>
       <IonToast

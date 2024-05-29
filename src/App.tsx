@@ -55,6 +55,7 @@ import '@ionic/react/css/palettes/dark.system.css';
 import './styles/reset.css';
 import './styles/tailwind.css';
 import './styles/video_player.css';
+import CategoriesPage from './pages/categories/CategoriesPage';
 
 setupIonicReact();
 
@@ -79,6 +80,9 @@ const App: React.FC = () => {
           </Route>
           <Route exact path='/therapy-mode'>
             <TherapyModePage />
+          </Route>
+          <Route exact path='/categories'>
+            <CategoriesPage />
           </Route>
           <Route exact path='/privacy-policy'>
             <PrivacyPolicyPage />
