@@ -1,27 +1,11 @@
-import React, { useState, useEffect, useRef } from 'react';
+import React from 'react';
 import { IonPage } from '@ionic/react';
 
 interface ItemsMenuComponentProps {
   menuTitle: string;
-  items: {
-    id: number;
-    name: string;
-    title: string;
-    imageUrl: string;
-    quantity: number;
-    price: number;
-    effect: number;
-  }[];
+  items: OwnedItem[];
   onClose: () => void;
-  onUseItem: (item: {
-    id: number;
-    name: string;
-    title: string;
-    imageUrl: string;
-    quantity: number;
-    price: number;
-    effect: number;
-  }) => void;
+  onUseItem: (item: OwnedItem) => void;
 }
 
 const ItemsMenuComponent: React.FC<ItemsMenuComponentProps> = ({
@@ -30,7 +14,8 @@ const ItemsMenuComponent: React.FC<ItemsMenuComponentProps> = ({
   onClose,
   onUseItem,
 }) => {
-  console.log('items,', items);
+  console.log('Items in menu:', items);
+
   return (
     <IonPage>
       <section className='grid absolute w-full h-full overflow-hidden'>

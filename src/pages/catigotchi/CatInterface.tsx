@@ -9,3 +9,21 @@ interface CatigotchiStats {
     dob: Date;
   }
   
+  interface Item {
+    id: number;
+    name: string;
+    title: string;
+    imageUrl: string;
+    price: number;
+    effect: number;
+  }
+  interface OwnedItem {
+    id: number;
+    name: string;
+    title: string;
+    imageUrl: string;
+    price: number;
+    effect: number;
+    quantity: number;
+  }
+  

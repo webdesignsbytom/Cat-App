@@ -1,6 +1,5 @@
 // src/components/game/GameMenuComponent.tsx
 import React from 'react';
-
 interface GameMenuComponentProps {
   menuTitle: string;
   items: {
@@ -12,14 +11,7 @@ interface GameMenuComponentProps {
     effect: number;
   }[];
   onClose: () => void;
-  onBuyItem: (item: {
-    id: number;
-    name: string;
-    title: string;
-    imageUrl: string;
-    price: number;
-    effect: number;
-  }) => void;
+  onBuyItem: (item: Item) => void;
 }
 
 const GameMenuComponent: React.FC<GameMenuComponentProps> = ({

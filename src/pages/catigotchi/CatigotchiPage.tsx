@@ -3,13 +3,24 @@ import { IonPage, IonToast } from '@ionic/react';
 // Components
 import GameMenuComponent from '../../components/game/GameMenuComponent';
 import ItemsMenuComponent from '../../components/game/ItemsMenuComponent';
-
 // Data
 import {
   foodItemsArray,
   catGamesArray,
   catMedicinesArray,
 } from '../../utils/game/PurchasableGameItems';
+// Images
+import AmazedCat from '../../assets/images/game/amazed.png'
+import NappingCat from '../../assets/images/game/napping.png'
+import SleepingCat from '../../assets/images/game/sleeping.png'
+import PleasedCat from '../../assets/images/game/pleased.png'
+import WavingCat from '../../assets/images/game/waving.png'
+import FoodCat from '../../assets/images/game/food.png'
+import MadCat from '../../assets/images/game/mad.png'
+import BasketCat from '../../assets/images/game/basket.png'
+import CryingCat from '../../assets/images/game/crying.png'
+import KeenCat from '../../assets/images/game/keen.png'
+import WeirdCat from '../../assets/images/game/weird.png'
 
 const CatigotchiPage: React.FC = () => {
   const canvasRef = useRef<HTMLCanvasElement | null>(null);
@@ -46,8 +57,8 @@ const CatigotchiPage: React.FC = () => {
     { label: 'Health', value: catigotchiStats.health },
     { label: 'Hunger', value: catigotchiStats.hunger },
     { label: 'Happiness', value: catigotchiStats.happiness },
-    { label: 'Intelligence', value: catigotchiStats.intelligence },
-    { label: 'Playfulness', value: catigotchiStats.playfulness },
+    { label: 'Intelli', value: catigotchiStats.intelligence },
+    { label: 'Playful', value: catigotchiStats.playfulness },
     { label: 'Bank', value: bank },
   ];
 
@@ -83,28 +94,28 @@ const CatigotchiPage: React.FC = () => {
     const canvas = canvasRef.current;
     if (canvas) {
       const context = canvas.getContext('2d');
-
+  
       if (context) {
         context.scale(1, 1);
         context.lineCap = 'round';
         context.strokeStyle = 'black';
         context.lineWidth = 5;
         contextRef.current = context;
-
+  
         const image = new Image();
-        image.src = '/path/to/your/image.png'; // Set the source to your image path
+        image.src = AmazedCat; // Set the source to your image path
         image.onload = () => {
           if (canvas && context) {
             const canvasWidth = canvas.width;
             const canvasHeight = canvas.height;
             const imageWidth = image.width;
             const imageHeight = image.height;
-
+  
             // Calculate the new image dimensions to fit within the canvas
             let drawWidth = imageWidth;
             let drawHeight = imageHeight;
             const aspectRatio = imageWidth / imageHeight;
-
+  
             if (imageWidth > canvasWidth || imageHeight > canvasHeight) {
               if (canvasWidth / canvasHeight > aspectRatio) {
                 drawHeight = canvasHeight;
@@ -114,10 +125,14 @@ const CatigotchiPage: React.FC = () => {
                 drawHeight = canvasWidth / aspectRatio;
               }
             }
-
+  
+            // Reduce the image size by 10%
+            drawWidth *= 0.9;
+            drawHeight *= 0.9;
+  
             const x = (canvasWidth - drawWidth) / 2;
             const y = (canvasHeight - drawHeight) / 2;
-
+  
             context.clearRect(0, 0, canvasWidth, canvasHeight); // Clear the canvas
             context.drawImage(image, x, y, drawWidth, drawHeight); // Draw the image
           }
@@ -125,6 +140,7 @@ const CatigotchiPage: React.FC = () => {
       }
     }
   }, []);
+  
 
   useEffect(() => {
     const interval = setInterval(() => {
@@ -183,14 +199,7 @@ const CatigotchiPage: React.FC = () => {
     setIsItemMenuOpen(true);
   };
 
-  const handleBuyItem = (item: {
-    id: number;
-    name: string;
-    title: string;
-    imageUrl: string;
-    price: number;
-    effect: number;
-  }) => {
+  const handleBuyItem = (item: Item) => {
     if (bank >= item.price) {
       setBank((prevBank) => prevBank - item.price);
       setPetItemsOwned((prevItems) => {
@@ -209,16 +218,8 @@ const CatigotchiPage: React.FC = () => {
     }
     setShowToast(true);
   };
-
-  const handleUseItem = (item: {
-    id: number;
-    name: string;
-    title: string;
-    imageUrl: string;
-    price: number;
-    effect: number;
-    quantity: number;
-  }) => {
+  
+  const handleUseItem = (item: Item) => {
     setPetItemsOwned((prevItems) =>
       prevItems.map((i) =>
         i.id === item.id ? { ...i, quantity: i.quantity - 1 } : i
@@ -227,6 +228,7 @@ const CatigotchiPage: React.FC = () => {
     setMessage(`You used ${item.title}!`);
     setShowToast(true);
   };
+  
 
   const closeMenu = () => {
     setIsFoodMenuOpen(false);
@@ -240,20 +242,20 @@ const CatigotchiPage: React.FC = () => {
       <div className='grid h-full w-full overflow-hidden bg-white'>
         <main className='relative grid grid-rows-a1a w-full h-full overflow-hidden'>
           {/* Top bar */}
-          <section className='grid grid-cols-3 gap-y-2 border-solid border-b-2 border-black h-fit w-full py-2 overflow-hidden items-center'>
+          <section className='grid grid-cols-3 gap-y-1 border-solid border-b-2 border-black h-fit w-full py-2 overflow-hidden items-center'>
             {topBarDataSet.map((item, index) => (
               <div
-                className='grid items-center w-full px-2'
+                className='grid items-center w-full px-1'
                 key={index}
               >
                 <div
-                  className='grid grid-cols-rev gap-2 w-full bg-yellow-400 rounded p-2'
+                  className='grid grid-cols-rev gap-1 w-full bg-yellow-400 rounded p-1'
                   key={index}
                 >
-                  <label className='w-fit' htmlFor={item.label.toLowerCase()}>
+                  <label className='w-fit text-sm font-semibold' htmlFor={item.label.toLowerCase()}>
                     {item.label}
                   </label>
-                  <span className='w-[55px] text-center rounded bg-slate-50'>
+                  <span className='w-[50px] text-sm text-center rounded bg-slate-50'>
                     {item.value.toFixed(0)}
                   </span>
                 </div>
@@ -271,7 +273,7 @@ const CatigotchiPage: React.FC = () => {
             <div className='grid grid-cols-4 gap-2 w-full'>
               {bottomBarDataSet.map((button, index) => (
                 <button
-                  className='px-1 rounded-lg w-full h-[52px] bg-main-colour text-white text-2xl font-semibold active:scale-95 active:bg-main-colour-alt shadow-xl'
+                  className='px-1 rounded-lg w-full h-[52px] bg-main-colour text-white text-xl font-semibold active:scale-95 active:bg-main-colour-alt shadow-xl'
                   onClick={button.onClick}
                   key={index}
                 >
