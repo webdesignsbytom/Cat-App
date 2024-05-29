@@ -2,13 +2,14 @@ import React, { useState, useEffect, useRef } from 'react';
 import { IonPage, IonToast } from '@ionic/react';
 // Components
 import GameMenuComponent from '../../components/game/GameMenuComponent';
+import ItemsMenuComponent from '../../components/game/ItemsMenuComponent';
+
 // Data
 import {
   foodItemsArray,
   catGamesArray,
   catMedicinesArray,
 } from '../../utils/game/PurchasableGameItems';
-import ItemsMenuComponent from '../../components/game/ItemsMenuComponent';
 
 const CatigotchiPage: React.FC = () => {
   const canvasRef = useRef<HTMLCanvasElement | null>(null);
@@ -51,10 +52,10 @@ const CatigotchiPage: React.FC = () => {
   ];
 
   const bottomBarDataSet = [
-    { label: 'Feed', onClick: () => openFoodMenu() },
-    { label: 'Play', onClick: () => openCatToysMenu() },
-    { label: 'Medicine', onClick: () => openMedicineMenu() },
-    { label: 'Items', onClick: () => openItems() },
+    { label: 'Food', icon: '🥪', onClick: () => openFoodMenu() },
+    { label: 'Games', icon: '🕹️', onClick: () => openCatToysMenu() },
+    { label: 'Health', icon: '⚕️', onClick: () => openMedicineMenu() },
+    { label: 'Items', icon: '🎒', onClick: () => openItems() },
   ];
 
   useEffect(() => {
@@ -80,13 +81,7 @@ const CatigotchiPage: React.FC = () => {
 
   useEffect(() => {
     const canvas = canvasRef.current;
-
     if (canvas) {
-      canvas.style.width = `100%`;
-      canvas.style.height = `100%`;
-
-      canvas.style.background = 'blue';
-
       const context = canvas.getContext('2d');
 
       if (context) {
@@ -96,14 +91,37 @@ const CatigotchiPage: React.FC = () => {
         context.lineWidth = 5;
         contextRef.current = context;
 
-        // Draw a simple cat on the canvas
-        context.fillStyle = 'gray';
-        context.fillRect(100, 100, 100, 100); // Body
-        context.fillRect(130, 70, 40, 40); // Head
-        context.fillRect(110, 130, 20, 20); // Left leg
-        context.fillRect(170, 130, 20, 20); // Right leg
-        context.fillRect(90, 110, 20, 20); // Left arm
-        context.fillRect(190, 110, 20, 20); // Right arm
+        const image = new Image();
+        image.src = '/path/to/your/image.png'; // Set the source to your image path
+        image.onload = () => {
+          if (canvas && context) {
+            const canvasWidth = canvas.width;
+            const canvasHeight = canvas.height;
+            const imageWidth = image.width;
+            const imageHeight = image.height;
+
+            // Calculate the new image dimensions to fit within the canvas
+            let drawWidth = imageWidth;
+            let drawHeight = imageHeight;
+            const aspectRatio = imageWidth / imageHeight;
+
+            if (imageWidth > canvasWidth || imageHeight > canvasHeight) {
+              if (canvasWidth / canvasHeight > aspectRatio) {
+                drawHeight = canvasHeight;
+                drawWidth = canvasHeight * aspectRatio;
+              } else {
+                drawWidth = canvasWidth;
+                drawHeight = canvasWidth / aspectRatio;
+              }
+            }
+
+            const x = (canvasWidth - drawWidth) / 2;
+            const y = (canvasHeight - drawHeight) / 2;
+
+            context.clearRect(0, 0, canvasWidth, canvasHeight); // Clear the canvas
+            context.drawImage(image, x, y, drawWidth, drawHeight); // Draw the image
+          }
+        };
       }
     }
   }, []);
@@ -133,7 +151,6 @@ const CatigotchiPage: React.FC = () => {
   const playWithCatx = () => {
     const rnd = Math.random();
 
-    // Map the random number to one of four possible outcomes
     let plafulDiff;
     if (rnd < 0.25) {
       plafulDiff = 1;
@@ -207,7 +224,6 @@ const CatigotchiPage: React.FC = () => {
         i.id === item.id ? { ...i, quantity: i.quantity - 1 } : i
       ).filter(i => i.quantity > 0)
     );
-    // Apply item effect logic here
     setMessage(`You used ${item.title}!`);
     setShowToast(true);
   };
@@ -224,20 +240,20 @@ const CatigotchiPage: React.FC = () => {
       <div className='grid h-full w-full overflow-hidden bg-white'>
         <main className='relative grid grid-rows-a1a w-full h-full overflow-hidden'>
           {/* Top bar */}
-          <section className='grid grid-cols-3 md:grid-cols-5 gap-y-2 border-solid border-b-2 border-black h-fit w-full py-2 overflow-hidden items-center justify-between'>
+          <section className='grid grid-cols-3 gap-y-2 border-solid border-b-2 border-black h-fit w-full py-2 overflow-hidden items-center'>
             {topBarDataSet.map((item, index) => (
               <div
-                className='grid justify-center items-center w-full'
+                className='grid items-center w-full px-2'
                 key={index}
               >
                 <div
-                  className='grid grid-flow-col justify-center gap-2 w-fit bg-yellow-400 rounded p-2'
+                  className='grid grid-cols-rev gap-2 w-full bg-yellow-400 rounded p-2'
                   key={index}
                 >
                   <label className='w-fit' htmlFor={item.label.toLowerCase()}>
                     {item.label}
                   </label>
-                  <span className='w-[35px] text-center rounded bg-slate-50'>
+                  <span className='w-[55px] text-center rounded bg-slate-50'>
                     {item.value.toFixed(0)}
                   </span>
                 </div>
@@ -255,11 +271,14 @@ const CatigotchiPage: React.FC = () => {
             <div className='grid grid-cols-4 gap-2 w-full'>
               {bottomBarDataSet.map((button, index) => (
                 <button
-                  className='px-2 py-2 rounded-lg w-full h-[52px] bg-main-colour text-white text-2xl font-semibold active:scale-95 active:bg-main-colour-alt shadow-xl'
+                  className='px-1 rounded-lg w-full h-[52px] bg-main-colour text-white text-2xl font-semibold active:scale-95 active:bg-main-colour-alt shadow-xl'
                   onClick={button.onClick}
                   key={index}
                 >
-                  {button.label}
+                  <div className='grid grid-cols-reg gap-2 items-center'>
+                    <div className='text-4xl grid items-center'>{button.icon}</div>
+                    <div className='text-sm'>{button.label}</div>
+                  </div>
                 </button>
               ))}
             </div>

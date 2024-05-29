@@ -30,6 +30,7 @@ const ItemsMenuComponent: React.FC<ItemsMenuComponentProps> = ({
   onClose,
   onUseItem,
 }) => {
+  console.log('items,', items);
   return (
     <IonPage>
       <section className='grid absolute w-full h-full overflow-hidden'>
