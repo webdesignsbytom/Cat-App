@@ -1,5 +1,6 @@
 // src/components/game/GameMenuComponent.tsx
 import React from 'react';
+
 interface GameMenuComponentProps {
   menuTitle: string;
   items: {
