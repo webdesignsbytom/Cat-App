@@ -16,6 +16,7 @@ import LoginPage from './user/LoginPage';
 import RegisterPage from './user/RegisterPage';
 import MenuPage from './pages/menu/MenuPage';
 import MyCatsPage from './pages/user/MyCatsPage';
+import CategoriesPage from './pages/categories/CategoriesPage';
 import SponsorPage from './pages/sponsor/SponsorPage';
 import TestPage from './pages/test/TestPage';
 import AddEditCatPage from './pages/user/AddEditCatPage';
@@ -55,7 +56,7 @@ import '@ionic/react/css/palettes/dark.system.css';
 import './styles/reset.css';
 import './styles/tailwind.css';
 import './styles/video_player.css';
-import CategoriesPage from './pages/categories/CategoriesPage';
+import './styles/animations.css';
 
 setupIonicReact();
 

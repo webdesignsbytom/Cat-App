@@ -1,0 +1,77 @@
+@keyframes likeAnimation {
+  0% {
+    transform: translateY(0) translateX(0);
+    opacity: 1;
+  }
+  10% {
+    transform: translateY(10) translateX(0);
+  }
+  50% {
+    transform: translateY(-35px) translateX(-10px);
+  }
+  100% {
+    transform: translateY(-70px) translateX(50px);
+    opacity: 0;
+  }
+}
+
+@keyframes likeAnimationSecond {
+  0% {
+    transform: translateY(0) translateX(0);
+    opacity: 1;
+  }
+  10% {
+    transform: translateY(10) translateX(0);
+  }
+  50% {
+    transform: translateY(-45px) translateX(10px);
+  }
+  100% {
+    transform: translateY(-85px) translateX(-20px);
+    opacity: 0;
+  }
+}
+
+@keyframes likeAnimationThird {
+  0% {
+    transform: translateY(0) translateX(0);
+    opacity: 1;
+  }
+  10% {
+    transform: translateY(10) translateX(0);
+  }
+  50% {
+    transform: translateY(-35px) translateX(1px);
+  }
+  100% {
+    transform: translateY(-70px) translateX(-1px);
+    opacity: 0;
+  }
+}
+
+.floating-icon {
+  position: absolute;
+  top: 0;
+  left: 50%;
+  transform: translateX(-50%);
+  animation: likeAnimation 1s ease-in-out;
+  pointer-events: none; /* Ensure the floating icon doesn't interfere with button clicks */
+}
+
+.floating-icon-second {
+  position: absolute;
+  top: 0;
+  left: 50%;
+  transform: translateX(-50%);
+  animation: likeAnimationSecond 1s ease-in-out;
+  pointer-events: none; /* Ensure the floating icon doesn't interfere with button clicks */
+}
+
+.floating-icon-third {
+  position: absolute;
+  top: 0;
+  left: 50%;
+  transform: translateX(-50%);
+  animation: likeAnimationThird 1s ease-in-out;
+  pointer-events: none; /* Ensure the floating icon doesn't interfere with button clicks */
+}

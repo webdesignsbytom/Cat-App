@@ -67,7 +67,7 @@ const EndlessCatsPage: React.FC = () => {
             onGoBack={goBack}
             onGoForward={goForward}
             onToggleMute={toggleMute}
-            onLikeVideo={likeVideo}
+            onLike={likeVideo}
             isMuted={muted}
           />
         )}
