@@ -15,6 +15,7 @@ const ItemsMenuComponent: React.FC<ItemsMenuComponentProps> = ({
   onUseItem,
 }) => {
   console.log('Items in menu:', items);
+  console.log('Items in menu length:', items.length);
 
   return (
     <IonPage>

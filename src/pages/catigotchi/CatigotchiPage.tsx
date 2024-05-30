@@ -10,21 +10,30 @@ import {
   catMedicinesArray,
 } from '../../utils/game/PurchasableGameItems';
 // Images
-import AmazedCat from '../../assets/images/game/amazed.png'
-import NappingCat from '../../assets/images/game/napping.png'
-import SleepingCat from '../../assets/images/game/sleeping.png'
-import PleasedCat from '../../assets/images/game/pleased.png'
-import WavingCat from '../../assets/images/game/waving.png'
-import FoodCat from '../../assets/images/game/food.png'
-import MadCat from '../../assets/images/game/mad.png'
-import BasketCat from '../../assets/images/game/basket.png'
-import CryingCat from '../../assets/images/game/crying.png'
-import KeenCat from '../../assets/images/game/keen.png'
-import WeirdCat from '../../assets/images/game/weird.png'
+import AmazedCat from '../../assets/images/game/amazed.png';
+import NappingCat from '../../assets/images/game/napping.png';
+import SleepingCat from '../../assets/images/game/sleeping.png';
+import PleasedCat from '../../assets/images/game/pleased.png';
+import WavingCat from '../../assets/images/game/waving.png';
+import FoodCat from '../../assets/images/game/food.png';
+import MadCat from '../../assets/images/game/mad.png';
+import BasketCat from '../../assets/images/game/basket.png';
+import CryingCat from '../../assets/images/game/crying.png';
+import KeenCat from '../../assets/images/game/keen.png';
+import WeirdCat from '../../assets/images/game/weird.png';
 
 const imagesArray = [
-  AmazedCat, NappingCat, SleepingCat, PleasedCat, WavingCat,
-  FoodCat, MadCat, BasketCat, CryingCat, KeenCat, WeirdCat
+  AmazedCat,
+  NappingCat,
+  SleepingCat,
+  PleasedCat,
+  WavingCat,
+  FoodCat,
+  MadCat,
+  BasketCat,
+  CryingCat,
+  KeenCat,
+  WeirdCat,
 ];
 
 const CatigotchiPage: React.FC = () => {
@@ -41,7 +50,19 @@ const CatigotchiPage: React.FC = () => {
     age: 50,
     dob: new Date('2023-01-01'),
   });
-  const [petItemsOwned, setPetItemsOwned] = useState<{ id: number; name: string; title: string; imageUrl: string; price: number; effect: number; quantity: number }[]>([]);
+
+  const [petItemsOwned, setPetItemsOwned] = useState<
+    {
+      id: number;
+      name: string;
+      title: string;
+      imageUrl: string;
+      price: number;
+      effect: number;
+      quantity: number;
+    }[]
+  >([]);
+
   const [bank, setBank] = useState(5000);
 
   // Menus and shops
@@ -125,7 +146,7 @@ const CatigotchiPage: React.FC = () => {
               }
             }
 
-            drawWidth *= 0.9;
+            drawWidth *= 1.1;
             drawHeight *= 0.75;
 
             const x = (canvasWidth - drawWidth) / 2;
@@ -148,7 +169,6 @@ const CatigotchiPage: React.FC = () => {
       return () => clearInterval(interval);
     }
   }, []);
-  
 
   useEffect(() => {
     const interval = setInterval(() => {
@@ -169,6 +189,9 @@ const CatigotchiPage: React.FC = () => {
   }, [catigotchiStats.hunger, catigotchiStats.happiness]);
 
   const openFoodMenu = () => {
+    setIsPlayMenuOpen(false);
+    setIsItemMenuOpen(false);
+    setIsMedicineMenuOpen(false);
     setIsFoodMenuOpen(true);
   };
 
@@ -196,20 +219,34 @@ const CatigotchiPage: React.FC = () => {
   };
 
   const openCatToysMenu = () => {
+    setIsFoodMenuOpen(false);
+    setIsItemMenuOpen(false);
+    setIsMedicineMenuOpen(false);
     setIsPlayMenuOpen(true);
   };
 
   const openMedicineMenu = () => {
+    setIsFoodMenuOpen(false);
+    setIsPlayMenuOpen(false);
+    setIsItemMenuOpen(false);
     setIsMedicineMenuOpen(true);
   };
 
   const openItems = () => {
+    setIsFoodMenuOpen(false);
+    setIsPlayMenuOpen(false);
+    setIsMedicineMenuOpen(false);
     setIsItemMenuOpen(true);
   };
 
   const handleBuyItem = (item: Item) => {
+    console.log('item', item);
+
+    // Check if can afford to buy
     if (bank >= item.price) {
       setBank((prevBank) => prevBank - item.price);
+
+      // Add item to array
       setPetItemsOwned((prevItems) => {
         const existingItem = prevItems.find((i) => i.id === item.id);
         if (existingItem) {
@@ -226,17 +263,16 @@ const CatigotchiPage: React.FC = () => {
     }
     setShowToast(true);
   };
-  
+
   const handleUseItem = (item: Item) => {
     setPetItemsOwned((prevItems) =>
-      prevItems.map((i) =>
-        i.id === item.id ? { ...i, quantity: i.quantity - 1 } : i
-      ).filter(i => i.quantity > 0)
+      prevItems
+        .map((i) => (i.id === item.id ? { ...i, quantity: i.quantity - 1 } : i))
+        .filter((i) => i.quantity > 0)
     );
     setMessage(`You used ${item.title}!`);
     setShowToast(true);
   };
-  
 
   const closeMenu = () => {
     setIsFoodMenuOpen(false);
@@ -248,19 +284,20 @@ const CatigotchiPage: React.FC = () => {
   return (
     <IonPage>
       <div className='grid h-full w-full overflow-hidden bg-white'>
-        <main className='relative grid grid-rows-a1a w-full h-full overflow-hidden'>
+        <main className='grid grid-rows-a1a w-full h-full overflow-hidden'>
+
           {/* Top bar */}
           <section className='grid grid-cols-3 gap-y-1 bg-slate-200 border-solid border-2 border-black h-fit w-full py-2 overflow-hidden items-center'>
             {topBarDataSet.map((item, index) => (
-              <div
-                className='grid items-center w-full px-1'
-                key={index}
-              >
+              <div className='grid items-center w-full px-1' key={index}>
                 <div
                   className='grid grid-cols-rev gap-1 w-full bg-yellow-400 rounded p-1'
                   key={index}
                 >
-                  <label className='w-fit text-sm font-semibold' htmlFor={item.label.toLowerCase()}>
+                  <label
+                    className='w-fit text-sm font-semibold'
+                    htmlFor={item.label.toLowerCase()}
+                  >
                     {item.label}
                   </label>
                   <span className='w-[50px] text-sm text-center rounded bg-slate-50'>
@@ -272,8 +309,44 @@ const CatigotchiPage: React.FC = () => {
           </section>
 
           {/* Main game canvas */}
-          <section className=' h-full w-full overflow-hidden'>
+          <section className='relative h-full w-full overflow-hidden'>
             <canvas ref={canvasRef} className='w-full h-full' />
+
+            {isFoodMenuOpen && (
+              <GameMenuComponent
+                menuTitle='Food Menu'
+                items={foodItemsArray}
+                onClose={closeMenu}
+                onBuyItem={handleBuyItem}
+              />
+            )}
+
+            {isPlayMenuOpen && (
+              <GameMenuComponent
+                menuTitle='Play Menu'
+                items={catGamesArray}
+                onClose={closeMenu}
+                onBuyItem={handleBuyItem}
+              />
+            )}
+
+            {isMedicineMenuOpen && (
+              <GameMenuComponent
+                menuTitle='Medicine'
+                items={catMedicinesArray}
+                onClose={closeMenu}
+                onBuyItem={handleBuyItem}
+              />
+            )}
+
+            {isItemMenuOpen && (
+              <ItemsMenuComponent
+                menuTitle='Items'
+                items={petItemsOwned}
+                onClose={closeMenu}
+                onUseItem={handleUseItem}
+              />
+            )}
           </section>
 
           {/* Bottom bar */}
@@ -286,49 +359,15 @@ const CatigotchiPage: React.FC = () => {
                   key={index}
                 >
                   <div className='grid grid-cols-reg gap-1 items-center'>
-                    <div className='text-2xl grid items-center'>{button.icon}</div>
+                    <div className='text-2xl grid items-center'>
+                      {button.icon}
+                    </div>
                     <div className='text-sm font-semibold'>{button.label}</div>
                   </div>
                 </button>
               ))}
             </div>
           </section>
-
-          {isFoodMenuOpen && (
-            <GameMenuComponent
-              menuTitle='Food Menu'
-              items={foodItemsArray}
-              onClose={closeMenu}
-              onBuyItem={handleBuyItem}
-            />
-          )}
-
-          {isPlayMenuOpen && (
-            <GameMenuComponent
-              menuTitle='Play Menu'
-              items={catGamesArray}
-              onClose={closeMenu}
-              onBuyItem={handleBuyItem}
-            />
-          )}
-
-          {isMedicineMenuOpen && (
-            <GameMenuComponent
-              menuTitle='Medicine'
-              items={catMedicinesArray}
-              onClose={closeMenu}
-              onBuyItem={handleBuyItem}
-            />
-          )}
-
-          {isItemMenuOpen && (
-            <ItemsMenuComponent
-              menuTitle='Items'
-              items={petItemsOwned}
-              onClose={closeMenu}
-              onUseItem={handleUseItem}
-            />
-          )}
         </main>
       </div>
       <IonToast

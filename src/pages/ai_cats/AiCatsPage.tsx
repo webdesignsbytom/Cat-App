@@ -1,29 +1,36 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useState, useRef } from 'react';
 import { IonPage } from '@ionic/react';
 import { useHistory } from 'react-router-dom';
 // Components
 import MainButtonsComponent from '../../components/buttons/MainButtonsComponent';
-// Icons
-import {
-  FaBackward,
-  FaForward,
-  FaHome,
-  FaVolumeMute,
-  FaVolumeUp,
-} from 'react-icons/fa';
-import { FcLike } from 'react-icons/fc';
-import { CatImage, arrayOfCatImages } from './CatImages';
+// Images
+import { CatImage, arrayOfCatImages, slideshowImages } from './CatImages';
+// Audio
+import audioFile from '../../assets/audio/slideshow/rossini_il_barbiere_di_siviglia_overture.mp3'; // Import your audio file
 
 const AiCatsPage: React.FC = () => {
   const [currentIndex, setCurrentIndex] = useState(0);
-  const [images] = useState<CatImage[]>(arrayOfCatImages);
+  const [images, setImages] = useState<CatImage[]>(arrayOfCatImages);
+  const [isSlideshow, setIsSlideshow] = useState(false);
   const [muted, setMuted] = useState(false);
   const [buttonsVisible, setButtonsVisible] = useState(true);
+  const audioRef = useRef<HTMLAudioElement>(null);
 
   const history = useHistory();
 
   useEffect(() => {
-    // Timer to hide buttons after 5 seconds
+    let interval: NodeJS.Timeout;
+    if (isSlideshow) {
+      interval = setInterval(() => {
+        setCurrentIndex((prevIndex) =>
+          prevIndex < images.length - 1 ? prevIndex + 1 : 0
+        );
+      }, 5000);
+    }
+    return () => clearInterval(interval);
+  }, [isSlideshow, images.length]);
+
+  useEffect(() => {
     const timer = setTimeout(() => {
       setButtonsVisible(false);
     }, 5000);
@@ -43,22 +50,32 @@ const AiCatsPage: React.FC = () => {
     );
   };
 
-  const navigateHome = () => {
-    history.push('/menu');
+  const likeImage = () => {
+    // Handle like image logic here
   };
-
-  const likeImage = () => {};
-
-  const playCatHistorySlideShow = () => {};
 
   const toggleMute = () => {
     setMuted(!muted);
+    if (audioRef.current) {
+      audioRef.current.muted = !audioRef.current.muted;
+    }
   };
 
   const handleScreenTap = () => {
     if (buttonsVisible) return;
-
     setButtonsVisible(true);
+  };
+
+  const startSlideshow = () => {
+    setImages(slideshowImages);
+    setCurrentIndex(0);
+    setIsSlideshow(true);
+  };
+
+  const endSlideshow = () => {
+    setImages(arrayOfCatImages);
+    setCurrentIndex(0);
+    setIsSlideshow(false);
   };
 
   return (
@@ -70,66 +87,53 @@ const AiCatsPage: React.FC = () => {
           className='w-full h-full object-cover'
         />
 
+        {isSlideshow && (
+          <audio
+            ref={audioRef}
+            src={audioFile}
+            autoPlay
+            loop
+            muted={muted}
+            onLoadedMetadata={() => {
+              if (audioRef.current) {
+                audioRef.current.currentTime = 60; // Start audio from 1 minute (60 seconds)
+              }
+            }}
+          />
+        )}
+
         {buttonsVisible && (
-          <section className='absolute bottom-0 grid gap-4 w-full h-fit px-6 py-10'>
+          <section className='absolute bottom-24 grid gap-4 w-full h-fit px-6'>
             <section className='grid justify-center'>
               <div>
-                <button
-                  onClick={playCatHistorySlideShow}
-                  className='bg-main-colour text-white py-2 px-4 rounded-lg shadow-md active:scale-95 active:bg-main-colour-alt'
-                >
-                  <span className='text-lg font-medium'>PLAY SLIDESHOW</span>
-                </button>
-              </div>
-            </section>
-
-            <section className='grid grid-cols-5 w-full h-fit'>
-              <div className='grid justify-center items-center'>
-                <button
-                  onClick={goBack}
-                  className='bg-main-colour text-white p-2 rounded-lg shadow-md active:scale-95 active:bg-main-colour-alt'
-                >
-                  <FaBackward size={30} />
-                </button>
-              </div>
-              <div className='grid justify-center items-center'>
-                <button
-                  onClick={navigateHome}
-                  className='bg-main-colour text-white p-2 rounded-lg shadow-md active:scale-95 active:bg-main-colour-alt'
-                >
-                  <FaHome size={30} />
-                </button>
-              </div>
-              <div className='grid justify-center items-center'>
-                <button
-                  onClick={likeImage}
-                  className='bg-main-colour text-white p-2 rounded-lg shadow-md active:scale-95 active:bg-main-colour-alt'
-                >
-                  <FcLike size={30} />
-                </button>
-              </div>
-              <div className='grid justify-center items-center'>
-                <button
-                  onClick={toggleMute}
-                  className='bg-main-colour text-white p-2 rounded-lg shadow-md active:scale-95 active:bg-main-colour-alt'
-                >
-                  {muted ? (
-                    <FaVolumeMute size={30} />
-                  ) : (
-                    <FaVolumeUp size={30} />
-                  )}
-                </button>
-              </div>
-              <div className='grid justify-center items-center'>
-                <button
-                  onClick={goForward}
-                  className='bg-main-colour text-white p-2 rounded-lg shadow-md active:scale-95 active:bg-main-colour-alt'
-                >
-                  <FaForward size={30} />
-                </button>
+                {isSlideshow ? (
+                  <button
+                    onClick={endSlideshow}
+                    className='bg-main-colour text-white py-2 px-4 rounded-lg shadow-lg active:scale-95 active:bg-main-colour-alt'
+                  >
+                    <span className='text-lg font-medium'>END SLIDESHOW</span>
+                  </button>
+                ) : (
+                  <button
+                    onClick={startSlideshow}
+                    className='bg-main-colour text-white py-2 px-4 rounded-lg shadow-lg active:scale-95 active:bg-main-colour-alt'
+                  >
+                    <span className='text-lg font-medium'>PLAY SLIDESHOW</span>
+                  </button>
+                )}
               </div>
             </section>
           </section>
+        )}
+
+        {buttonsVisible && (
+          <MainButtonsComponent
+            onGoBack={goBack}
+            onGoForward={goForward}
+            onToggleMute={toggleMute}
+            onLike={likeImage}
+            isMuted={muted}
+          />
         )}
       </div>
     </IonPage>

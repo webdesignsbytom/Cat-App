@@ -82,7 +82,7 @@ const HomePage: React.FC = () => {
               {listOfButtons.map((button, index) => (
                 <div key={index}>
                   <button
-                    className='px-2 py-2 rounded-lg w-full h-[52px] bg-main-colour text-white text-2xl font-semibold active:scale-95 active:bg-main-colour-alt shadow-xl'
+                    className='px-2 py-2 rounded-lg w-full h-[52px] bg-main-colour text-white text-2xl font-semibold active:scale-95 active:bg-main-colour-alt shadow-xl active:outline-[6px] active:outline active:outline-main-colour'
                     onClick={() => navigateTo(button.link)}
                   >
                     {button.title}
