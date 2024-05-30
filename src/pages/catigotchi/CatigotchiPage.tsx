@@ -189,6 +189,8 @@ const CatigotchiPage: React.FC = () => {
   }, [catigotchiStats.hunger, catigotchiStats.happiness]);
 
   const openFoodMenu = () => {
+    console.log('>>> openFoodMenu');
+
     setIsPlayMenuOpen(false);
     setIsItemMenuOpen(false);
     setIsMedicineMenuOpen(false);
@@ -219,6 +221,8 @@ const CatigotchiPage: React.FC = () => {
   };
 
   const openCatToysMenu = () => {
+    console.log('>>> openCatToysMenu');
+
     setIsFoodMenuOpen(false);
     setIsItemMenuOpen(false);
     setIsMedicineMenuOpen(false);
@@ -226,6 +230,8 @@ const CatigotchiPage: React.FC = () => {
   };
 
   const openMedicineMenu = () => {
+    console.log('>>> openMedicineMenu');
+
     setIsFoodMenuOpen(false);
     setIsPlayMenuOpen(false);
     setIsItemMenuOpen(false);
@@ -233,6 +239,7 @@ const CatigotchiPage: React.FC = () => {
   };
 
   const openItems = () => {
+    console.log('>>> openItems');
     setIsFoodMenuOpen(false);
     setIsPlayMenuOpen(false);
     setIsMedicineMenuOpen(false);

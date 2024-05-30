@@ -10,7 +10,8 @@ import Video1 from '../../assets/video/cat_video1.mp4';
 const TherapyModePage: React.FC = () => {
   const videoRef = useRef<HTMLVideoElement>(null);
   const [buttonsVisible, setButtonsVisible] = useState(true);
-  const [muted, setMuted] = useState(true);
+  const [muted, setMuted] = useState(false);
+  const [disabled, setDisabled] = useState(true);
 
   useEffect(() => {
     if (videoRef.current) {
@@ -71,6 +72,7 @@ const TherapyModePage: React.FC = () => {
             onToggleMute={toggleMute}
             onLike={likeVideo}
             isMuted={muted}
+            disabled={disabled}
           />
         )}
       </div>

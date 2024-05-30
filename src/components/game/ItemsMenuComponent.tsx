@@ -20,7 +20,7 @@ const ItemsMenuComponent: React.FC<ItemsMenuComponentProps> = ({
   return (
     <IonPage>
       <section className='grid absolute w-full h-full overflow-hidden'>
-        <div className='grid grid-rows-a1a px-2 py-2 overflow-hidden mx-auto my-auto w-[90%] h-3/4 bg-white border-2 border-black border-solid rounded-lg'>
+        <div className='grid grid-rows-a1a px-2 py-2 overflow-hidden mx-auto my-auto w-[90%] h-[90%] bg-blue-100 border-2 border-black border-solid rounded-lg'>
           <header className='grid h-full'>
             <div className='text-center'>
               <h3 className='text-xl font-semibold text-main-colour'>
@@ -35,18 +35,18 @@ const ItemsMenuComponent: React.FC<ItemsMenuComponentProps> = ({
                 <article
                   key={item.id}
                   onClick={() => onUseItem(item)}
-                  className='grid shadow-lg border-2 border-black border-solid rounded-lg p-2 active:scale-95 active:brightness-110 no__highlights'
+                  className='grid shadow-lg border-2 border-black border-solid rounded-lg p-2 active:scale-95 active:brightness-110 no__highlights bg-slate-50'
                 >
                   <div className='grid grid-rows-2 gap-2 w-full h-full'>
                     <div className='grid w-full h-full justify-center items-center'>
                       <span className='text-5xl'>{item.imageUrl}</span>
                     </div>
-                    <div className='grid grid-rows-2 gap-2 py-1 w-full h-full text-center leading-5'>
+                    <div className='grid grid-rows-2 gap-2 py-1 w-full h-full text-sm font-semibold text-center leading-5'>
                       <div className='grid bg-main-colour rounded-lg items-center p-1'>
                         {item.title}
                       </div>
-                      <div className='grid bg-main-colour-alt rounded-lg items-center p-1'>
-                        {item.quantity}
+                      <div className='grid grid-flow-col justify-center gap-4 bg-main-colour-alt rounded-lg items-center p-1'>
+                        <span>Owned {' '}</span><span>{item.quantity}</span>
                       </div>
                     </div>
                   </div>

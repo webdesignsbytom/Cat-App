@@ -9,6 +9,7 @@ interface MainButtonsComponentProps {
   onToggleMute: () => void;
   onLike: () => void;
   isMuted: boolean;
+  disabled: boolean;
 }
 
 const MainButtonsComponent: React.FC<MainButtonsComponentProps> = ({
@@ -17,6 +18,7 @@ const MainButtonsComponent: React.FC<MainButtonsComponentProps> = ({
   onToggleMute,
   onLike: onLikeVideo,
   isMuted,
+  disabled
 }) => {
   const history = useHistory();
   const [likeAnimation, setLikeAnimation] = useState(false);
@@ -40,15 +42,15 @@ const MainButtonsComponent: React.FC<MainButtonsComponentProps> = ({
   };
 
   const buttons = [
-    { onClick: onGoBack, icon: <FaBackward size={30} /> },
+    { onClick: onGoBack, icon: <FaBackward size={30} />, className: disabled ? 'hidden' : '' },
     { onClick: navigateHome, icon: <FaHome size={30} /> },
     { 
       onClick: handleLikeClick, 
       icon: <FcLike size={30} />, 
-      className: likeAnimation || secondLikeAnimation || thirdLikeAnimation ? 'animate-like' : '' // Only the like button gets this class
+      className: likeAnimation || secondLikeAnimation || thirdLikeAnimation ? 'animate-like' : '' // Only the like button 
     },
     { onClick: onToggleMute, icon: isMuted ? <FaVolumeMute size={30} /> : <FaVolumeUp size={30} /> },
-    { onClick: onGoForward, icon: <FaForward size={30} /> },
+    { onClick: onGoForward, icon: <FaForward size={30} />, className: disabled ? 'hidden' : '' },
   ];
 
   return (
