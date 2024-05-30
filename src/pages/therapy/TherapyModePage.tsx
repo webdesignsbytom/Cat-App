@@ -1,68 +1,78 @@
 import React, { useEffect, useRef, useState } from 'react';
-import { useHistory } from 'react-router-dom';
 import { IonPage } from '@ionic/react';
-import { FaBackward, FaForward, FaHome } from 'react-icons/fa';
-import { FcLike } from 'react-icons/fc';
 // Context
 import { useVideo } from '../../context/VideoContext';
+// Components
+import MainButtonsComponent from '../../components/buttons/MainButtonsComponent';
+// Images
+import Video1 from '../../assets/video/cat_video1.mp4';
 
 const TherapyModePage: React.FC = () => {
   const videoRef = useRef<HTMLVideoElement>(null);
-  const { videoUrl } = useVideo();
-  const [isVideoReady, setIsVideoReady] = useState(false);
+  const [buttonsVisible, setButtonsVisible] = useState(true);
   const [muted, setMuted] = useState(true);
-  const history = useHistory();
 
   useEffect(() => {
     if (videoRef.current) {
-      videoRef.current.muted = true; // Start muted
+      videoRef.current.muted = muted; // Start muted
     }
-  }, []);
+  }, [muted]);
 
-  const handleCanPlay = () => {
-    setIsVideoReady(true);
-    if (videoRef.current) {
-      videoRef.current.play();
-    }
-  };
+  useEffect(() => {
+    // Timer to hide buttons after 5 seconds
+    const timer = setTimeout(() => {
+      setButtonsVisible(false);
+    }, 5000);
 
-  const toggleMute = () => {
-    if (videoRef.current) {
-      videoRef.current.muted = !videoRef.current.muted;
-      setMuted(!muted);
-    }
+    return () => clearTimeout(timer);
+  }, [buttonsVisible]);
+
+  const handleScreenTap = () => {
+    if (buttonsVisible) return;
+
+    setButtonsVisible(true);
   };
 
   const goBack = () => {
     if (videoRef.current) {
-      videoRef.current.currentTime -= 10; // Go back 10 seconds
     }
   };
 
   const goForward = () => {
     if (videoRef.current) {
-      videoRef.current.currentTime += 10; // Go forward 10 seconds
     }
   };
 
-  const navigateHome = () => {
-    history.push('/home');
+  const toggleMute = () => {
+    setMuted((prevMuted) => !prevMuted);
+  };
+
+  const likeVideo = () => {
+    console.log('Video liked');
   };
 
   return (
-    <IonPage>
-      <div className='relative h-full w-full'>
+    <IonPage onClick={handleScreenTap}>
+      <div className='video-container'>
         <video
           ref={videoRef}
           autoPlay
           muted={muted}
-          preload='auto'
-          onCanPlay={handleCanPlay}
           style={{ width: '100%', height: '100%', objectFit: 'cover' }}
         >
-          <source src={videoUrl} type='video/mp4' />
+          <source src={Video1} type='video/mp4' />
           Your browser does not support the video tag.
         </video>
+
+        {buttonsVisible && (
+          <MainButtonsComponent
+            onGoBack={goBack}
+            onGoForward={goForward}
+            onToggleMute={toggleMute}
+            onLikeVideo={likeVideo}
+            isMuted={muted}
+          />
+        )}
       </div>
     </IonPage>
   );

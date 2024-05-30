@@ -2,33 +2,51 @@ import React, { useState, useRef, useEffect } from 'react';
 import { IonPage } from '@ionic/react';
 // Components
 import MainButtonsComponent from '../../components/buttons/MainButtonsComponent';
-// Videos
+// Images
 import Video1 from '../../assets/video/cat_video1.mp4';
 
 const CotdPage: React.FC = () => {
   const videoRef = useRef<HTMLVideoElement>(null);
   const [buttonsVisible, setButtonsVisible] = useState(true);
+  const [muted, setMuted] = useState(true);
 
   useEffect(() => {
     if (videoRef.current) {
-      videoRef.current.muted = true; // Start muted
+      videoRef.current.muted = muted; // Start muted
     }
-
+  }, [muted]);
+  
+  useEffect(() => {
     // Timer to hide buttons after 5 seconds
     const timer = setTimeout(() => {
       setButtonsVisible(false);
     }, 5000);
 
     return () => clearTimeout(timer);
-  }, []);
+  }, [buttonsVisible]);
 
   const handleScreenTap = () => {
-    setButtonsVisible(true);
+    if (buttonsVisible) return;
 
-    // Reset the timer to hide buttons after 5 seconds
-    setTimeout(() => {
-      setButtonsVisible(false);
-    }, 5000);
+    setButtonsVisible(true);
+  };
+
+  const goBack = () => {
+    if (videoRef.current) {
+    }
+  };
+
+  const goForward = () => {
+    if (videoRef.current) {
+    }
+  };
+
+  const toggleMute = () => {
+    setMuted((prevMuted) => !prevMuted);
+  };
+
+  const likeVideo = () => {
+    console.log('Video liked');
   };
 
   return (
@@ -37,14 +55,22 @@ const CotdPage: React.FC = () => {
         <video
           ref={videoRef}
           autoPlay
-          muted
+          muted={muted}
           style={{ width: '100%', height: '100%', objectFit: 'cover' }}
         >
           <source src={Video1} type='video/mp4' />
           Your browser does not support the video tag.
         </video>
 
-        {buttonsVisible && <MainButtonsComponent />}
+        {buttonsVisible && (
+          <MainButtonsComponent
+            onGoBack={goBack}
+            onGoForward={goForward}
+            onToggleMute={toggleMute}
+            onLikeVideo={likeVideo}
+            isMuted={muted}
+          />
+        )}
       </div>
     </IonPage>
   );
