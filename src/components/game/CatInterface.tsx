@@ -19,9 +19,16 @@ export interface Item {
   title: string;
   imageUrl: string;
   price: number;
-  effect: number;
+  effects: {
+    hunger?: number;
+    happiness?: number;
+    health?: number;
+    intelligence?: number;
+    playfulness?: number;
+  };
   xp: number;
 }
+
 
 export interface OwnedItem {
   id: number;
@@ -30,13 +37,20 @@ export interface OwnedItem {
   title: string;
   imageUrl: string;
   price: number;
-  effect: number;
+  effects: {
+    hunger?: number;
+    happiness?: number;
+    health?: number;
+    intelligence?: number;
+    playfulness?: number;
+  };
   quantity: number;
   xp: number;
 }
 
 export interface GameMenuComponentProps {
   menuTitle: string;
+  bank: number;
   items: {
     id: number;
     type: string;
@@ -44,8 +58,13 @@ export interface GameMenuComponentProps {
     title: string;
     imageUrl: string;
     price: number;
-    effect: number;
-    quantity: number;
+    effects: {
+      hunger?: number;
+      happiness?: number;
+      health?: number;
+      intelligence?: number;
+      playfulness?: number;
+    };
     xp: number;
   }[];
   onClose: () => void;
@@ -57,6 +76,12 @@ export interface ItemsMenuComponentProps {
   items: OwnedItem[];
   onClose: () => void;
   onUseItem: (item: OwnedItem) => void;
+  openSettingsMenu: () => void;
+}
+
+export interface SettingsMenuComponentProps {
+  onClose: () => void;
+  onResetCat: () => void;
 }
 
 export interface GameModalDisplayProps {
@@ -92,3 +117,10 @@ export const startingCat: CatigotchiStats = {
   mood: CatMood.Happy,
   dob: new Date('2023-01-01'),
 };
+
+// Define the interface for a settings option
+export interface SettingsOption {
+  id: number;
+  name: string;
+  title: string;
+}

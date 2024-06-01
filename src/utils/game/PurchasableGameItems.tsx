@@ -1,10 +1,11 @@
 // Purchasable items for Catigotchi Game
-// Arrays are all identical format for reusuable component 'GameMenuComponent'
 
-// Food items
+import { Item } from '../../components/game/CatInterface';
+
+// Arrays are all identical format for reusuable component 'GameMenuComponent'
 let foodId = 0;
 
-export const foodItemsArray = [
+export const foodItemsArray: Item[] = [
     {
         id: foodId++,
         type: 'food',
@@ -12,8 +13,10 @@ export const foodItemsArray = [
         title: 'Fresh Fish',
         imageUrl: '🐟',
         price: 10,
-        effect: 10,
-        quantity: 0,
+        effects: {
+            hunger: 10,
+            happiness: 5,
+        },
         xp: 5
     },
     {
@@ -23,8 +26,10 @@ export const foodItemsArray = [
         title: 'Cooked Chicken',
         imageUrl: '🍗',
         price: 10,
-        effect: 10,
-        quantity: 0,
+        effects: {
+            hunger: 10,
+            happiness: 5,
+        },
         xp: 5
     },
     {
@@ -34,8 +39,10 @@ export const foodItemsArray = [
         title: 'Bowl of Milk',
         imageUrl: '🥛',
         price: 10,
-        effect: 10,
-        quantity: 0,
+        effects: {
+            hunger: 10,
+            happiness: 5,
+        },
         xp: 5
     },
     {
@@ -45,8 +52,10 @@ export const foodItemsArray = [
         title: 'Tuna Can',
         imageUrl: '🐟',
         price: 10,
-        effect: 10,
-        quantity: 0,
+        effects: {
+            hunger: 10,
+            happiness: 5,
+        },
         xp: 5
     },
     {
@@ -56,8 +65,10 @@ export const foodItemsArray = [
         title: 'Salmon Fillet',
         imageUrl: '🐠',
         price: 10,
-        effect: 10,
-        quantity: 0,
+        effects: {
+            hunger: 10,
+            happiness: 5,
+        },
         xp: 5
     },
     {
@@ -67,27 +78,30 @@ export const foodItemsArray = [
         title: 'Fresh Catnip',
         imageUrl: '🌿',
         price: 10,
-        effect: 10,
-        quantity: 0,
+        effects: {
+            hunger: 10,
+            happiness: 5,
+        },
         xp: 5
     },
     {
         id: foodId++,
         type: 'food',
-        name: 'Shrimp',
+        name: 'shrimp',
         title: 'Fresh Shrimp',
         imageUrl: '🍤',
         price: 10,
-        effect: 10,
-        quantity: 0,
+        effects: {
+            hunger: 10,
+            happiness: 5,
+        },
         xp: 5
     }
 ];
 
-// Play and games
 let gameId = 0;
 
-export const catGamesArray = [
+export const catGamesArray: Item[] = [
     {
         id: gameId++,
         type: 'game',
@@ -95,8 +109,10 @@ export const catGamesArray = [
         title: 'Ball of Yarn',
         imageUrl: '🧶',
         price: 10,
-        effect: 10,
-        quantity: 0,
+        effects: {
+            happiness: 10,
+            playfulness: 5,
+        },
         xp: 5
     },
     {
@@ -106,8 +122,10 @@ export const catGamesArray = [
         title: 'Laser Pointer',
         imageUrl: '🔦',
         price: 10,
-        effect: 10,
-        quantity: 0,
+        effects: {
+            happiness: 10,
+            playfulness: 5,
+        },
         xp: 5
     },
     {
@@ -117,8 +135,10 @@ export const catGamesArray = [
         title: 'Feather Toy',
         imageUrl: '🪶',
         price: 10,
-        effect: 10,
-        quantity: 0,
+        effects: {
+            happiness: 10,
+            playfulness: 5,
+        },
         xp: 5
     },
     {
@@ -128,8 +148,10 @@ export const catGamesArray = [
         title: 'Catnip Toy',
         imageUrl: '🌿',
         price: 10,
-        effect: 10,
-        quantity: 0,
+        effects: {
+            happiness: 10,
+            playfulness: 5,
+        },
         xp: 5
     },
     {
@@ -139,8 +161,10 @@ export const catGamesArray = [
         title: 'Scratching Post',
         imageUrl: '🪵',
         price: 10,
-        effect: 10,
-        quantity: 0,
+        effects: {
+            happiness: 10,
+            playfulness: 5,
+        },
         xp: 5
     },
     {
@@ -150,16 +174,17 @@ export const catGamesArray = [
         title: 'Toy Mouse',
         imageUrl: '🐭',
         price: 10,
-        effect: 10,
-        quantity: 0,
+        effects: {
+            happiness: 10,
+            playfulness: 5,
+        },
         xp: 5
     }
 ];
 
-// Medicine 
 let medicineId = 0;
 
-export const catMedicinesArray = [
+export const catMedicinesArray: Item[] = [
     {
         id: medicineId++,
         type: 'medicine',
@@ -167,8 +192,9 @@ export const catMedicinesArray = [
         title: 'Antibiotic',
         imageUrl: '💊',
         price: 15,
-        effect: 20,
-        quantity: 0,
+        effects: {
+            health: 20,
+        },
         xp: 5
     },
     {
@@ -178,8 +204,9 @@ export const catMedicinesArray = [
         title: 'Flea Treatment',
         imageUrl: '🪲',
         price: 20,
-        effect: 15,
-        quantity: 0,
+        effects: {
+            health: 15,
+        },
         xp: 5
     },
     {
@@ -189,8 +216,9 @@ export const catMedicinesArray = [
         title: 'Pain Reliever',
         imageUrl: '🩹',
         price: 10,
-        effect: 10,
-        quantity: 0,
+        effects: {
+            health: 10,
+        },
         xp: 5
     }
 ];

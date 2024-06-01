@@ -75,3 +75,20 @@
   animation: likeAnimationThird 1s ease-in-out;
   pointer-events: none; /* Ensure the floating icon doesn't interfere with button clicks */
 }
+
+@keyframes increaseSize {
+  0% {
+    scale: 1;
+  }
+  50% {
+    scale: 1.4;
+  }
+  100% {
+    scale: 1;
+  }
+}
+
+/* Apply the animation to a class */
+.enlarged-image {
+  animation: increaseSize 1s forwards;
+}

@@ -11,7 +11,12 @@ import {
   catMedicinesArray,
 } from '../../utils/game/PurchasableGameItems';
 import { GamesMessagesArray } from '../../utils/game/GameMessages';
-import { CatMood, CatigotchiStats, Item, startingCat } from '../../components/game/CatInterface';
+import {
+  CatMood,
+  CatigotchiStats,
+  Item,
+  startingCat,
+} from '../../components/game/CatInterface';
 // Images
 import AmazedCat from '../../assets/images/game/amazed.png';
 import NappingCat from '../../assets/images/game/napping.png';
@@ -25,6 +30,7 @@ import CryingCat from '../../assets/images/game/crying.png';
 import KeenCat from '../../assets/images/game/keen.png';
 import WeirdCat from '../../assets/images/game/weird.png';
 import GameModalDisplay from '../../components/game/GameModalDisplay';
+import SettingsMenuComponent from '../../components/game/SettingsMenuComponent';
 
 const imagesArray = [
   AmazedCat,
@@ -51,25 +57,33 @@ const CatigotchiPage: React.FC = () => {
   const [petItemsOwned, setPetItemsOwned] = useState<
     {
       id: number;
-      type: string;
       name: string;
+      type: string;
       title: string;
       imageUrl: string;
       price: number;
-      effect: number;
+      effects: {
+        hunger?: number;
+        happiness?: number;
+        health?: number;
+        intelligence?: number;
+        playfulness?: number;
+      };
       quantity: number;
       xp: number;
     }[]
   >([]);
 
-  const [bank, setBank] = useState(5000);
+  const [bankStartingNum, setBankStartingNum] = useState(5000);
+  const [bank, setBank] = useState(bankStartingNum);
 
   // Menus and shops
   const [isFoodMenuOpen, setIsFoodMenuOpen] = useState(false);
   const [isMedicineMenuOpen, setIsMedicineMenuOpen] = useState(false);
   const [isPlayMenuOpen, setIsPlayMenuOpen] = useState(false);
   const [isItemMenuOpen, setIsItemMenuOpen] = useState(false);
-  const [isDevButtonsMenuOpen, setIsDevButtonsMenuOpen] = useState(false); // Added DevButtons menu state
+  const [isDevButtonsMenuOpen, setIsDevButtonsMenuOpen] = useState(false);
+  const [isSettingsMenuOpen, setIsSettingsMenuOpen] = useState(false);
 
   // Messages
   const [message, setMessage] = useState('');
@@ -78,9 +92,8 @@ const CatigotchiPage: React.FC = () => {
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [modalMessages, setModalMessages] = useState({
     modalTitle: '',
-    modalMessage: ''
+    modalMessage: '',
   });
-
 
   // Stats and effects
   const [minHungerLevel, setMinHungerLevel] = useState(1);
@@ -117,19 +130,22 @@ const CatigotchiPage: React.FC = () => {
   useEffect(() => {
     const lastCheck = localStorage.getItem('lastCheck');
     const now = new Date().getTime();
-  
+
     if (lastCheck) {
       const elapsedTime = (now - parseInt(lastCheck)) / 1000; // Time in seconds
       const hungerDecrease = Math.floor(elapsedTime / 60); // Decrease hunger by 1 every minute
       const happinessDecrease = Math.floor(elapsedTime / 120); // Decrease happiness by 1 every 2 minutes
       const healthDecrease = Math.floor(elapsedTime / 180); // Decrease health by 1 every 3 minutes
-  
+
       setCatigotchiStats((prevStats) => {
         const newHunger = Math.max(prevStats.hunger - hungerDecrease, 0);
-        const newHappiness = Math.max(prevStats.happiness - happinessDecrease, 0);
+        const newHappiness = Math.max(
+          prevStats.happiness - happinessDecrease,
+          0
+        );
         const newHealth = Math.max(prevStats.health - healthDecrease, 0);
         const newMood = checkMood(newHunger, newHappiness, newHealth);
-  
+
         return {
           ...prevStats,
           hunger: newHunger,
@@ -139,10 +155,9 @@ const CatigotchiPage: React.FC = () => {
         };
       });
     }
-  
+
     localStorage.setItem('lastCheck', now.toString());
   }, []);
-  
 
   // Set up and animate the canvas
   useEffect(() => {
@@ -226,7 +241,11 @@ const CatigotchiPage: React.FC = () => {
     }
   }, [catigotchiStats.hunger, catigotchiStats.happiness]);
 
-  const checkMood = (hunger: number, happiness: number, health: number): CatMood => {
+  const checkMood = (
+    hunger: number,
+    happiness: number,
+    health: number
+  ): CatMood => {
     if (health < 30) {
       return CatMood.Sick;
     } else if (hunger < 30) {
@@ -280,18 +299,22 @@ const CatigotchiPage: React.FC = () => {
       plafulDiff = 5;
     }
 
-    let newHappiness = Math.min(catigotchiStats.happiness + 20, 100)
-    let newIntelligence = parseFloat((catigotchiStats.intelligence + 0.1).toFixed(1))
-    let newPlayfullness = parseFloat((catigotchiStats.playfulness + plafulDiff).toFixed(1))
+    let newHappiness = Math.min(catigotchiStats.happiness + 20, 100);
+    let newIntelligence = parseFloat(
+      (catigotchiStats.intelligence + 0.1).toFixed(1)
+    );
+    let newPlayfullness = parseFloat(
+      (catigotchiStats.playfulness + plafulDiff).toFixed(1)
+    );
 
     setCatigotchiStats((prevStats) => ({
       ...prevStats,
       happiness: newHappiness,
       intelligence: newIntelligence,
       playfulness: newPlayfullness,
-      mood: checkMood(newHappiness, newIntelligence, newPlayfullness)
+      mood: checkMood(newHappiness, newIntelligence, newPlayfullness),
     }));
-    
+
     setMessage('You played with your cat!');
     setShowToast(true);
   };
@@ -324,18 +347,30 @@ const CatigotchiPage: React.FC = () => {
   const handleUseItem = (item: Item) => {
     setPetItemsOwned((prevItems) =>
       prevItems
-        .map((i) => (i.name === item.name ? { ...i, quantity: i.quantity - 1 } : i))
+        .map((i) => (i.id === item.id ? { ...i, quantity: i.quantity - 1 } : i))
         .filter((i) => i.quantity > 0)
     );
 
-    if (item.type === 'game') {
-      playWithCat();
-    }
-  
     setCatigotchiStats((prevCat) => {
-      console.log('prevCat', prevCat);
       const newXp = prevCat.xp + item.xp;
       const newLevel = updateLevel(newXp);
+
+      const newHunger = item.effects.hunger
+        ? Math.min(prevCat.hunger + item.effects.hunger, 100)
+        : prevCat.hunger;
+      const newHappiness = item.effects.happiness
+        ? Math.min(prevCat.happiness + item.effects.happiness, 100)
+        : prevCat.happiness;
+      const newHealth = item.effects.health
+        ? Math.min(prevCat.health + item.effects.health, 100)
+        : prevCat.health;
+      const newIntelligence = item.effects.intelligence
+        ? Math.min(prevCat.intelligence + item.effects.intelligence, 100)
+        : prevCat.intelligence;
+      const newPlayfulness = item.effects.playfulness
+        ? Math.min(prevCat.playfulness + item.effects.playfulness, 100)
+        : prevCat.playfulness;
+      const newMood = checkMood(newHunger, newHappiness, newHealth);
 
       if (newLevel !== prevCat.level) {
         const levelUpMessage = GamesMessagesArray.find(
@@ -351,13 +386,18 @@ const CatigotchiPage: React.FC = () => {
         ...prevCat,
         xp: newXp,
         level: newLevel,
+        hunger: newHunger,
+        happiness: newHappiness,
+        health: newHealth,
+        intelligence: newIntelligence,
+        playfulness: newPlayfulness,
+        mood: newMood,
       };
     });
-  
+
     setMessage(`You used ${item.title} and gained ${item.xp} XP!`);
     setShowToast(true);
   };
-  
 
   const getXpForLevel = (level: number) => {
     return 10 * level * (level - 1); // Example function
@@ -371,15 +411,32 @@ const CatigotchiPage: React.FC = () => {
     }
     return level;
   };
-  
+
+  const openSettingsMenu = () => {
+    setIsSettingsMenuOpen(true);
+  };
+
+  const closeSettingsMenu = () => {
+    setIsSettingsMenuOpen(false);
+  };
+
+  const closeModal = () => {
+    setIsModalOpen(false);
+  };
 
   const closeMenu = () => {
     setIsFoodMenuOpen(false);
     setIsPlayMenuOpen(false);
     setIsItemMenuOpen(false);
     setIsMedicineMenuOpen(false);
-    setIsModalOpen(false)
+    setIsModalOpen(false);
     setIsDevButtonsMenuOpen(false); // Close DevButtons menu
+  };
+
+  const resetCat = () => {
+    setCatigotchiStats(startingCat);
+    setBank(bankStartingNum); // Reset the bank to initial value if needed
+    setPetItemsOwned([]); // Clear owned items
   };
 
   return (
@@ -415,6 +472,7 @@ const CatigotchiPage: React.FC = () => {
             {isFoodMenuOpen && (
               <GameMenuComponent
                 menuTitle='Food Menu'
+                bank={bank}
                 items={foodItemsArray}
                 onClose={closeMenu}
                 onBuyItem={handleBuyItem}
@@ -424,6 +482,7 @@ const CatigotchiPage: React.FC = () => {
             {isPlayMenuOpen && (
               <GameMenuComponent
                 menuTitle='Play Menu'
+                bank={bank}
                 items={catGamesArray}
                 onClose={closeMenu}
                 onBuyItem={handleBuyItem}
@@ -433,6 +492,7 @@ const CatigotchiPage: React.FC = () => {
             {isMedicineMenuOpen && (
               <GameMenuComponent
                 menuTitle='Medicine'
+                bank={bank}
                 items={catMedicinesArray}
                 onClose={closeMenu}
                 onBuyItem={handleBuyItem}
@@ -445,6 +505,7 @@ const CatigotchiPage: React.FC = () => {
                 items={petItemsOwned}
                 onClose={closeMenu}
                 onUseItem={handleUseItem}
+                openSettingsMenu={openSettingsMenu}
               />
             )}
 
@@ -460,7 +521,14 @@ const CatigotchiPage: React.FC = () => {
               <GameModalDisplay
                 modalTitle={modalMessages.modalTitle}
                 modalContent={modalMessages.modalMessage}
-                onClose={closeMenu}
+                onClose={closeModal}
+              />
+            )}
+
+            {isSettingsMenuOpen && (
+              <SettingsMenuComponent
+                onResetCat={resetCat}
+                onClose={closeSettingsMenu}
               />
             )}
           </section>
