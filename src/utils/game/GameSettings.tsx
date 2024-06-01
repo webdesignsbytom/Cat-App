@@ -26,5 +26,5 @@ export const gameSettingsOptions: SettingsOption[] = [
         name: 'earn',
         title: 'Earn',
         runFunction: () => {}
-    }
+    },
 ]
