@@ -8,9 +8,10 @@ import { gameSettingsOptions } from '../../utils/game/GameSettings';
 const SettingsMenuComponent: React.FC<SettingsMenuComponentProps> = ({
   onClose,
   onResetCat,
+  volumeSettings
 }) => {
   const [settingsOptionArray, setSettingsOptionArray] = useState<SettingsOption[]>(gameSettingsOptions);
-  const [volume, setVolume] = useState<number>(50); // Default volume value
+  const [volume, setVolume] = volumeSettings; // Destructure volume state and setter from props
 
   const handleVolumeChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     setVolume(parseInt(event.target.value, 10));

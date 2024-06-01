@@ -82,7 +82,9 @@ export interface ItemsMenuComponentProps {
 export interface SettingsMenuComponentProps {
   onClose: () => void;
   onResetCat: () => void;
+  volumeSettings: [number, React.Dispatch<React.SetStateAction<number>>];
 }
+
 
 export interface GameModalDisplayProps {
   modalTitle: string;

@@ -17,42 +17,19 @@ import {
   Item,
   startingCat,
 } from '../../components/game/CatInterface';
-// Images
-import AmazedCat from '../../assets/images/game/amazed.png';
-import NappingCat from '../../assets/images/game/napping.png';
-import SleepingCat from '../../assets/images/game/sleeping.png';
-import PleasedCat from '../../assets/images/game/pleased.png';
-import WavingCat from '../../assets/images/game/waving.png';
-import FoodCat from '../../assets/images/game/food.png';
-import MadCat from '../../assets/images/game/mad.png';
-import BasketCat from '../../assets/images/game/basket.png';
-import CryingCat from '../../assets/images/game/crying.png';
-import KeenCat from '../../assets/images/game/keen.png';
-import WeirdCat from '../../assets/images/game/weird.png';
 import GameModalDisplay from '../../components/game/GameModalDisplay';
 import SettingsMenuComponent from '../../components/game/SettingsMenuComponent';
-
-const imagesArray = [
-  AmazedCat,
-  NappingCat,
-  SleepingCat,
-  PleasedCat,
-  WavingCat,
-  FoodCat,
-  MadCat,
-  BasketCat,
-  CryingCat,
-  KeenCat,
-  WeirdCat,
-];
+// Images
+import { catGameImagesArray } from '../../components/game/CatImages';
 
 const CatigotchiPage: React.FC = () => {
   const canvasRef = useRef<HTMLCanvasElement | null>(null);
   const contextRef = useRef<CanvasRenderingContext2D | null>(null);
 
   const [showInitialImage, setShowInitialImage] = useState(true);
-  const [catigotchiStats, setCatigotchiStats] =
-    useState<CatigotchiStats>(startingCat);
+  const [catigotchiStats, setCatigotchiStats] = useState<CatigotchiStats>(
+    JSON.parse(localStorage.getItem('catStats') || JSON.stringify(startingCat))
+  );
 
   const [petItemsOwned, setPetItemsOwned] = useState<
     {
@@ -72,10 +49,15 @@ const CatigotchiPage: React.FC = () => {
       quantity: number;
       xp: number;
     }[]
-  >([]);
+  >(JSON.parse(localStorage.getItem('petItems') || '[]'));
 
-  const [bankStartingNum, setBankStartingNum] = useState(5000);
-  const [bank, setBank] = useState(bankStartingNum);
+  const [bankStartingNum, setBankStartingNum] = useState<number>(5000);
+  const [bank, setBank] = useState<number>(
+    () => {
+      const storedBank = localStorage.getItem('bank');
+      return storedBank ? parseInt(storedBank, 10) : bankStartingNum;
+    }
+  );
 
   // Menus and shops
   const [isFoodMenuOpen, setIsFoodMenuOpen] = useState(false);
@@ -94,6 +76,16 @@ const CatigotchiPage: React.FC = () => {
     modalTitle: '',
     modalMessage: '',
   });
+
+  // Settings
+  const [startingVolume, setStartingVolume] = useState<number>(1);
+  const [volumeLevel, setVolumeLevel] = useState<number>(
+    () => {
+      const storedVolume = localStorage.getItem('volumeLevel');
+      return storedVolume ? parseInt(storedVolume, 10) : startingVolume;
+    }
+  );
+
 
   // Stats and effects
   const [minHungerLevel, setMinHungerLevel] = useState(1);
@@ -117,7 +109,7 @@ const CatigotchiPage: React.FC = () => {
     { label: 'DevButtons', icon: '🛠️', onClick: () => openDevButtonsMenu() }, // Added DevButtons
   ];
 
-  // Show inital image
+  // Show initial image
   useEffect(() => {
     const timer = setTimeout(() => {
       setShowInitialImage(false);
@@ -203,19 +195,19 @@ const CatigotchiPage: React.FC = () => {
       };
 
       if (showInitialImage) {
-        drawImage(WavingCat);
+        drawImage(catGameImagesArray.find(img => img.mood === 'Waving')?.image || '');
       } else {
         const moodToImageMap = {
-          [CatMood.Happy]: PleasedCat,
-          [CatMood.Hungry]: FoodCat,
-          [CatMood.Tired]: NappingCat,
-          [CatMood.Sick]: CryingCat,
-          [CatMood.Excited]: KeenCat,
-          [CatMood.Sleeping]: SleepingCat,
+          [CatMood.Happy]: catGameImagesArray.find(img => img.mood === 'Happy')?.image,
+          [CatMood.Hungry]: catGameImagesArray.find(img => img.mood === 'Hungry')?.image,
+          [CatMood.Tired]: catGameImagesArray.find(img => img.mood === 'Tired')?.image,
+          [CatMood.Sick]: catGameImagesArray.find(img => img.mood === 'Sick')?.image,
+          [CatMood.Excited]: catGameImagesArray.find(img => img.mood === 'Excited')?.image,
+          [CatMood.Sleeping]: catGameImagesArray.find(img => img.mood === 'Sleeping')?.image,
         };
 
-        const currentImage = moodToImageMap[catigotchiStats.mood] || PleasedCat;
-        drawImage(currentImage);
+        const currentImage = moodToImageMap[catigotchiStats.mood] || catGameImagesArray.find(img => img.mood === 'Happy')?.image;
+        drawImage(currentImage || '');
       }
     }
   }, [catigotchiStats.mood, showInitialImage]);
@@ -240,6 +232,22 @@ const CatigotchiPage: React.FC = () => {
       }));
     }
   }, [catigotchiStats.hunger, catigotchiStats.happiness]);
+
+  useEffect(() => {
+    localStorage.setItem('catStats', JSON.stringify(catigotchiStats));
+  }, [catigotchiStats]);
+
+  useEffect(() => {
+    localStorage.setItem('petItems', JSON.stringify(petItemsOwned));
+  }, [petItemsOwned]);
+
+  useEffect(() => {
+    localStorage.setItem('bank', JSON.stringify(bank));
+  }, [bank]);
+
+  useEffect(() => {
+    localStorage.setItem('volumeLevel', JSON.stringify(volumeLevel));
+  }, [volumeLevel]);
 
   const checkMood = (
     hunger: number,
@@ -434,9 +442,14 @@ const CatigotchiPage: React.FC = () => {
   };
 
   const resetCat = () => {
+    // Clear local storage
+    localStorage.clear();
+  
+    // Reset state to default values
     setCatigotchiStats(startingCat);
-    setBank(bankStartingNum); // Reset the bank to initial value if needed
-    setPetItemsOwned([]); // Clear owned items
+    setBank(bankStartingNum);
+    setPetItemsOwned([]);
+    setVolumeLevel(startingVolume); // Reset volume level to default if needed
   };
 
   return (
@@ -529,6 +542,7 @@ const CatigotchiPage: React.FC = () => {
               <SettingsMenuComponent
                 onResetCat={resetCat}
                 onClose={closeSettingsMenu}
+                volumeSettings={[volumeLevel, setVolumeLevel]}
               />
             )}
           </section>
