@@ -1,12 +1,9 @@
 export interface AppSettingsOption {
-    id: number;
-    name: string;
-    title: string;
-    runFunction: () => void;
-  }
-
-// Images
-import AmazedCat from '../../assets/images/game/amazed.png';
+  id: number;
+  name: string;
+  title: string;
+  runFunction: () => void;
+}
 
 export interface OwnedCat {
   name: string;
