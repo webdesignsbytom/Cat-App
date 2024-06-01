@@ -1,6 +1,7 @@
 // src/components/game/GameMenuComponent.tsx
 import { IonCard, IonPage } from '@ionic/react';
 import React from 'react';
+import { Item } from './CatInterface';
 
 interface GameMenuComponentProps {
   menuTitle: string;
@@ -12,6 +13,7 @@ interface GameMenuComponentProps {
     price: number;
     effect: number;
     quantity: number;
+    xp: number;
   }[];
   onClose: () => void;
   onBuyItem: (item: Item) => void;

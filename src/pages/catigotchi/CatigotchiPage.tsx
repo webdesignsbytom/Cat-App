@@ -3,12 +3,14 @@ import { IonPage, IonToast } from '@ionic/react';
 // Components
 import GameMenuComponent from '../../components/game/GameMenuComponent';
 import ItemsMenuComponent from '../../components/game/ItemsMenuComponent';
+import DevButtonsMenuComponent from '../../components/buttons/DevButtonsMenuComponent';
 // Data
 import {
   foodItemsArray,
   catGamesArray,
   catMedicinesArray,
 } from '../../utils/game/PurchasableGameItems';
+import { CatMood, CatigotchiStats, Item, startingCat } from '../../components/game/CatInterface';
 // Images
 import AmazedCat from '../../assets/images/game/amazed.png';
 import NappingCat from '../../assets/images/game/napping.png';
@@ -21,6 +23,8 @@ import BasketCat from '../../assets/images/game/basket.png';
 import CryingCat from '../../assets/images/game/crying.png';
 import KeenCat from '../../assets/images/game/keen.png';
 import WeirdCat from '../../assets/images/game/weird.png';
+import GameModalDisplay from '../../components/game/GameModalDisplay';
+import { GamesMessagesArray } from '../../utils/game/GameMessages';
 
 const imagesArray = [
   AmazedCat,
@@ -40,17 +44,9 @@ const CatigotchiPage: React.FC = () => {
   const canvasRef = useRef<HTMLCanvasElement | null>(null);
   const contextRef = useRef<CanvasRenderingContext2D | null>(null);
 
-  const [catigotchiStats, setCatigotchiStats] = useState<CatigotchiStats>({
-    name: 'PetCat',
-    hunger: 200,
-    health: 100,
-    happiness: 100,
-    intelligence: 5,
-    playfulness: 5,
-    age: 50,
-    level: 1,
-    dob: new Date('2023-01-01'),
-  });
+  const [showInitialImage, setShowInitialImage] = useState(true);
+  const [catigotchiStats, setCatigotchiStats] =
+    useState<CatigotchiStats>(startingCat);
 
   const [petItemsOwned, setPetItemsOwned] = useState<
     {
@@ -61,6 +57,7 @@ const CatigotchiPage: React.FC = () => {
       price: number;
       effect: number;
       quantity: number;
+      xp: number;
     }[]
   >([]);
 
@@ -71,13 +68,22 @@ const CatigotchiPage: React.FC = () => {
   const [isMedicineMenuOpen, setIsMedicineMenuOpen] = useState(false);
   const [isPlayMenuOpen, setIsPlayMenuOpen] = useState(false);
   const [isItemMenuOpen, setIsItemMenuOpen] = useState(false);
+  const [isDevButtonsMenuOpen, setIsDevButtonsMenuOpen] = useState(false); // Added DevButtons menu state
 
   // Messages
   const [message, setMessage] = useState('');
   const [showToast, setShowToast] = useState(false);
+  // Modal
+  const [isModalOpen, setIsModalOpen] = useState(false);
+  const [modalMessages, setModalMessages] = useState({
+    modalTitle: '',
+    modalMessage: ''
+  });
+
 
   // Stats and effects
   const [minHungerLevel, setMinHungerLevel] = useState(1);
+  const [minHappinessLevel, setMinHappinessLevel] = useState(1);
 
   // Game needs
   const topBarDataSet = [
@@ -94,7 +100,17 @@ const CatigotchiPage: React.FC = () => {
     { label: 'Games', icon: '🕹️', onClick: () => openCatToysMenu() },
     { label: 'Health', icon: '⚕️', onClick: () => openMedicineMenu() },
     { label: 'Items', icon: '🎒', onClick: () => openItems() },
+    { label: 'DevButtons', icon: '🛠️', onClick: () => openDevButtonsMenu() }, // Added DevButtons
   ];
+
+  // Show inital image
+  useEffect(() => {
+    const timer = setTimeout(() => {
+      setShowInitialImage(false);
+    }, 4000);
+
+    return () => clearTimeout(timer); // Cleanup the timer if the component unmounts
+  }, []);
 
   useEffect(() => {
     const lastCheck = localStorage.getItem('lastCheck');
@@ -117,6 +133,7 @@ const CatigotchiPage: React.FC = () => {
     localStorage.setItem('lastCheck', now.toString());
   }, []);
 
+  // Set up and animate the canvas
   useEffect(() => {
     const canvas = canvasRef.current;
     if (canvas) {
@@ -159,17 +176,23 @@ const CatigotchiPage: React.FC = () => {
         };
       };
 
-      let currentIndex = 0;
-      drawImage(imagesArray[currentIndex]);
+      if (showInitialImage) {
+        drawImage(WavingCat);
+      } else {
+        const moodToImageMap = {
+          [CatMood.Happy]: PleasedCat,
+          [CatMood.Hungry]: FoodCat,
+          [CatMood.Tired]: NappingCat,
+          [CatMood.Sick]: CryingCat,
+          [CatMood.Excited]: KeenCat,
+          [CatMood.Sleeping]: SleepingCat,
+        };
 
-      const interval = setInterval(() => {
-        currentIndex = (currentIndex + 1) % imagesArray.length;
-        drawImage(imagesArray[currentIndex]);
-      }, 10000);
-
-      return () => clearInterval(interval);
+        const currentImage = moodToImageMap[catigotchiStats.mood] || PleasedCat;
+        drawImage(currentImage);
+      }
     }
-  }, []);
+  }, [catigotchiStats.mood, showInitialImage]);
 
   useEffect(() => {
     const interval = setInterval(() => {
@@ -181,7 +204,10 @@ const CatigotchiPage: React.FC = () => {
   }, []);
 
   useEffect(() => {
-    if (catigotchiStats.hunger === 0 || catigotchiStats.happiness === 0) {
+    if (
+      catigotchiStats.hunger === minHungerLevel ||
+      catigotchiStats.happiness === minHappinessLevel
+    ) {
       setCatigotchiStats((prevStats) => ({
         ...prevStats,
         health: Math.max(prevStats.health - 2, 0),
@@ -189,11 +215,30 @@ const CatigotchiPage: React.FC = () => {
     }
   }, [catigotchiStats.hunger, catigotchiStats.happiness]);
 
-  const openFoodMenu = () => {
-    setIsPlayMenuOpen(false);
-    setIsItemMenuOpen(false);
-    setIsMedicineMenuOpen(false);
-    setIsFoodMenuOpen(true);
+  const openMenu = (
+    menuType: 'food' | 'play' | 'medicine' | 'item' | 'devButtons'
+  ) => {
+    setIsFoodMenuOpen(menuType === 'food');
+    setIsPlayMenuOpen(menuType === 'play');
+    setIsMedicineMenuOpen(menuType === 'medicine');
+    setIsItemMenuOpen(menuType === 'item');
+    setIsDevButtonsMenuOpen(menuType === 'devButtons'); // Handle DevButtons menu
+  };
+
+  const openFoodMenu = () => openMenu('food');
+  const openCatToysMenu = () => openMenu('play');
+  const openMedicineMenu = () => openMenu('medicine');
+  const openItems = () => openMenu('item');
+  const openDevButtonsMenu = () => openMenu('devButtons'); // Open DevButtons menu
+
+  const changeCatMood = (mood: CatMood) => {
+    setCatigotchiStats((prevStats) => ({
+      ...prevStats,
+      mood: mood,
+    }));
+    setMessage(`Cat mood changed to ${mood}!`);
+    setShowToast(true);
+    setIsDevButtonsMenuOpen(false);
   };
 
   const playWithCatx = () => {
@@ -217,27 +262,6 @@ const CatigotchiPage: React.FC = () => {
     }));
     setMessage('You played with your cat!');
     setShowToast(true);
-  };
-
-  const openCatToysMenu = () => {
-    setIsFoodMenuOpen(false);
-    setIsItemMenuOpen(false);
-    setIsMedicineMenuOpen(false);
-    setIsPlayMenuOpen(true);
-  };
-
-  const openMedicineMenu = () => {
-    setIsFoodMenuOpen(false);
-    setIsPlayMenuOpen(false);
-    setIsItemMenuOpen(false);
-    setIsMedicineMenuOpen(true);
-  };
-
-  const openItems = () => {
-    setIsFoodMenuOpen(false);
-    setIsPlayMenuOpen(false);
-    setIsMedicineMenuOpen(false);
-    setIsItemMenuOpen(true);
   };
 
   const handleBuyItem = (item: Item) => {
@@ -264,28 +288,68 @@ const CatigotchiPage: React.FC = () => {
     setShowToast(true);
   };
 
+  // Use items and update level and xp
   const handleUseItem = (item: Item) => {
     setPetItemsOwned((prevItems) =>
       prevItems
         .map((i) => (i.id === item.id ? { ...i, quantity: i.quantity - 1 } : i))
         .filter((i) => i.quantity > 0)
     );
-    setMessage(`You used ${item.title}!`);
+  
+    setCatigotchiStats((prevCat) => {
+      console.log('prevCat', prevCat);
+      const newXp = prevCat.xp + item.xp;
+      const newLevel = updateLevel(newXp);
+
+      if (newLevel !== prevCat.level) {
+        const levelUpMessage = GamesMessagesArray.find(
+          (message) => message.modalTitle === 'Level Up'
+        );
+        if (levelUpMessage) {
+          setModalMessages(levelUpMessage);
+          setIsModalOpen(true);
+        }
+      }
+
+      return {
+        ...prevCat,
+        xp: newXp,
+        level: newLevel,
+      };
+    });
+  
+    setMessage(`You used ${item.title} and gained ${item.xp} XP!`);
     setShowToast(true);
   };
+  
+
+  const getXpForLevel = (level: number) => {
+    return 10 * level * (level - 1); // Example function
+  };
+
+  const updateLevel = (xp: number) => {
+    let level = catigotchiStats.level;
+    console.log('xp', xp);
+    while (xp >= getXpForLevel(level + 1)) {
+      level++;
+    }
+    return level;
+  };
+  
 
   const closeMenu = () => {
     setIsFoodMenuOpen(false);
     setIsPlayMenuOpen(false);
     setIsItemMenuOpen(false);
     setIsMedicineMenuOpen(false);
+    setIsModalOpen(false)
+    setIsDevButtonsMenuOpen(false); // Close DevButtons menu
   };
 
   return (
     <IonPage>
       <div className='grid h-full w-full overflow-hidden bg-white'>
         <main className='grid grid-rows-a1a w-full h-full overflow-hidden'>
-
           {/* Top bar */}
           <section className='grid grid-cols-3 gap-y-1 bg-slate-200 border-solid border-2 border-black h-fit w-full py-2 overflow-hidden items-center'>
             {topBarDataSet.map((item, index) => (
@@ -345,6 +409,22 @@ const CatigotchiPage: React.FC = () => {
                 items={petItemsOwned}
                 onClose={closeMenu}
                 onUseItem={handleUseItem}
+              />
+            )}
+
+            {isDevButtonsMenuOpen && (
+              <DevButtonsMenuComponent
+                menuTitle='Dev Tools'
+                onClose={closeMenu}
+                onChangeMood={changeCatMood}
+              />
+            )}
+
+            {isModalOpen && (
+              <GameModalDisplay
+                modalTitle={modalMessages.modalTitle}
+                modalContent={modalMessages.modalMessage}
+                onClose={closeMenu}
               />
             )}
           </section>

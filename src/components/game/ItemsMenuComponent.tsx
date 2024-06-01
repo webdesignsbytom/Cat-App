@@ -1,5 +1,7 @@
 import React from 'react';
 import { IonPage } from '@ionic/react';
+// Data
+import { OwnedItem } from './CatInterface';
 
 interface ItemsMenuComponentProps {
   menuTitle: string;
@@ -14,8 +16,6 @@ const ItemsMenuComponent: React.FC<ItemsMenuComponentProps> = ({
   onClose,
   onUseItem,
 }) => {
-  console.log('Items in menu:', items);
-  console.log('Items in menu length:', items.length);
 
   return (
     <IonPage>

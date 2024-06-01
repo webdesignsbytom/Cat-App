@@ -12,7 +12,8 @@ export const foodItemsArray = [
         imageUrl: '🐟',
         price: 10,
         effect: 10,
-        quantity: 0
+        quantity: 0,
+        xp: 5
     },
     {
         id: foodId++,
@@ -21,7 +22,8 @@ export const foodItemsArray = [
         imageUrl: '🍗',
         price: 10,
         effect: 10,
-        quantity: 0
+        quantity: 0,
+        xp: 5
     },
     {
         id: foodId++,
@@ -30,7 +32,8 @@ export const foodItemsArray = [
         imageUrl: '🥛',
         price: 10,
         effect: 10,
-        quantity: 0
+        quantity: 0,
+        xp: 5
     },
     {
         id: foodId++,
@@ -39,7 +42,8 @@ export const foodItemsArray = [
         imageUrl: '🐟',
         price: 10,
         effect: 10,
-        quantity: 0
+        quantity: 0,
+        xp: 5
     },
     {
         id: foodId++,
@@ -48,7 +52,8 @@ export const foodItemsArray = [
         imageUrl: '🐠',
         price: 10,
         effect: 10,
-        quantity: 0
+        quantity: 0,
+        xp: 5
     },
     {
         id: foodId++,
@@ -57,7 +62,8 @@ export const foodItemsArray = [
         imageUrl: '🌿',
         price: 10,
         effect: 10,
-        quantity: 0
+        quantity: 0,
+        xp: 5
     },
     {
         id: foodId++,
@@ -66,7 +72,8 @@ export const foodItemsArray = [
         imageUrl: '🍤',
         price: 10,
         effect: 10,
-        quantity: 0
+        quantity: 0,
+        xp: 5
     }
 ];
 
@@ -81,7 +88,8 @@ export const catGamesArray = [
         imageUrl: '🧶',
         price: 10,
         effect: 10,
-        quantity: 0
+        quantity: 0,
+        xp: 5
     },
     {
         id: gameId++,
@@ -90,7 +98,8 @@ export const catGamesArray = [
         imageUrl: '🔦',
         price: 10,
         effect: 10,
-        quantity: 0
+        quantity: 0,
+        xp: 5
     },
     {
         id: gameId++,
@@ -99,7 +108,8 @@ export const catGamesArray = [
         imageUrl: '🪶',
         price: 10,
         effect: 10,
-        quantity: 0
+        quantity: 0,
+        xp: 5
     },
     {
         id: gameId++,
@@ -108,7 +118,8 @@ export const catGamesArray = [
         imageUrl: '🌿',
         price: 10,
         effect: 10,
-        quantity: 0
+        quantity: 0,
+        xp: 5
     },
     {
         id: gameId++,
@@ -117,7 +128,8 @@ export const catGamesArray = [
         imageUrl: '🪵',
         price: 10,
         effect: 10,
-        quantity: 0
+        quantity: 0,
+        xp: 5
     },
     {
         id: gameId++,
@@ -126,7 +138,8 @@ export const catGamesArray = [
         imageUrl: '🐭',
         price: 10,
         effect: 10,
-        quantity: 0
+        quantity: 0,
+        xp: 5
     }
 ];
 
@@ -141,7 +154,8 @@ export const catMedicinesArray = [
         imageUrl: '💊',
         price: 15,
         effect: 20,
-        quantity: 0
+        quantity: 0,
+        xp: 5
     },
     {
         id: medicineId++,
@@ -150,7 +164,8 @@ export const catMedicinesArray = [
         imageUrl: '🪲',
         price: 20,
         effect: 15,
-        quantity: 0
+        quantity: 0,
+        xp: 5
     },
     {
         id: medicineId++,
@@ -159,6 +174,7 @@ export const catMedicinesArray = [
         imageUrl: '🩹',
         price: 10,
         effect: 10,
-        quantity: 0
+        quantity: 0,
+        xp: 5
     }
 ];
