@@ -37,9 +37,9 @@ const GameMenuComponent: React.FC<GameMenuComponentProps> = ({
 
           <section className='grid h-full w-full overflow-hidden py-4'>
             <div className='grid grid-cols-3 gap-x-2 gap-y-2 overflow-y-auto '>
-              {items.map((item) => (
+              {items.map((item, index) => (
                 <article
-                  key={item.id}
+                  key={index}
                   onClick={() => onBuyItem(item)}
                   className='grid shadow-lg border-2 border-black border-solid rounded-lg p-2 active:scale-95 active:brightness-110 no__highlights'
                 >

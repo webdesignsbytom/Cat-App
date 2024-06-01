@@ -1,16 +1,13 @@
 # Cat App
 
-
 ## Table of contents
 
 - [CatApp](#cat-app)
   - [Table of contents](#table-of-contents)
 
-
 ## Purpose
 
 Cat App provides video entertainment featuring the most popular animal on the internet.
-
 
 ## Features
 
@@ -24,7 +21,6 @@ Cat App provides video entertainment featuring the most popular animal on the in
 ## License
 
 This project is private property and is not open for public use. For more details, see the [LICENSE](License.md) file.
-
 
 ## Code Structure
 

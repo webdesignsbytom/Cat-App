@@ -58,6 +58,15 @@ export const foodItemsArray = [
         price: 10,
         effect: 10,
         quantity: 0
+    },
+    {
+        id: foodId++,
+        name: 'Shrimp',
+        title: 'Fresh Shrimp',
+        imageUrl: '🍤',
+        price: 10,
+        effect: 10,
+        quantity: 0
     }
 ];
 

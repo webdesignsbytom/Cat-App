@@ -48,6 +48,7 @@ const CatigotchiPage: React.FC = () => {
     intelligence: 5,
     playfulness: 5,
     age: 50,
+    level: 1,
     dob: new Date('2023-01-01'),
   });
 
@@ -85,7 +86,7 @@ const CatigotchiPage: React.FC = () => {
     { label: 'Happiness', value: catigotchiStats.happiness },
     { label: 'Intelli', value: catigotchiStats.intelligence },
     { label: 'Playful', value: catigotchiStats.playfulness },
-    { label: 'Bank', value: bank },
+    { label: 'Level', value: catigotchiStats.level },
   ];
 
   const bottomBarDataSet = [
@@ -189,8 +190,6 @@ const CatigotchiPage: React.FC = () => {
   }, [catigotchiStats.hunger, catigotchiStats.happiness]);
 
   const openFoodMenu = () => {
-    console.log('>>> openFoodMenu');
-
     setIsPlayMenuOpen(false);
     setIsItemMenuOpen(false);
     setIsMedicineMenuOpen(false);
@@ -221,8 +220,6 @@ const CatigotchiPage: React.FC = () => {
   };
 
   const openCatToysMenu = () => {
-    console.log('>>> openCatToysMenu');
-
     setIsFoodMenuOpen(false);
     setIsItemMenuOpen(false);
     setIsMedicineMenuOpen(false);
@@ -230,8 +227,6 @@ const CatigotchiPage: React.FC = () => {
   };
 
   const openMedicineMenu = () => {
-    console.log('>>> openMedicineMenu');
-
     setIsFoodMenuOpen(false);
     setIsPlayMenuOpen(false);
     setIsItemMenuOpen(false);
@@ -239,7 +234,6 @@ const CatigotchiPage: React.FC = () => {
   };
 
   const openItems = () => {
-    console.log('>>> openItems');
     setIsFoodMenuOpen(false);
     setIsPlayMenuOpen(false);
     setIsMedicineMenuOpen(false);
@@ -247,18 +241,17 @@ const CatigotchiPage: React.FC = () => {
   };
 
   const handleBuyItem = (item: Item) => {
-    console.log('item', item);
-
     // Check if can afford to buy
     if (bank >= item.price) {
       setBank((prevBank) => prevBank - item.price);
 
       // Add item to array
       setPetItemsOwned((prevItems) => {
-        const existingItem = prevItems.find((i) => i.id === item.id);
+        const existingItem = prevItems.find((i) => i.name === item.name);
+
         if (existingItem) {
           return prevItems.map((i) =>
-            i.id === item.id ? { ...i, quantity: i.quantity + 1 } : i
+            i.name === item.name ? { ...i, quantity: i.quantity + 1 } : i
           );
         } else {
           return [...prevItems, { ...item, quantity: 1 }];
@@ -357,15 +350,15 @@ const CatigotchiPage: React.FC = () => {
           </section>
 
           {/* Bottom bar */}
-          <section className='grid h-fit w-full bg-slate-200 border-solid border-2 border-black py-4 px-2 overflow-hidden'>
+          <section className='grid h-fit w-full bg-slate-200 border-solid border-2 border-black py-4 px-1.5 overflow-hidden'>
             <div className='grid grid-cols-4 gap-2 w-full'>
               {bottomBarDataSet.map((button, index) => (
                 <button
-                  className='px-1 rounded-lg w-full h-[52px] bg-main-colour text-white text-xl font-semibold active:scale-95 active:bg-main-colour-alt shadow-xl'
+                  className='px-0.5 rounded-lg w-full h-[52px] bg-main-colour text-white text-xl font-semibold active:scale-95 active:bg-main-colour-alt shadow-xl'
                   onClick={button.onClick}
                   key={index}
                 >
-                  <div className='grid grid-cols-reg gap-1 items-center'>
+                  <div className='grid grid-cols-reg items-center'>
                     <div className='text-2xl grid items-center'>
                       {button.icon}
                     </div>
