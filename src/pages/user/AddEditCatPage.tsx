@@ -5,26 +5,34 @@ import { IonPage } from '@ionic/react';
 import WhiteCat1 from '../../assets/images/background/small_cat_white_1.png';
 // Icons
 import { FaRegImage } from 'react-icons/fa6';
+// Interfaces
+import { OwnedCat, blankCat } from '../../utils/app/AppInterface';
 
 const AddEditCatPage: React.FC = () => {
   const history = useHistory();
   const location = useLocation<{
-    cat: { name: string; age: number; image: string; breed: string };
+    cat: OwnedCat;
   }>();
-  const cat = location.state?.cat || { name: '', age: 0, image: '' };
+
+  const cat = location.state?.cat || blankCat;
 
   const [catName, setCatName] = useState(cat.name || '');
-  const [catAge, setCatAge] = useState(cat.age ? cat.age.toString() : '');
   const [catBreed, setCatBreed] = useState(cat.breed || '');
+  const [catDob, setCatDob] = useState(cat.dob ? new Date(cat.dob) : new Date());
+
   const [uploadCatImage, setUploadCatImage] = useState<File | null>(null);
   const [catPicture, setCatPicture] = useState<string | ArrayBuffer | null>(
     cat.image || null
   );
+
+  // Messages
   const [showToast, setShowToast] = useState(false);
   const [toastMessage, setToastMessage] = useState('');
 
+  // Upload image
   const handleImageUpload = (event: React.ChangeEvent<HTMLInputElement>) => {
     const file = event.target.files?.[0];
+    
     if (file) {
       setUploadCatImage(file);
       const reader = new FileReader();
@@ -35,13 +43,10 @@ const AddEditCatPage: React.FC = () => {
     }
   };
 
+  // Save cat data
   const handleSaveCat = async () => {
     if (uploadCatImage) {
       const formData = new FormData();
-      formData.append('catName', catName);
-      formData.append('catAge', catAge);
-      formData.append('catBreed', catBreed);
-      formData.append('uploadCatImage', uploadCatImage);
 
       try {
         const response = await fetch('/api/upload-cat', {
@@ -65,7 +70,7 @@ const AddEditCatPage: React.FC = () => {
         setShowToast(true);
       }
     } else {
-      console.log({ catName, catAge, catBreed });
+      console.log({ catName, catBreed });
       history.push('/my-cats');
     }
   };
@@ -73,7 +78,6 @@ const AddEditCatPage: React.FC = () => {
   const navigateHome = () => {
     history.push('/my-cats');
   };
-
 
   return (
     <IonPage>
@@ -118,14 +122,14 @@ const AddEditCatPage: React.FC = () => {
                 </div>
               </div>
               <div className='grid grid-cols-reg gap-4 items-center'>
-                <label htmlFor='catAge'>Cat Age</label>
+                <label htmlFor='catDob'>Cat Date of Birth</label>
                 <div className='grid justify-end'>
                   <input
-                    type='number'
-                    id='catAge'
-                    value={catAge}
+                    type='date'
+                    id='catDob'
+                    value={catDob.toISOString().split('T')[0]}
                     className='outline outline-1 outline-gray-600 shadow-md rounded-lg px-1 py-1 h-fit w-full max-w-[200px]'
-                    onChange={(e) => setCatAge(e.target.value)}
+                    onChange={(e) => setCatDob(new Date(e.target.value))}
                   />
                 </div>
               </div>

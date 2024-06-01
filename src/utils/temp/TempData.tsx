@@ -1,24 +1,30 @@
+// Images
 import Cat1 from '../../assets/images/background/small_cat_blue_1.png'
 import Cat2 from '../../assets/images/background/small_cat_white_1.png'
 import Cat3 from '../../assets/images/background/small_cat_red_1.png'
+// Interfaces
+import { OwnedCat } from '../app/AppInterface'
 
-export const UserCats = [
+export const UserCats: OwnedCat[] = [
     {
         name: 'Tingles',
-        age: 6,
         image: Cat1,
-        breed: 'Calico'
+        breed: 'Calico',
+        favouriteFood: 'Fish',
+        dob: new Date('2023-01-01'),
     },
     {
         name: 'Snowball',
-        age: 2,
         image: Cat2,
-        breed: 'Calico'
+        breed: 'Calico',
+        favouriteFood: 'Fish',
+        dob: new Date('2023-01-01'),
     },
     {
         name: 'Tubs',
-        age: 3,
         image: Cat3,
-        breed: 'Calico'
+        breed: 'Calico',
+        favouriteFood: 'Fish',
+        dob: new Date('2023-01-01'),
     },
 ]

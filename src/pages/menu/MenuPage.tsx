@@ -33,10 +33,6 @@ const MenuPage: React.FC = () => {
       title: 'Sponsor',
       link: '/sponsor',
     },
-    {
-      title: 'Test',
-      link: '/test',
-    },
   ]);
 
   const [secondListOfButtons, setSecondListOfButtons] = useState([

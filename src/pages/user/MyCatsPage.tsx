@@ -3,31 +3,26 @@ import { useHistory } from 'react-router-dom';
 import { IonPage } from '@ionic/react';
 // Data
 import { UserCats } from '../../utils/temp/TempData';
+import { OwnedCat, blankCat } from '../../utils/app/AppInterface';
 // Images
 import BlueCat1 from '../../assets/images/background/small_cat_blue_1.png';
 
 const MyCatsPage: React.FC = () => {
   const history = useHistory();
-  const [userCats, setUserCats] = useState(UserCats);
+  const [userCats, setUserCats] = useState<OwnedCat[]>(UserCats);
 
-  const handleAddEditCat = (cat: {
-    name: string;
-    age: number;
-    image: string;
-    breed: string;
-  }) => {
+  const handleAddEditCat = (cat: OwnedCat) => {
     history.push({
       pathname: '/add-edit-cat',
       state: { cat },
     });
   };
-
-  const totalBoxes = 16;
+  const totalBoxes = 8;
   const catsToShow = [...userCats];
 
   // Fill the array to ensure there are 16 items
   while (catsToShow.length < totalBoxes) {
-    catsToShow.push({ name: '', age: 0, image: '', breed: '' });
+    catsToShow.push(blankCat);
   }
 
   const navigateTo = (path: string) => {
