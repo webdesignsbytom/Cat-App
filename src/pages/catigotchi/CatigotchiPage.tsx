@@ -211,6 +211,10 @@ const CatigotchiPage: React.FC = () => {
           [CatMood.Excited]: catGameImagesArray.find(img => img.mood === 'Excited')?.image,
           [CatMood.Sleeping]: catGameImagesArray.find(img => img.mood === 'Sleeping')?.image,
           [CatMood.Amazed]: catGameImagesArray.find(img => img.mood === 'Amazed')?.image,
+          [CatMood.Mad]: catGameImagesArray.find(img => img.mood === 'Mad')?.image,
+          [CatMood.Weird]: catGameImagesArray.find(img => img.mood === 'Weird')?.image,
+          [CatMood.Waving]: catGameImagesArray.find(img => img.mood === 'Waving')?.image,
+          [CatMood.Basket]: catGameImagesArray.find(img => img.mood === 'Basket')?.image,
         };
 
         const currentImage = moodToImageMap[catigotchiStats.mood] || catGameImagesArray.find(img => img.mood === 'Happy')?.image;

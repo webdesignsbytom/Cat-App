@@ -105,7 +105,12 @@ export enum CatMood {
   Excited = 'Excited',
   Sleeping = 'Sleeping',
   Amazed = 'Amazed',
+  Weird = 'Weird',
+  Mad = 'Mad',
+  Waving = 'Waving',
+  Basket = 'Basket',
 }
+
 
 export const startingCat: CatigotchiStats = {
   name: 'PetCat',
