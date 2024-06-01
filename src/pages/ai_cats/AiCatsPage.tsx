@@ -12,7 +12,7 @@ const AiCatsPage: React.FC = () => {
   const [currentIndex, setCurrentIndex] = useState(0);
   const [images, setImages] = useState<CatImage[]>(arrayOfCatImages);
   const [isSlideshow, setIsSlideshow] = useState(false);
-  const [muted, setMuted] = useState(false);
+  const [isMuted, setIsMuted] = useState(false);
   const [buttonsVisible, setButtonsVisible] = useState(true);
   const audioRef = useRef<HTMLAudioElement>(null);
 
@@ -55,7 +55,7 @@ const AiCatsPage: React.FC = () => {
   };
 
   const toggleMute = () => {
-    setMuted(!muted);
+    setIsMuted(!isMuted);
     if (audioRef.current) {
       audioRef.current.muted = !audioRef.current.muted;
     }
@@ -93,7 +93,7 @@ const AiCatsPage: React.FC = () => {
             src={audioFile}
             autoPlay
             loop
-            muted={muted}
+            muted={isMuted}
             onLoadedMetadata={() => {
               if (audioRef.current) {
                 audioRef.current.currentTime = 60; // Start audio from 1 minute (60 seconds)
@@ -132,7 +132,8 @@ const AiCatsPage: React.FC = () => {
             onGoForward={goForward}
             onToggleMute={toggleMute}
             onLike={likeImage}
-            isMuted={muted}
+            isMuted={isMuted}
+            disabled={false}
           />
         )}
       </div>

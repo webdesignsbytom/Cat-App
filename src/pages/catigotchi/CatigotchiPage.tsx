@@ -10,6 +10,7 @@ import {
   catGamesArray,
   catMedicinesArray,
 } from '../../utils/game/PurchasableGameItems';
+import { GamesMessagesArray } from '../../utils/game/GameMessages';
 import { CatMood, CatigotchiStats, Item, startingCat } from '../../components/game/CatInterface';
 // Images
 import AmazedCat from '../../assets/images/game/amazed.png';
@@ -24,7 +25,6 @@ import CryingCat from '../../assets/images/game/crying.png';
 import KeenCat from '../../assets/images/game/keen.png';
 import WeirdCat from '../../assets/images/game/weird.png';
 import GameModalDisplay from '../../components/game/GameModalDisplay';
-import { GamesMessagesArray } from '../../utils/game/GameMessages';
 
 const imagesArray = [
   AmazedCat,

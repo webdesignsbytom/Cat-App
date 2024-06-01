@@ -43,13 +43,14 @@ const MainButtonsComponent: React.FC<MainButtonsComponentProps> = ({
 
   const buttons = [
     { onClick: onGoBack, icon: <FaBackward size={30} />, className: disabled ? 'hidden' : '' },
-    { onClick: navigateHome, icon: <FaHome size={30} /> },
+    { onClick: navigateHome, icon: <FaHome size={30} />, disabled: false },
     { 
       onClick: handleLikeClick, 
       icon: <FcLike size={30} />, 
+      disabled: false,
       className: likeAnimation || secondLikeAnimation || thirdLikeAnimation ? 'animate-like' : '' // Only the like button 
     },
-    { onClick: onToggleMute, icon: isMuted ? <FaVolumeMute size={30} /> : <FaVolumeUp size={30} /> },
+    { onClick: onToggleMute, icon: isMuted ? <FaVolumeMute size={30} /> : <FaVolumeUp size={30} />,  disabled: false },
     { onClick: onGoForward, icon: <FaForward size={30} />, className: disabled ? 'hidden' : '' },
   ];
 

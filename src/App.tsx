@@ -57,6 +57,7 @@ import './styles/reset.css';
 import './styles/tailwind.css';
 import './styles/video_player.css';
 import './styles/animations.css';
+import UploadCatVideoPage from './pages/user/UploadCatVideoPage';
 
 setupIonicReact();
 
@@ -105,6 +106,9 @@ const App: React.FC = () => {
           </Route>
           <Route exact path='/add-edit-cat'>
             <AddEditCatPage />
+          </Route>
+          <Route exact path='/upload-video'>
+            <UploadCatVideoPage />
           </Route>
           <Route exact path='/menu'>
             <MenuPage />
