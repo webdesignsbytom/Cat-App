@@ -113,26 +113,36 @@ const CatigotchiPage: React.FC = () => {
     return () => clearTimeout(timer); // Cleanup the timer if the component unmounts
   }, []);
 
+  // Update data based on times
   useEffect(() => {
     const lastCheck = localStorage.getItem('lastCheck');
     const now = new Date().getTime();
-
+  
     if (lastCheck) {
       const elapsedTime = (now - parseInt(lastCheck)) / 1000; // Time in seconds
       const hungerDecrease = Math.floor(elapsedTime / 60); // Decrease hunger by 1 every minute
       const happinessDecrease = Math.floor(elapsedTime / 120); // Decrease happiness by 1 every 2 minutes
       const healthDecrease = Math.floor(elapsedTime / 180); // Decrease health by 1 every 3 minutes
-
-      setCatigotchiStats((prevStats) => ({
-        ...prevStats,
-        hunger: Math.max(prevStats.hunger - hungerDecrease, 0),
-        happiness: Math.max(prevStats.happiness - happinessDecrease, 0),
-        health: Math.max(prevStats.health - healthDecrease, 0),
-      }));
+  
+      setCatigotchiStats((prevStats) => {
+        const newHunger = Math.max(prevStats.hunger - hungerDecrease, 0);
+        const newHappiness = Math.max(prevStats.happiness - happinessDecrease, 0);
+        const newHealth = Math.max(prevStats.health - healthDecrease, 0);
+        const newMood = checkMood(newHunger, newHappiness, newHealth);
+  
+        return {
+          ...prevStats,
+          hunger: newHunger,
+          happiness: newHappiness,
+          health: newHealth,
+          mood: newMood,
+        };
+      });
     }
-
+  
     localStorage.setItem('lastCheck', now.toString());
   }, []);
+  
 
   // Set up and animate the canvas
   useEffect(() => {
@@ -216,6 +226,20 @@ const CatigotchiPage: React.FC = () => {
     }
   }, [catigotchiStats.hunger, catigotchiStats.happiness]);
 
+  const checkMood = (hunger: number, happiness: number, health: number): CatMood => {
+    if (health < 30) {
+      return CatMood.Sick;
+    } else if (hunger < 30) {
+      return CatMood.Hungry;
+    } else if (happiness < 30) {
+      return CatMood.Tired;
+    } else if (happiness > 70 && hunger > 70 && health > 70) {
+      return CatMood.Happy;
+    } else {
+      return CatMood.Excited;
+    }
+  };
+
   const openMenu = (
     menuType: 'food' | 'play' | 'medicine' | 'item' | 'devButtons'
   ) => {
@@ -242,7 +266,7 @@ const CatigotchiPage: React.FC = () => {
     setIsDevButtonsMenuOpen(false);
   };
 
-  const playWithCatx = () => {
+  const playWithCat = () => {
     const rnd = Math.random();
 
     let plafulDiff;
@@ -255,12 +279,19 @@ const CatigotchiPage: React.FC = () => {
     } else {
       plafulDiff = 5;
     }
+
+    let newHappiness = Math.min(catigotchiStats.happiness + 20, 100)
+    let newIntelligence = parseFloat((catigotchiStats.intelligence + 0.1).toFixed(1))
+    let newPlayfullness = parseFloat((catigotchiStats.playfulness + plafulDiff).toFixed(1))
+
     setCatigotchiStats((prevStats) => ({
       ...prevStats,
-      happiness: Math.min(prevStats.happiness + 20, 100),
-      intelligence: parseFloat((prevStats.intelligence + 0.1).toFixed(1)),
-      playfulness: parseFloat((prevStats.playfulness + plafulDiff).toFixed(1)),
+      happiness: newHappiness,
+      intelligence: newIntelligence,
+      playfulness: newPlayfullness,
+      mood: checkMood(newHappiness, newIntelligence, newPlayfullness)
     }));
+    
     setMessage('You played with your cat!');
     setShowToast(true);
   };
@@ -293,9 +324,13 @@ const CatigotchiPage: React.FC = () => {
   const handleUseItem = (item: Item) => {
     setPetItemsOwned((prevItems) =>
       prevItems
-        .map((i) => (i.id === item.id ? { ...i, quantity: i.quantity - 1 } : i))
+        .map((i) => (i.name === item.name ? { ...i, quantity: i.quantity - 1 } : i))
         .filter((i) => i.quantity > 0)
     );
+
+    if (item.type === 'game') {
+      playWithCat();
+    }
   
     setCatigotchiStats((prevCat) => {
       console.log('prevCat', prevCat);
