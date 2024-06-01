@@ -21,7 +21,7 @@ export const UserProvider: React.FC<React.PropsWithChildren<{}>> = ({ children }
       if (axios.isAxiosError(error) && error.response) {
         throw new Error(error.response.data.message || 'Invalid credentials');
       } else {
-        throw new Error('An error occurred during login');
+        throw new Error('An error occurred during login ');
       }
     }
   };
