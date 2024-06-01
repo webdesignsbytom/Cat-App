@@ -6,21 +6,25 @@ export const gameSettingsOptions: SettingsOption[] = [
     {
         id: settingsId++,
         name: 'volume',
-        title: 'Volume'
+        title: 'Volume',
+        runFunction: () => {}
     },
     {
         id: settingsId++,
         name: 'reset',
-        title: 'Reset'
+        title: 'Reset',
+        runFunction: () => {}
     },
     {
         id: settingsId++,
-        name: 'volume',
-        title: 'Volume'
+        name: 'share',
+        title: 'Share',
+        runFunction: () => {}
     },
     {
         id: settingsId++,
-        name: 'volume',
-        title: 'Volume'
+        name: 'earn',
+        title: 'Earn',
+        runFunction: () => {}
     }
 ]

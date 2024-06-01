@@ -104,6 +104,7 @@ export enum CatMood {
   Sick = 'Sick',
   Excited = 'Excited',
   Sleeping = 'Sleeping',
+  Amazed = 'Amazed',
 }
 
 export const startingCat: CatigotchiStats = {
@@ -125,4 +126,5 @@ export interface SettingsOption {
   id: number;
   name: string;
   title: string;
+  runFunction: () => void;
 }

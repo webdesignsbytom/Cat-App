@@ -20,7 +20,7 @@ import {
 import GameModalDisplay from '../../components/game/GameModalDisplay';
 import SettingsMenuComponent from '../../components/game/SettingsMenuComponent';
 // Images
-import { catGameImagesArray } from '../../components/game/CatImages';
+import { catGameImagesArray } from '../../utils/game/CatImages';
 
 const CatigotchiPage: React.FC = () => {
   const canvasRef = useRef<HTMLCanvasElement | null>(null);
@@ -151,48 +151,54 @@ const CatigotchiPage: React.FC = () => {
     localStorage.setItem('lastCheck', now.toString());
   }, []);
 
+  const drawImage = (imageSrc: string) => {
+    console.log('PPPPPPPPPPPPPPPPPP');
+    const canvas = canvasRef.current;
+    const context = contextRef.current;
+    if (!canvas || !context) return;
+  
+    const image = new Image();
+    image.src = imageSrc;
+    image.onload = () => {
+      if (canvas && context) {
+        const canvasWidth = canvas.width;
+        const canvasHeight = canvas.height;
+        const imageWidth = image.width;
+        const imageHeight = image.height;
+  
+        let drawWidth = imageWidth;
+        let drawHeight = imageHeight;
+        const aspectRatio = imageWidth / imageHeight;
+  
+        if (imageWidth > canvasWidth || imageHeight > canvasHeight) {
+          if (canvasWidth / canvasHeight > aspectRatio) {
+            drawHeight = canvasHeight;
+            drawWidth = canvasHeight * aspectRatio;
+          } else {
+            drawWidth = canvasWidth;
+            drawHeight = canvasWidth / aspectRatio;
+          }
+        }
+  
+        drawWidth *= 1.1;
+        drawHeight *= 0.75;
+  
+        const x = (canvasWidth - drawWidth) / 2;
+        const y = (canvasHeight - drawHeight) / 2;
+  
+        context.clearRect(0, 0, canvasWidth, canvasHeight);
+        context.drawImage(image, x, y, drawWidth, drawHeight);
+      }
+    };
+  };
+  
+
   // Set up and animate the canvas
   useEffect(() => {
     const canvas = canvasRef.current;
     if (canvas) {
       const context = canvas.getContext('2d');
       contextRef.current = context;
-
-      const drawImage = (imageSrc: string) => {
-        const image = new Image();
-        image.src = imageSrc;
-        image.onload = () => {
-          if (canvas && context) {
-            const canvasWidth = canvas.width;
-            const canvasHeight = canvas.height;
-            const imageWidth = image.width;
-            const imageHeight = image.height;
-
-            let drawWidth = imageWidth;
-            let drawHeight = imageHeight;
-            const aspectRatio = imageWidth / imageHeight;
-
-            if (imageWidth > canvasWidth || imageHeight > canvasHeight) {
-              if (canvasWidth / canvasHeight > aspectRatio) {
-                drawHeight = canvasHeight;
-                drawWidth = canvasHeight * aspectRatio;
-              } else {
-                drawWidth = canvasWidth;
-                drawHeight = canvasWidth / aspectRatio;
-              }
-            }
-
-            drawWidth *= 1.1;
-            drawHeight *= 0.75;
-
-            const x = (canvasWidth - drawWidth) / 2;
-            const y = (canvasHeight - drawHeight) / 2;
-
-            context.clearRect(0, 0, canvasWidth, canvasHeight);
-            context.drawImage(image, x, y, drawWidth, drawHeight);
-          }
-        };
-      };
 
       if (showInitialImage) {
         drawImage(catGameImagesArray.find(img => img.mood === 'Waving')?.image || '');
@@ -204,6 +210,7 @@ const CatigotchiPage: React.FC = () => {
           [CatMood.Sick]: catGameImagesArray.find(img => img.mood === 'Sick')?.image,
           [CatMood.Excited]: catGameImagesArray.find(img => img.mood === 'Excited')?.image,
           [CatMood.Sleeping]: catGameImagesArray.find(img => img.mood === 'Sleeping')?.image,
+          [CatMood.Amazed]: catGameImagesArray.find(img => img.mood === 'Amazed')?.image,
         };
 
         const currentImage = moodToImageMap[catigotchiStats.mood] || catGameImagesArray.find(img => img.mood === 'Happy')?.image;
@@ -403,6 +410,12 @@ const CatigotchiPage: React.FC = () => {
       };
     });
 
+    if (item.type === 'game') {
+      changeCatMood(CatMood.Amazed)
+      closeMenu();
+      animateItemTowardsCat(catGameImagesArray[0].image); // Call the animation function
+    }
+
     setMessage(`You used ${item.title} and gained ${item.xp} XP!`);
     setShowToast(true);
   };
@@ -450,6 +463,46 @@ const CatigotchiPage: React.FC = () => {
     setBank(bankStartingNum);
     setPetItemsOwned([]);
     setVolumeLevel(startingVolume); // Reset volume level to default if needed
+  };
+
+  const animateItemTowardsCat = (itemImageSrc: string) => {
+    const canvas = canvasRef.current;
+    const context = contextRef.current;
+    if (!canvas || !context) return;
+
+    const itemImage = new Image();
+    itemImage.src = itemImageSrc;
+
+    let x = -itemImage.width; // Start position (off-screen)
+    const y = canvas.height / 2 - itemImage.height / 2; // Vertical center
+
+    itemImage.onload = () => {
+      const animate = () => {
+        if (!canvas || !context) return;
+
+        // Clear the canvas
+        context.clearRect(0, 0, canvas.width, canvas.height);
+
+        // Draw the item image at the new position
+        context.drawImage(itemImage, x, y);
+
+        // Update the position
+        x += 5; // Move 5 pixels per frame
+
+        // Continue the animation if the image is not off-screen yet
+        if (x < canvas.width) {
+          requestAnimationFrame(animate);
+        } else {
+          // Optionally draw the cat image once the item reaches the cat
+          const catImageSrc = catGameImagesArray.find(img => img.mood === catigotchiStats.mood)?.image;
+          if (catImageSrc) {
+            drawImage(catImageSrc);
+          }
+        }
+      };
+
+      animate();
+    };
   };
 
   return (
