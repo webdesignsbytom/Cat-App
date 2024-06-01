@@ -51,6 +51,7 @@ const CatigotchiPage: React.FC = () => {
   const [petItemsOwned, setPetItemsOwned] = useState<
     {
       id: number;
+      type: string;
       name: string;
       title: string;
       imageUrl: string;

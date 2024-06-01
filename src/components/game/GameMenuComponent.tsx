@@ -1,23 +1,8 @@
 // src/components/game/GameMenuComponent.tsx
-import { IonCard, IonPage } from '@ionic/react';
+import { IonPage } from '@ionic/react';
 import React from 'react';
-import { Item } from './CatInterface';
-
-interface GameMenuComponentProps {
-  menuTitle: string;
-  items: {
-    id: number;
-    name: string;
-    title: string;
-    imageUrl: string;
-    price: number;
-    effect: number;
-    quantity: number;
-    xp: number;
-  }[];
-  onClose: () => void;
-  onBuyItem: (item: Item) => void;
-}
+// Interface
+import { GameMenuComponentProps } from './CatInterface';
 
 const GameMenuComponent: React.FC<GameMenuComponentProps> = ({
   menuTitle,

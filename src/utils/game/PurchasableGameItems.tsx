@@ -7,6 +7,7 @@ let foodId = 0;
 export const foodItemsArray = [
     {
         id: foodId++,
+        type: 'food',
         name: 'fish',
         title: 'Fresh Fish',
         imageUrl: '🐟',
@@ -17,6 +18,7 @@ export const foodItemsArray = [
     },
     {
         id: foodId++,
+        type: 'food',
         name: 'chicken',
         title: 'Cooked Chicken',
         imageUrl: '🍗',
@@ -27,6 +29,7 @@ export const foodItemsArray = [
     },
     {
         id: foodId++,
+        type: 'food',
         name: 'milk',
         title: 'Bowl of Milk',
         imageUrl: '🥛',
@@ -37,6 +40,7 @@ export const foodItemsArray = [
     },
     {
         id: foodId++,
+        type: 'food',
         name: 'tuna',
         title: 'Tuna Can',
         imageUrl: '🐟',
@@ -47,6 +51,7 @@ export const foodItemsArray = [
     },
     {
         id: foodId++,
+        type: 'food',
         name: 'salmon',
         title: 'Salmon Fillet',
         imageUrl: '🐠',
@@ -57,6 +62,7 @@ export const foodItemsArray = [
     },
     {
         id: foodId++,
+        type: 'food',
         name: 'catnip',
         title: 'Fresh Catnip',
         imageUrl: '🌿',
@@ -67,6 +73,7 @@ export const foodItemsArray = [
     },
     {
         id: foodId++,
+        type: 'food',
         name: 'Shrimp',
         title: 'Fresh Shrimp',
         imageUrl: '🍤',
@@ -83,6 +90,7 @@ let gameId = 0;
 export const catGamesArray = [
     {
         id: gameId++,
+        type: 'game',
         name: 'ballOfYarn',
         title: 'Ball of Yarn',
         imageUrl: '🧶',
@@ -93,6 +101,7 @@ export const catGamesArray = [
     },
     {
         id: gameId++,
+        type: 'game',
         name: 'laserPointer',
         title: 'Laser Pointer',
         imageUrl: '🔦',
@@ -103,6 +112,7 @@ export const catGamesArray = [
     },
     {
         id: gameId++,
+        type: 'game',
         name: 'featherToy',
         title: 'Feather Toy',
         imageUrl: '🪶',
@@ -113,6 +123,7 @@ export const catGamesArray = [
     },
     {
         id: gameId++,
+        type: 'game',
         name: 'catnipToy',
         title: 'Catnip Toy',
         imageUrl: '🌿',
@@ -123,6 +134,7 @@ export const catGamesArray = [
     },
     {
         id: gameId++,
+        type: 'game',
         name: 'scratchingPost',
         title: 'Scratching Post',
         imageUrl: '🪵',
@@ -133,6 +145,7 @@ export const catGamesArray = [
     },
     {
         id: gameId++,
+        type: 'game',
         name: 'toyMouse',
         title: 'Toy Mouse',
         imageUrl: '🐭',
@@ -149,6 +162,7 @@ let medicineId = 0;
 export const catMedicinesArray = [
     {
         id: medicineId++,
+        type: 'medicine',
         name: 'antibiotic',
         title: 'Antibiotic',
         imageUrl: '💊',
@@ -159,6 +173,7 @@ export const catMedicinesArray = [
     },
     {
         id: medicineId++,
+        type: 'medicine',
         name: 'fleaTreatment',
         title: 'Flea Treatment',
         imageUrl: '🪲',
@@ -169,6 +184,7 @@ export const catMedicinesArray = [
     },
     {
         id: medicineId++,
+        type: 'medicine',
         name: 'painReliever',
         title: 'Pain Reliever',
         imageUrl: '🩹',

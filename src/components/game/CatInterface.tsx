@@ -14,6 +14,7 @@ export interface CatigotchiStats {
 
 export interface Item {
   id: number;
+  type: string;
   name: string;
   title: string;
   imageUrl: string;
@@ -24,6 +25,7 @@ export interface Item {
 
 export interface OwnedItem {
   id: number;
+  type: string;
   name: string;
   title: string;
   imageUrl: string;
@@ -33,9 +35,39 @@ export interface OwnedItem {
   xp: number;
 }
 
+export interface GameMenuComponentProps {
+  menuTitle: string;
+  items: {
+    id: number;
+    type: string;
+    name: string;
+    title: string;
+    imageUrl: string;
+    price: number;
+    effect: number;
+    quantity: number;
+    xp: number;
+  }[];
+  onClose: () => void;
+  onBuyItem: (item: Item) => void;
+}
+
+export interface ItemsMenuComponentProps {
+  menuTitle: string;
+  items: OwnedItem[];
+  onClose: () => void;
+  onUseItem: (item: OwnedItem) => void;
+}
+
+export interface GameModalDisplayProps {
+  modalTitle: string;
+  modalContent: string;
+  onClose: () => void;
+}
+
 export interface GameMessage {
-  modalTitle: string,
-  modalContent: string
+  modalTitle: string;
+  modalContent: string;
 }
 
 export enum CatMood {
@@ -44,7 +76,7 @@ export enum CatMood {
   Tired = 'Tired',
   Sick = 'Sick',
   Excited = 'Excited',
-  Sleeping = 'Sleeping'
+  Sleeping = 'Sleeping',
 }
 
 export const startingCat: CatigotchiStats = {

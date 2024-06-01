@@ -1,12 +1,8 @@
 // src/components/game/GameMenuComponent.tsx
-import { IonCard, IonPage } from '@ionic/react';
+import { IonPage } from '@ionic/react';
 import React from 'react';
-
-interface GameModalDisplayProps {
-  modalTitle: string;
-  modalContent: string;
-  onClose: () => void;
-}
+// Interface
+import { GameModalDisplayProps } from './CatInterface';
 
 const GameModalDisplay: React.FC<GameModalDisplayProps> = ({
   modalTitle,
@@ -25,9 +21,9 @@ const GameModalDisplay: React.FC<GameModalDisplayProps> = ({
             </div>
           </header>
 
-          <article>
+          <article className='grid items-center justify-center'>
             <div>
-              <p>{modalContent}</p>
+              <p className='text-3xl text-main-colour font-extrabold'>{modalContent}</p>
             </div>
           </article>
 

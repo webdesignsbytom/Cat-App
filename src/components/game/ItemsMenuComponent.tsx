@@ -1,14 +1,7 @@
 import React from 'react';
 import { IonPage } from '@ionic/react';
-// Data
-import { OwnedItem } from './CatInterface';
-
-interface ItemsMenuComponentProps {
-  menuTitle: string;
-  items: OwnedItem[];
-  onClose: () => void;
-  onUseItem: (item: OwnedItem) => void;
-}
+// Interface
+import { ItemsMenuComponentProps } from './CatInterface';
 
 const ItemsMenuComponent: React.FC<ItemsMenuComponentProps> = ({
   menuTitle,
