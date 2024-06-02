@@ -3,19 +3,14 @@ import { IonPage } from '@ionic/react';
 // Components
 import MainButtonsComponent from '../../components/buttons/MainButtonsComponent';
 // Utils
-import { cotdVideos } from '../../utils/video/CatVideoUtils';
+import { CatVideo, cotdVideos } from '../../utils/video/CatVideoUtils';
 
 const CotdPage: React.FC = () => {
   const videoRef = useRef<HTMLVideoElement>(null);
   const [buttonsVisible, setButtonsVisible] = useState(true);
   const [muted, setMuted] = useState(false);
+  const [catVideoArray, setCatVideoArray] = useState<CatVideo[]>(cotdVideos);
   const [currentVideoIndex, setCurrentVideoIndex] = useState(0);
-
-  useEffect(() => {
-    if (videoRef.current) {
-      videoRef.current.muted = muted; // Start muted
-    }
-  }, [muted]);
 
   useEffect(() => {
     // Timer to hide buttons after 5 seconds
@@ -26,6 +21,15 @@ const CotdPage: React.FC = () => {
     return () => clearTimeout(timer);
   }, [buttonsVisible]);
 
+  useEffect(() => {
+    // Update video source when currentVideoIndex changes
+    if (videoRef.current) {
+      videoRef.current.src = catVideoArray[currentVideoIndex].videoUrl;
+      videoRef.current.load(); // Load the new video
+      videoRef.current.play(); // Play the new video
+    }
+  }, [currentVideoIndex, catVideoArray]);
+
   const handleScreenTap = () => {
     if (buttonsVisible) return;
 
@@ -33,11 +37,11 @@ const CotdPage: React.FC = () => {
   };
 
   const goBack = () => {
-    setCurrentVideoIndex((prevIndex) => (prevIndex === 0 ? cotdVideos.length - 1 : prevIndex - 1));
+    setCurrentVideoIndex((prevIndex) => (prevIndex === 0 ? catVideoArray.length - 1 : prevIndex - 1));
   };
 
   const goForward = () => {
-    setCurrentVideoIndex((prevIndex) => (prevIndex === cotdVideos.length - 1 ? 0 : prevIndex + 1));
+    setCurrentVideoIndex((prevIndex) => (prevIndex === catVideoArray.length - 1 ? 0 : prevIndex + 1));
   };
 
   const toggleMute = () => {
@@ -57,7 +61,7 @@ const CotdPage: React.FC = () => {
           muted={muted}
           style={{ width: '100%', height: '100%', objectFit: 'cover' }}
         >
-          <source src={cotdVideos[currentVideoIndex].videoUrl} type='video/mp4' />
+          <source src={catVideoArray[currentVideoIndex].videoUrl} type='video/mp4' />
           Your browser does not support the video tag.
         </video>
 

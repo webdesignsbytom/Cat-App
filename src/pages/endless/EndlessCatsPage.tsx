@@ -2,28 +2,33 @@ import React, { useState, useRef, useEffect } from 'react';
 import { IonPage } from '@ionic/react';
 // Components
 import MainButtonsComponent from '../../components/buttons/MainButtonsComponent';
-// Images
-import Video1 from '../../assets/video/cat_video1.mp4';
+// Utils
+import { CatVideo, endlessVideos } from '../../utils/video/CatVideoUtils';
 
 const EndlessCatsPage: React.FC = () => {
   const videoRef = useRef<HTMLVideoElement>(null);
   const [buttonsVisible, setButtonsVisible] = useState(true);
   const [muted, setMuted] = useState(false);
+  const [catVideoArray, setCatVideoArray] = useState<CatVideo[]>(endlessVideos);
+  const [currentVideoIndex, setCurrentVideoIndex] = useState(0);
 
+  // Timer to hide buttons after 5 seconds
   useEffect(() => {
-    if (videoRef.current) {
-      videoRef.current.muted = muted; // Start muted
-    }
-  }, [muted]);
-  
-  useEffect(() => {
-    // Timer to hide buttons after 5 seconds
     const timer = setTimeout(() => {
       setButtonsVisible(false);
     }, 5000);
 
     return () => clearTimeout(timer);
   }, [buttonsVisible]);
+
+  // Update video source when currentVideoIndex changes
+  useEffect(() => {
+    if (videoRef.current) {
+      videoRef.current.src = catVideoArray[currentVideoIndex].videoUrl;
+      videoRef.current.load(); // Load the new video
+      videoRef.current.play(); // Play the new video
+    }
+  }, [currentVideoIndex, catVideoArray]);
 
   const handleScreenTap = () => {
     if (buttonsVisible) return;
@@ -32,13 +37,11 @@ const EndlessCatsPage: React.FC = () => {
   };
 
   const goBack = () => {
-    if (videoRef.current) {
-    }
+    setCurrentVideoIndex((prevIndex) => (prevIndex === 0 ? catVideoArray.length - 1 : prevIndex - 1));
   };
 
   const goForward = () => {
-    if (videoRef.current) {
-    }
+    setCurrentVideoIndex((prevIndex) => (prevIndex === catVideoArray.length - 1 ? 0 : prevIndex + 1));
   };
 
   const toggleMute = () => {
@@ -58,7 +61,7 @@ const EndlessCatsPage: React.FC = () => {
           muted={muted}
           style={{ width: '100%', height: '100%', objectFit: 'cover' }}
         >
-          <source src={Video1} type='video/mp4' />
+          <source src={catVideoArray[currentVideoIndex].videoUrl} type='video/mp4' />
           Your browser does not support the video tag.
         </video>
 

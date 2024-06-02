@@ -14,3 +14,15 @@ export const cotdVideos: CatVideo[] = [
   { id: 2, name: 'Cat Video 2', videoUrl: Video2, category: 'cat' },
   { id: 3, name: 'Cat Video 3', videoUrl: Video3, category: 'cat' },
 ];
+
+export const endlessVideos: CatVideo[] = [
+  { id: 1, name: 'Cat Video 1', videoUrl: Video1, category: 'cat' },
+  { id: 2, name: 'Cat Video 2', videoUrl: Video2, category: 'cat' },
+  { id: 3, name: 'Cat Video 3', videoUrl: Video3, category: 'cat' },
+];
+
+export const therapyVideos: CatVideo[] = [
+  { id: 1, name: 'Cat Video 1', videoUrl: Video1, category: 'cat' },
+  { id: 2, name: 'Cat Video 2', videoUrl: Video2, category: 'cat' },
+  { id: 3, name: 'Cat Video 3', videoUrl: Video3, category: 'cat' },
+];
