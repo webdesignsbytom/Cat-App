@@ -1,11 +1,25 @@
 // Purchasable items for Catigotchi Game
 
 import { Item } from '../../components/game/CatInterface';
+import { sponsorData } from '../app/SponsorData';
 
 // Arrays are all identical format for reusuable component 'GameMenuComponent'
 let foodId = 0;
 
 export const foodItemsArray: Item[] = [
+    {
+        id: foodId++,
+        type: 'food',
+        name: sponsorData.name,
+        title: sponsorData.title,
+        imageUrl: '🥫',
+        price: 5,
+        effects: {
+            hunger: 10,
+            happiness: 5,
+        },
+        xp: 5
+    },
     {
         id: foodId++,
         type: 'food',
@@ -108,7 +122,20 @@ export const catGamesArray: Item[] = [
         name: 'ballOfYarn',
         title: 'Ball of Yarn',
         imageUrl: '🧶',
-        price: 10,
+        price: 2,
+        effects: {
+            happiness: 10,
+            playfulness: 5,
+        },
+        xp: 5
+    },
+    {
+        id: gameId++,
+        type: 'game',
+        name: 'cardboardBox',
+        title: 'Box',
+        imageUrl: '📦',
+        price: 5,
         effects: {
             happiness: 10,
             playfulness: 5,
@@ -218,6 +245,20 @@ export const catMedicinesArray: Item[] = [
         price: 10,
         effects: {
             health: 10,
+        },
+        xp: 5
+    },
+    {
+        id: medicineId++,
+        type: 'medicine',
+        name: 'vaccine',
+        title: 'Vaccine',
+        imageUrl: '💉',
+        price: 50,
+        effects: {
+            health: 10,
+            happiness: 10,
+            playfulness: 5,
         },
         xp: 5
     }
