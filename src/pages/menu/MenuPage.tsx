@@ -33,6 +33,10 @@ const MenuPage: React.FC = () => {
       title: 'Sponsor',
       link: '/sponsor',
     },
+    {
+      title: 'Upload',
+      link: '/upload-video',
+    },
   ]);
 
   const [secondListOfButtons, setSecondListOfButtons] = useState([

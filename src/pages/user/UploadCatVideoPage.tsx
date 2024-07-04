@@ -1,5 +1,15 @@
 import React, { useState } from 'react';
-import { IonPage, IonHeader, IonToolbar, IonTitle, IonContent, IonButton, IonInput, IonToast } from '@ionic/react';
+import {
+  IonPage,
+  IonHeader,
+  IonToolbar,
+  IonTitle,
+  IonContent,
+  IonButton,
+  IonInput,
+  IonToast,
+} from '@ionic/react';
+import client from '../../api/client';
 
 const UploadCatVideoPage: React.FC = () => {
   const [videoFile, setVideoFile] = useState<File | null>(null);
@@ -23,21 +33,20 @@ const UploadCatVideoPage: React.FC = () => {
     const formData = new FormData();
     formData.append('video', videoFile);
 
-    try {
-      const response = await fetch('YOUR_SERVER_UPLOAD_URL', {
-        method: 'POST',
-        body: formData,
-      });
+    client
+      .postVideo('/videos/upload-video', formData, false)
+      .then((res) => {
+        console.log('res', res.data);
+        console.log('res', res.data.message);
+        setMessage('Video upload successful.');
+        setShowToast(true);
+      })
 
-      if (response.ok) {
-        setMessage('Video uploaded successfully!');
-      } else {
-        setMessage('Failed to upload video.');
-      }
-    } catch (error) {
-      console.error('Error uploading video:', error);
-      setMessage('An error occurred while uploading the video.');
-    }
+      .catch((err) => {
+        console.error('Error uploading file:', err);
+        setMessage('Error uploading video.');
+        setShowToast(true);
+      });
 
     setShowToast(true);
   };
@@ -49,9 +58,9 @@ const UploadCatVideoPage: React.FC = () => {
           <IonTitle>Upload Cat Video</IonTitle>
         </IonToolbar>
       </IonHeader>
-      <IonContent className="ion-padding">
-        <input type="file" accept="video/*" onChange={handleFileChange} />
-        <IonButton expand="full" onClick={handleUpload} disabled={!videoFile}>
+      <IonContent className='ion-padding'>
+        <input type='file' accept='video/*' onChange={handleFileChange} />
+        <IonButton expand='full' onClick={handleUpload} disabled={!videoFile}>
           Upload Video
         </IonButton>
         <IonToast

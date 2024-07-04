@@ -32,6 +32,15 @@ const client = {
     return axios.post(url, data, { headers });
   },
 
+  postVideo: (path: string, data: any, withToken: boolean = false) => {
+    const url = `${host}${path}`;
+    let headers = {
+      'Content-Type': 'multipart/form-data',
+    };
+
+    return axios.post(url, data, { headers });
+  },
+
   patch: (path: string, data: any, withToken: boolean = true) => {
     const url = `${host}${path}`;
     const token = localStorage.getItem(tokenKey);

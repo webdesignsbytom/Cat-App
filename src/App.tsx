@@ -16,7 +16,6 @@ import LoginPage from './user/LoginPage';
 import RegisterPage from './user/RegisterPage';
 import MenuPage from './pages/menu/MenuPage';
 import MyCatsPage from './pages/user/MyCatsPage';
-import CategoriesPage from './pages/categories/CategoriesPage';
 import SponsorPage from './pages/sponsor/SponsorPage';
 import AddEditCatPage from './pages/user/AddEditCatPage';
 import CatigotchiPage from './pages/catigotchi/CatigotchiPage';
@@ -81,9 +80,6 @@ const App: React.FC = () => {
           </Route>
           <Route exact path='/therapy-mode'>
             <TherapyModePage />
-          </Route>
-          <Route exact path='/categories'>
-            <CategoriesPage />
           </Route>
           <Route exact path='/privacy-policy'>
             <PrivacyPolicyPage />
