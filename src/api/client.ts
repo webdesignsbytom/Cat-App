@@ -1,7 +1,7 @@
 import axios from 'axios';
 
-const host: string = process.env.REACT_APP_API_URL as string;
-const tokenKey: string = process.env.REACT_APP_USER_TOKEN as string;
+const host: string = 'https://api.myecoapp.org';
+const tokenKey: string = 'un';
 
 const client = {
   get: (path: string) => {
@@ -11,6 +11,14 @@ const client = {
     };
 
     return axios.get(url, { headers });
+  },
+
+  getVideo: (path: string) => {
+    const url = `${host}${path}`;
+    const headers = {
+      Authorization: `Bearer ${localStorage.getItem(tokenKey)}`,
+    };
+    return axios.get(url, { headers, responseType: 'blob' });
   },
 
   post: (path: string, data: any, withToken: boolean = true) => {

@@ -18,7 +18,6 @@ import MenuPage from './pages/menu/MenuPage';
 import MyCatsPage from './pages/user/MyCatsPage';
 import CategoriesPage from './pages/categories/CategoriesPage';
 import SponsorPage from './pages/sponsor/SponsorPage';
-import TestPage from './pages/test/TestPage';
 import AddEditCatPage from './pages/user/AddEditCatPage';
 import CatigotchiPage from './pages/catigotchi/CatigotchiPage';
 
@@ -121,9 +120,6 @@ const App: React.FC = () => {
           </Route>
           <Route exact path='/register'>
             <RegisterPage />
-          </Route>
-          <Route exact path='/test'>
-            <TestPage />
           </Route>
           <Route exact path='/'>
             <Redirect to='/home' />
