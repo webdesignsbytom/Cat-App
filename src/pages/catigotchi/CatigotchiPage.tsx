@@ -102,7 +102,7 @@ const CatigotchiPage: React.FC = () => {
     { label: 'Games', icon: '🕹️', onClick: () => openCatToysMenu() },
     { label: 'Health', icon: '⚕️', onClick: () => openMedicineMenu() },
     { label: 'Items', icon: '🎒', onClick: () => openItems() },
-    { label: 'DevButtons', icon: '🛠️', onClick: () => openDevButtonsMenu() }, // Added DevButtons
+    //{ label: 'DevButtons', icon: '🛠️', onClick: () => openDevButtonsMenu() }, // Added DevButtons
   ];
 
   // Show initial image
