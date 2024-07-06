@@ -21,6 +21,17 @@ export interface User {
   profileId?: string;
 }
 
+export interface NewUser {
+  email: string;
+  firstName: string;
+  lastName: string;
+  password: string;
+  confirmPassword: string;
+  country: string;
+  agreedToTerms: boolean;
+  agreedToPrivacy: boolean;
+}
+
 export interface UserVerification {
   id: string;
   uniqueString: string;

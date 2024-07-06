@@ -56,6 +56,7 @@ import './styles/tailwind.css';
 import './styles/video_player.css';
 import './styles/animations.css';
 import UploadCatVideoPage from './pages/user/UploadCatVideoPage';
+import UserAccountPage from './pages/user/UserAccountPage';
 
 setupIonicReact();
 
@@ -116,6 +117,9 @@ const App: React.FC = () => {
           </Route>
           <Route exact path='/register'>
             <RegisterPage />
+          </Route>
+          <Route exact path='/account'>
+            <UserAccountPage />
           </Route>
           <Route exact path='/'>
             <Redirect to='/home' />

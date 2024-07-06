@@ -12,7 +12,7 @@ import YellowCat1 from '../../assets/images/background/small_cat_yellow_1.png';
 
 const MenuPage: React.FC = () => {
   const history = useHistory();
-  const [firstListOfButtons, setFirstListOfButtons] = useState([
+  const [firstListOfButtons] = useState([
     {
       title: 'AI Cats',
       link: '/ai-cats',
@@ -37,9 +37,13 @@ const MenuPage: React.FC = () => {
       title: 'Upload',
       link: '/upload-video',
     },
+    {
+      title: 'Account',
+      link: '/account',
+    },
   ]);
 
-  const [secondListOfButtons, setSecondListOfButtons] = useState([
+  const [secondListOfButtons] = useState([
     {
       title: 'Back',
       link: '/home',

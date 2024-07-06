@@ -1,14 +1,9 @@
 import React, { useState } from 'react';
 import {
   IonPage,
-  IonHeader,
-  IonToolbar,
-  IonTitle,
-  IonContent,
-  IonButton,
-  IonInput,
   IonToast,
 } from '@ionic/react';
+// Api
 import client from '../../api/client';
 
 const UploadCatVideoPage: React.FC = () => {
@@ -53,23 +48,39 @@ const UploadCatVideoPage: React.FC = () => {
 
   return (
     <IonPage>
-      <IonHeader>
-        <IonToolbar>
-          <IonTitle>Upload Cat Video</IonTitle>
-        </IonToolbar>
-      </IonHeader>
-      <IonContent className='ion-padding'>
-        <input type='file' accept='video/*' onChange={handleFileChange} />
-        <IonButton expand='full' onClick={handleUpload} disabled={!videoFile}>
-          Upload Video
-        </IonButton>
+      <div className='grid grid-rows-reg h-full w-full bg-white overflow-hidden'>
+        <header className='grid grid-cols-rev py-4 px-4 border-solid border-b-2 border-gray-600'>
+          <div className='grid items-center w-full'>
+            <h1 className='text-2xl font-semibold'>Upload Cat Videos</h1>
+            <h2>
+              Your chance to win{' '}
+              <span className='font-medium'>'Cat of the Day'</span>
+            </h2>
+          </div>
+        </header>
+
+        <main className='grid overflow-hidden'>
+          <section className='ion-padding'>
+            <input type='file' accept='video/*' onChange={handleFileChange} />
+            <div>
+              <button
+                className='px-2 py-2 rounded-lg w-full h-[48px] bg-main-colour text-white text-2xl font-semibold active:scale-95 active:bg-main-colour-alt shadow-xl'
+                onClick={handleUpload}
+                disabled={!videoFile}
+              >
+                Upload Video
+              </button>
+            </div>
+          </section>
+        </main>
+        
         <IonToast
           isOpen={showToast}
           onDidDismiss={() => setShowToast(false)}
           message={message}
           duration={2000}
         />
-      </IonContent>
+      </div>
     </IonPage>
   );
 };

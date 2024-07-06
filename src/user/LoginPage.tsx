@@ -19,6 +19,7 @@ import { useUser } from '../context/UserContext';
 const LoginPage: React.FC = () => {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
+
   const [showLoading, setShowLoading] = useState(false);
   const [showToast, setShowToast] = useState(false);
   const [toastMessage, setToastMessage] = useState('');
@@ -99,6 +100,14 @@ const LoginPage: React.FC = () => {
           </div>
         </main>
       </div>
+
+      <IonLoading isOpen={showLoading} message={'Please wait...'} />
+      <IonToast
+        isOpen={showToast}
+        message={toastMessage}
+        duration={2000}
+        onDidDismiss={() => setShowToast(false)}
+      />
     </IonPage>
   );
 };

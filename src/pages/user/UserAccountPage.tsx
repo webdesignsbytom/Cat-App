@@ -1,136 +1,80 @@
-// src/pages/UserAccountPage.tsx
-import React, { useState, useEffect } from 'react';
-import {
-  IonPage,
-  IonHeader,
-  IonToolbar,
-  IonTitle,
-  IonContent,
-  IonItem,
-  IonLabel,
-  IonInput,
-  IonButton,
-  IonToast,
-  IonLoading,
-} from '@ionic/react';
+import React from 'react';
+import { IonPage } from '@ionic/react';
+import { useHistory } from 'react-router-dom';
 // Context
 import { useUser } from '../../context/UserContext';
 
 const UserAccountPage: React.FC = () => {
-  const { token, logout } = useUser();
-  const [username, setUsername] = useState('');
-  const [email, setEmail] = useState('');
-  const [showLoading, setShowLoading] = useState(false);
-  const [showToast, setShowToast] = useState(false);
-  const [toastMessage, setToastMessage] = useState('');
-
-  useEffect(() => {
-    // Fetch user information using the token
-    const fetchUserData = async () => {
-      setShowLoading(true);
-      try {
-        const response = await fetch('/api/user-info', {
-          headers: {
-            Authorization: `Bearer ${token}`,
-          },
-        });
-        const data = await response.json();
-        setUsername(data.username);
-        setEmail(data.email);
-      } catch (error) {
-        setToastMessage('Failed to load user data');
-        setShowToast(true);
-      } finally {
-        setShowLoading(false);
-      }
-    };
-
-    fetchUserData();
-  }, [token]);
-
-  const handleSave = async () => {
-    setShowLoading(true);
-    try {
-      const response = await fetch('/api/update-user', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-          Authorization: `Bearer ${token}`,
-        },
-        body: JSON.stringify({ username, email }),
-      });
-
-      if (!response.ok) {
-        throw new Error('Failed to update user information');
-      }
-
-      setToastMessage('User information updated successfully');
-      setShowToast(true);
-    } catch (error: unknown) {
-      if (error instanceof Error) {
-        setToastMessage(error.message);
-      } else {
-        setToastMessage('An unknown error occurred');
-      }
-      setShowToast(true);
-    } finally {
-      setShowLoading(false);
-    }
-  };
+  const { token, user, logout } = useUser();
+  const history = useHistory();
 
   const handleLogout = () => {
     logout();
   };
 
+  const handleLogin = () => {
+    history.push('/login'); // Replace with your login page path
+  };
+
+  const handleSignUp = () => {
+    history.push('/signup'); // Replace with your sign-up page path
+  };
+
   return (
     <IonPage>
-      <IonHeader>
-        <IonToolbar>
-          <IonTitle>Account</IonTitle>
-        </IonToolbar>
-      </IonHeader>
-      <IonContent className='ion-padding'>
-        <IonItem>
-          <IonLabel position='floating'>Username</IonLabel>
-          <IonInput
-            value={username}
-            onIonChange={(e) => setUsername(e.detail.value!)}
-            type='text'
-            required
-          />
-        </IonItem>
-        <IonItem>
-          <IonLabel position='floating'>Email</IonLabel>
-          <IonInput
-            value={email}
-            onIonChange={(e) => setEmail(e.detail.value!)}
-            type='email'
-            required
-          />
-        </IonItem>
-        <IonButton
-          expand='full'
-          onClick={handleSave}
-          className='ion-margin-top'
-        >
-          Save
-        </IonButton>
-        <IonButton
-          expand='full'
-          onClick={handleLogout}
-          color='danger'
-          className='ion-margin-top'
-        >
-          Logout
-        </IonButton>
-        <IonLoading isOpen={showLoading} message={'Please wait...'} />
-        <IonToast
-          isOpen={showToast}
-          message={toastMessage}
-          duration={2000}
-          onDidDismiss={() => setShowToast(false)}
-        />
-      </IonContent>
+      <div className='grid grid-rows-reg h-full w-full bg-white overflow-hidden'>
+        <header className='grid grid-cols-rev py-4 px-4 border-solid border-b-2 border-gray-600'>
+          <div className='grid items-center w-full'>
+            <h1 className='text-2xl font-semibold'>Account</h1>
+          </div>
+        </header>
+
+        <main className='grid p-4'>
+          {!user ? (
+            // No user defined content 
+            <div className='grid gap-4'>
+              <div>
+                <button
+                  className='px-2 py-2 rounded-lg w-full h-[48px] bg-main-colour text-white text-2xl font-semibold active:scale-95 active:bg-main-colour-alt shadow-xl'
+                  onClick={handleLogin}
+                >
+                  Login
+                </button>
+              </div>
+              <div>
+                <button
+                  className='px-2 py-2 rounded-lg w-full h-[48px] bg-main-colour text-white text-2xl font-semibold active:scale-95 active:bg-main-colour-alt shadow-xl'
+                  onClick={handleSignUp}
+                >
+                  Sign Up
+                </button>
+              </div>
+            </div>
+          ) : (
+            // Main content
+            <div className='grid gap-4'>
+              <article>
+                <h2 className='text-xl font-semibold'>Welcome, {user.email}</h2>
+                <div>
+                  <p>
+                    Name: {user.profile?.firstName} {user.profile?.lastName}
+                  </p>
+                  <p>Country: {user.profile?.country}</p>
+                </div>
+              </article>
+
+              <div>
+                <button
+                  className='px-2 py-2 rounded-lg w-full h-[48px] bg-main-colour text-white text-2xl font-semibold active:scale-95 active:bg-main-colour-alt shadow-xl'
+                  onClick={handleLogout}
+                >
+                  Logout
+                </button>
+              </div>
+            </div>
+          )}
+        </main>
+      </div>
     </IonPage>
   );
 };

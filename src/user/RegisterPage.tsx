@@ -1,46 +1,46 @@
-// src/pages/RegisterPage.tsx
 import React, { useState } from 'react';
-import {
-  IonPage,
-  IonHeader,
-  IonToolbar,
-  IonTitle,
-  IonContent,
-  IonItem,
-  IonLabel,
-  IonInput,
-  IonSelect,
-  IonSelectOption,
-  IonButton,
-  IonLoading,
-  IonToast,
-  IonCheckbox,
-  IonText,
-} from '@ionic/react';
+import { IonPage } from '@ionic/react';
 import { useHistory } from 'react-router-dom';
+// Interfaces
+import { NewUser } from '../utils/User/UserInterfaces';
+import { useUser } from '../context/UserContext';
 
 const RegisterPage: React.FC = () => {
-  const [email, setEmail] = useState('');
-  const [firstName, setFirstName] = useState('');
-  const [lastName, setLastName] = useState('');
-  const [password, setPassword] = useState('');
-  const [confirmPassword, setConfirmPassword] = useState('');
-  const [country, setCountry] = useState('');
-  const [termsAccepted, setTermsAccepted] = useState(false);
-  const [privacyAccepted, setPrivacyAccepted] = useState(false);
+  const [formData, setFormData] = useState<NewUser>({
+    email: '',
+    firstName: '',
+    lastName: '',
+    password: '',
+    confirmPassword: '',
+    country: '',
+    agreedToTerms: false,
+    agreedToPrivacy: false,
+  });
   const [showLoading, setShowLoading] = useState(false);
   const [showToast, setShowToast] = useState(false);
   const [toastMessage, setToastMessage] = useState('');
+
   const history = useHistory();
 
+  const { register } = useUser();
+
+  const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const { id, value, type, checked } = e.target;
+
+    setFormData((prevFormData) => ({
+      ...prevFormData,
+      [id]: type === 'checkbox' ? checked : value,
+    }));
+  };
+
   const handleRegister = async () => {
-    if (password !== confirmPassword) {
+    if (formData.password !== formData.confirmPassword) {
       setToastMessage('Passwords do not match');
       setShowToast(true);
       return;
     }
 
-    if (!termsAccepted || !privacyAccepted) {
+    if (!formData.agreedToTerms || !formData.agreedToPrivacy) {
       setToastMessage('You must accept the terms and privacy policy');
       setShowToast(true);
       return;
@@ -49,132 +49,99 @@ const RegisterPage: React.FC = () => {
     setShowLoading(true);
 
     try {
-      const response = await fetch('/api/register', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify({
-          email,
-          firstName,
-          lastName,
-          password,
-          country,
-        }),
-      });
-
-      if (!response.ok) {
-        throw new Error('Registration failed');
-      }
+      await register(formData);
 
       setToastMessage('Registration successful');
       setShowToast(true);
       history.push('/login');
     } catch (error: unknown) {
-        if (error instanceof Error) {
-          setToastMessage(error.message);
-        } else {
-          setToastMessage('An unknown error occurred');
-        }
+      if (error instanceof Error) {
+        setToastMessage(error.message);
+      } else {
+        setToastMessage('An unknown error occurred');
+      }
       setShowToast(true);
     } finally {
       setShowLoading(false);
     }
   };
 
+  const inputFields = [
+    { id: 'email', type: 'email', label: 'Email' },
+    { id: 'firstName', type: 'text', label: 'First Name' },
+    { id: 'lastName', type: 'text', label: 'Last Name' },
+    { id: 'password', type: 'password', label: 'Password' },
+    { id: 'confirmPassword', type: 'password', label: 'Confirm Password' },
+    { id: 'country', type: 'text', label: 'Country' },
+  ];
+
   return (
     <IonPage>
-      <IonContent className="ion-padding">
-        <IonItem>
-          <IonLabel position="floating">Email</IonLabel>
-          <IonInput
-            value={email}
-            onIonChange={(e) => setEmail(e.detail.value!)}
-            type="email"
-            required
-          />
-        </IonItem>
-        <IonItem>
-          <IonLabel position="floating">First Name</IonLabel>
-          <IonInput
-            value={firstName}
-            onIonChange={(e) => setFirstName(e.detail.value!)}
-            type="text"
-            required
-          />
-        </IonItem>
-        <IonItem>
-          <IonLabel position="floating">Last Name</IonLabel>
-          <IonInput
-            value={lastName}
-            onIonChange={(e) => setLastName(e.detail.value!)}
-            type="text"
-            required
-          />
-        </IonItem>
-        <IonItem>
-          <IonLabel position="floating">Password</IonLabel>
-          <IonInput
-            value={password}
-            onIonChange={(e) => setPassword(e.detail.value!)}
-            type="password"
-            required
-          />
-        </IonItem>
-        <IonItem>
-          <IonLabel position="floating">Confirm Password</IonLabel>
-          <IonInput
-            value={confirmPassword}
-            onIonChange={(e) => setConfirmPassword(e.detail.value!)}
-            type="password"
-            required
-          />
-        </IonItem>
-        <IonItem>
-          <IonLabel>Country</IonLabel>
-          <IonSelect
-            value={country}
-            placeholder="Select your country"
-            onIonChange={(e) => setCountry(e.detail.value)}
-          >
-            <IonSelectOption value="USA">USA</IonSelectOption>
-            <IonSelectOption value="Canada">Canada</IonSelectOption>
-            <IonSelectOption value="UK">UK</IonSelectOption>
-            <IonSelectOption value="Australia">Australia</IonSelectOption>
-            <IonSelectOption value="Germany">Germany</IonSelectOption>
-            <IonSelectOption value="France">France</IonSelectOption>
-            <IonSelectOption value="Other">Other</IonSelectOption>
-          </IonSelect>
-        </IonItem>
-        <IonItem lines="none">
-          <IonCheckbox
-            checked={termsAccepted}
-            onIonChange={(e) => setTermsAccepted(e.detail.checked)}
-          />
-          <IonLabel className="ion-padding-start">
-            I accept the <a href="/terms-and-conditions">terms and conditions</a>
-          </IonLabel>
-        </IonItem>
-        <IonItem lines="none">
-          <IonCheckbox
-            checked={privacyAccepted}
-            onIonChange={(e) => setPrivacyAccepted(e.detail.checked)}
-          />
-          <IonLabel className="ion-padding-start">
-            I accept the <a href="/privacy-policy">privacy policy</a>
-          </IonLabel>
-        </IonItem>
-        <IonButton expand="full" onClick={handleRegister} className="ion-margin-top">
-          Register
-        </IonButton>
-        <IonLoading isOpen={showLoading} message={'Registering...'} />
-        <IonToast
-          isOpen={showToast}
-          message={toastMessage}
-          duration={2000}
-          onDidDismiss={() => setShowToast(false)}
-        />
-      </IonContent>
+      <div className='grid grid-rows-reg h-full w-full bg-white overflow-hidden'>
+        <header className='grid grid-cols-rev py-4 px-4 border-solid border-b-2 border-gray-600'>
+          <div className='grid items-center w-full'>
+            <h1 className='text-2xl font-semibold'>Register</h1>
+          </div>
+        </header>
+
+        <main className='grid gap-4 p-4'>
+          {inputFields.map(({ id, type, label }) => (
+            <div key={id} className='grid grid-rows-reg gap-2 items-center'>
+              <label htmlFor={id}>{label}</label>
+              <div className='grid justify-end'>
+                <input
+                  type={type}
+                  id={id}
+                  value={(formData as any)[id]} // Type assertion to access formData properties dynamically
+                  className='outline outline-1 outline-gray-600 shadow-md rounded-lg px-1 py-1 h-fit w-full max-w-[200px]'
+                  onChange={handleInputChange}
+                />
+              </div>
+            </div>
+          ))}
+          <div className='grid grid-rows-reg gap-2 items-center'>
+            <label>
+              <input
+                type='checkbox'
+                id='termsAccepted'
+                checked={formData.agreedToTerms}
+                onChange={handleInputChange}
+              />
+              Accept Terms
+            </label>
+          </div>
+          <div className='grid grid-rows-reg gap-2 items-center'>
+            <label>
+              <input
+                type='checkbox'
+                id='privacyAccepted'
+                checked={formData.agreedToPrivacy}
+                onChange={handleInputChange}
+              />
+              Accept Privacy Policy
+            </label>
+          </div>
+          <div>
+            <button
+              className='px-2 py-2 rounded-lg w-full h-[48px] bg-main-colour text-white text-2xl font-semibold active:scale-95 active:bg-main-colour-alt shadow-xl'
+              onClick={handleRegister}
+            >
+              Register
+            </button>
+          </div>
+        </main>
+
+        {showLoading && (
+          <div className='fixed inset-0 flex items-center justify-center bg-black bg-opacity-50'>
+            <div className='bg-white p-4 rounded shadow'>Please wait...</div>
+          </div>
+        )}
+        {showToast && (
+          <div className='fixed bottom-4 left-1/2 transform -translate-x-1/2 bg-gray-800 text-white p-2 rounded'>
+            {toastMessage}
+          </div>
+        )}
+      </div>
     </IonPage>
   );
 };
