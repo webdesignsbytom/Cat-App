@@ -84,33 +84,36 @@ const LoginPage: React.FC = () => {
             {/* Main content */}
             <section className='grid gap-1 w-[65%] mx-auto h-full'>
               <section className='mt-10'>
-                <div className='grid grid-rows-reg gap-1 text-center items-center h-fit'>
-                  <label htmlFor='email'>Email</label>
-                  <div className='grid justify-center'>
-                    <input
-                      type='text'
-                      id='email'
-                      value={email}
-                      className='outline outline-1 outline-gray-600 shadow-md rounded-lg px-1 py-1 h-fit w-full max-w-[350px]'
-                      onChange={(e) => setEmail(e.target.value)}
-                    />
-                  </div>
-                </div>
 
-                <div className='grid grid-rows-reg gap-1 text-center items-center h-fit'>
-                  <label htmlFor='password'>Password</label>
-                  <div className='grid justify-center'>
-                    <input
-                      type='text'
-                      id='password'
-                      value={password}
-                      className='outline outline-1 outline-gray-600 shadow-md rounded-lg px-1 py-1 h-fit w-full max-w-[300px]'
-                      onChange={(e) => setPassword(e.target.value)}
-                    />
+                <section className='grid gap-4 '>
+                  <div className='grid grid-rows-reg gap-1 text-center items-center h-fit'>
+                    <label htmlFor='email'>Email</label>
+                    <div className='grid justify-center'>
+                      <input
+                        type='text'
+                        id='email'
+                        value={email}
+                        className='outline outline-1 outline-gray-600 shadow-md rounded-lg px-1 py-1 h-fit w-full min-w-[350px] max-w-[350px]'
+                        onChange={(e) => setEmail(e.target.value)}
+                      />
+                    </div>
                   </div>
-                </div>
 
-                <div className='mt-6'>
+                  <div className='grid grid-rows-reg gap-1 text-center items-center h-fit'>
+                    <label htmlFor='password'>Password</label>
+                    <div className='grid justify-center'>
+                      <input
+                        type='text'
+                        id='password'
+                        value={password}
+                        className='outline outline-1 outline-gray-600 shadow-md rounded-lg px-1 py-1 h-fit w-full min-w-[350px] max-w-[350px]'
+                        onChange={(e) => setPassword(e.target.value)}
+                      />
+                    </div>
+                  </div>
+                </section>
+
+                <div className='mt-10'>
                   <button
                     className='px-2 py-2 rounded-lg w-full h-[52px] bg-main-colour text-white text-2xl font-semibold active:scale-95 active:bg-main-colour-alt shadow-xl active:outline-[6px] active:outline active:outline-main-colour'
                     onClick={handleLogin}

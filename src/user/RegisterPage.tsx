@@ -102,7 +102,7 @@ const RegisterPage: React.FC = () => {
                       type={type}
                       id={id}
                       value={(formData as any)[id]} // Type assertion to access formData properties dynamically
-                      className='outline outline-1 outline-gray-600 shadow-md rounded-lg px-1 py-1 h-fit w-full max-w-[350px]'
+                      className='outline outline-1 outline-gray-600 shadow-md rounded-lg px-1 py-1 h-fit w-full min-w-[350px] max-w-[350px]'
                       onChange={handleInputChange}
                     />
                   </div>
