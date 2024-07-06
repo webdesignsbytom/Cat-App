@@ -5,7 +5,7 @@ import { useHistory } from 'react-router-dom';
 import { useUser } from '../../context/UserContext';
 
 const UserAccountPage: React.FC = () => {
-  const { token, user, logout } = useUser();
+  const { user, logout } = useUser();
   const history = useHistory();
 
   const handleLogout = () => {
@@ -17,7 +17,7 @@ const UserAccountPage: React.FC = () => {
   };
 
   const handleSignUp = () => {
-    history.push('/signup'); // Replace with your sign-up page path
+    history.push('/register'); // Replace with your sign-up page path
   };
 
   return (
