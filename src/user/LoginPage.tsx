@@ -15,6 +15,8 @@ import {
 import { useHistory } from 'react-router-dom';
 // Context
 import { useUser } from '../context/UserContext';
+// Logo
+import CatAppLogo from '../assets/images/logos/cat_app_logo_of_cat.svg';
 
 const LoginPage: React.FC = () => {
   const [email, setEmail] = useState('');
@@ -64,39 +66,51 @@ const LoginPage: React.FC = () => {
           </div>
         </header>
 
-        <main className='grid overflow-hidden'>
-          <div className='grid grid-rows-reg gap-4 items-center'>
-            <label htmlFor='email'>Email</label>
-            <div className='grid justify-end'>
-              <input
-                type='text'
-                id='email'
-                value={email}
-                className='outline outline-1 outline-gray-600 shadow-md rounded-lg px-1 py-1 h-fit w-full max-w-[200px]'
-                onChange={(e) => setEmail(e.target.value)}
-              />
-            </div>
-          </div>
-          <div className='grid grid-rows-reg gap-4 items-center'>
-            <label htmlFor='password'>Password</label>
-            <div className='grid justify-end'>
-              <input
-                type='text'
-                id='password'
-                value={password}
-                className='outline outline-1 outline-gray-600 shadow-md rounded-lg px-1 py-1 h-fit w-full max-w-[200px]'
-                onChange={(e) => setPassword(e.target.value)}
-              />
-            </div>
-          </div>
-
+        <main className='grid p-4'>
           <div>
-            <button
-              className='px-2 py-2 rounded-lg w-full h-[52px] bg-main-colour text-white text-2xl font-semibold active:scale-95 active:bg-main-colour-alt shadow-xl active:outline-[6px] active:outline active:outline-main-colour'
-              onClick={handleLogin}
-            >
-              Login
-            </button>
+            {/* Logo section */}
+            <section className='grid justify-center items-center p-2'>
+              <img
+                src={CatAppLogo}
+                alt='Cat App logo'
+                className='w-full h-full'
+              />
+            </section>
+            <section className='grid gap-1 w-fit mx-auto'>
+              <div className='grid grid-rows-reg gap-1 text-center items-center'>
+                <label htmlFor='email'>Email</label>
+                <div className='grid justify-end'>
+                  <input
+                    type='text'
+                    id='email'
+                    value={email}
+                    className='outline outline-1 outline-gray-600 shadow-md rounded-lg px-1 py-1 h-fit w-full max-w-[200px]'
+                    onChange={(e) => setEmail(e.target.value)}
+                  />
+                </div>
+              </div>
+              <div className='grid grid-rows-reg gap-1 text-center items-center'>
+                <label htmlFor='password'>Password</label>
+                <div className='grid justify-end'>
+                  <input
+                    type='text'
+                    id='password'
+                    value={password}
+                    className='outline outline-1 outline-gray-600 shadow-md rounded-lg px-1 py-1 h-fit w-full max-w-[200px]'
+                    onChange={(e) => setPassword(e.target.value)}
+                  />
+                </div>
+              </div>
+
+              <div className='mt-6'>
+                <button
+                  className='px-2 py-2 rounded-lg w-full h-[52px] bg-main-colour text-white text-2xl font-semibold active:scale-95 active:bg-main-colour-alt shadow-xl active:outline-[6px] active:outline active:outline-main-colour'
+                  onClick={handleLogin}
+                >
+                  Login
+                </button>
+              </div>
+            </section>
           </div>
         </main>
       </div>

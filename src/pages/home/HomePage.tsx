@@ -6,7 +6,7 @@ import { useHistory } from 'react-router-dom';
 // Context
 import { useUser } from '../../context/UserContext';
 // Logo
-import CatAppLogo from '../../assets/images/logos/CAT APP-01.svg';
+import CatAppLogo from '../../assets/images/logos/cat_app_logo_of_cat.svg';
 // Images
 import BlueCat1 from '../../assets/images/background/small_cat_blue_1.png';
 import BlueCat3 from '../../assets/images/background/small_cat_blue_3.png';

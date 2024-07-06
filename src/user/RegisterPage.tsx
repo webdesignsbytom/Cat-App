@@ -23,7 +23,7 @@ const RegisterPage: React.FC = () => {
   const history = useHistory();
 
   const { register } = useUser();
-
+  console.log('agreedToTerms', formData.agreedToTerms);
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { id, value, type, checked } = e.target;
 
@@ -84,50 +84,59 @@ const RegisterPage: React.FC = () => {
           </div>
         </header>
 
-        <main className='grid gap-4 p-4'>
-          {inputFields.map(({ id, type, label }) => (
-            <div key={id} className='grid grid-rows-reg gap-2 items-center'>
-              <label htmlFor={id}>{label}</label>
-              <div className='grid justify-end'>
-                <input
-                  type={type}
-                  id={id}
-                  value={(formData as any)[id]} // Type assertion to access formData properties dynamically
-                  className='outline outline-1 outline-gray-600 shadow-md rounded-lg px-1 py-1 h-fit w-full max-w-[200px]'
-                  onChange={handleInputChange}
-                />
-              </div>
-            </div>
-          ))}
-          <div className='grid grid-rows-reg gap-2 items-center'>
-            <label>
-              <input
-                type='checkbox'
-                id='termsAccepted'
-                checked={formData.agreedToTerms}
-                onChange={handleInputChange}
-              />
-              Accept Terms
-            </label>
-          </div>
-          <div className='grid grid-rows-reg gap-2 items-center'>
-            <label>
-              <input
-                type='checkbox'
-                id='privacyAccepted'
-                checked={formData.agreedToPrivacy}
-                onChange={handleInputChange}
-              />
-              Accept Privacy Policy
-            </label>
-          </div>
+        <main className='grid p-4'>
           <div>
-            <button
-              className='px-2 py-2 rounded-lg w-full h-[48px] bg-main-colour text-white text-2xl font-semibold active:scale-95 active:bg-main-colour-alt shadow-xl'
-              onClick={handleRegister}
-            >
-              Register
-            </button>
+            <section className='grid gap-1 w-fit mx-auto'>
+              {inputFields.map(({ id, type, label }) => (
+                <div
+                  key={id}
+                  className='grid grid-rows-reg gap-1 text-center items-center'
+                >
+                  <label htmlFor={id}>{label}</label>
+                  <div className='grid justify-end'>
+                    <input
+                      type={type}
+                      id={id}
+                      value={(formData as any)[id]} // Type assertion to access formData properties dynamically
+                      className='outline outline-1 outline-gray-600 shadow-md rounded-lg px-1 py-1 h-fit w-full max-w-[200px]'
+                      onChange={handleInputChange}
+                    />
+                  </div>
+                </div>
+              ))}
+              <div className='mt-2'>
+                <div className='grid grid-rows-reg gap-2 items-center'>
+                  <label>
+                    <input
+                      type='checkbox'
+                      id='agreedToTerms'
+                      checked={formData.agreedToTerms}
+                      onChange={handleInputChange}
+                    />{' '}
+                    Accept Terms
+                  </label>
+                </div>
+                <div className='grid grid-rows-reg gap-2 items-center'>
+                  <label>
+                    <input
+                      type='checkbox'
+                      id='agreedToPrivacy'
+                      checked={formData.agreedToPrivacy}
+                      onChange={handleInputChange}
+                    />{' '}
+                    Accept Privacy Policy
+                  </label>
+                </div>
+              </div>
+              <div className='mt-2'>
+                <button
+                  className='px-2 py-2 rounded-lg w-full h-[48px] bg-main-colour text-white text-2xl font-semibold active:scale-95 active:bg-main-colour-alt shadow-xl'
+                  onClick={handleRegister}
+                >
+                  Register
+                </button>
+              </div>
+            </section>
           </div>
         </main>
 
