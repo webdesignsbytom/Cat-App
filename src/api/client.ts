@@ -1,6 +1,6 @@
 import axios from 'axios';
 
-const host: string = 'https://api.myecoapp.org';
+const host: string = 'http://localhost:4000';
 const tokenKey: string = 'un';
 
 const client = {

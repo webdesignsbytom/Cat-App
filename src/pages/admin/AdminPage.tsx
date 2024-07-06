@@ -3,8 +3,6 @@ import {
   IonPage,
 } from '@ionic/react';
 import { useHistory } from 'react-router-dom';
-// Context
-import { useUser } from '../../context/UserContext';
 // Logo
 import CatAppLogo from '../../assets/images/logos/CAT APP-01.svg';
 // Images
@@ -14,27 +12,21 @@ import WhiteCat1 from '../../assets/images/background/small_cat_white_1.png';
 import WhiteCat2 from '../../assets/images/background/small_cat_white_2.png';
 import RedCat1 from '../../assets/images/background/small_cat_red_1.png';
 
-const HomePage: React.FC = () => {
+const AdminPage: React.FC = () => {
   const history = useHistory();
-
-  const { user } = useUser(); 
 
   const [listOfButtons] = useState([
     {
-      title: 'Cat of the Day',
-      link: '/cotd',
+      title: 'Review Videos',
+      link: '/admin/review-videos',
     },
     {
-      title: 'Endless Cats',
-      link: '/endless-cats',
+      title: 'Users',
+      link: '/admin/users',
     },
     {
-      title: 'Therapy Mode',
-      link: '/therapy-mode',
-    },
-    {
-      title: 'Menu',
-      link: '/menu',
+      title: 'Events',
+      link: '/admin/events',
     },
   ]);
 
@@ -64,18 +56,6 @@ const HomePage: React.FC = () => {
                 </div>
               ))}
             </section>
-            
-            {/* Conditional Admin Button */}
-            {user && (user.role === 'ADMIN' || user.role === 'DEVELOPER') && (
-              <div className='mt-4'>
-                <button
-                  className='px-2 py-2 rounded-lg w-full h-[52px] bg-red-600 text-white text-2xl font-semibold active:scale-95 active:bg-red-700 shadow-xl active:outline-[6px] active:outline-red-600'
-                  onClick={() => navigateTo('/admin')}
-                >
-                  Admin
-                </button>
-              </div>
-            )}
           </div>
 
           {/* Background images top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2  */}
@@ -121,4 +101,4 @@ const HomePage: React.FC = () => {
   );
 };
 
-export default HomePage;
+export default AdminPage;

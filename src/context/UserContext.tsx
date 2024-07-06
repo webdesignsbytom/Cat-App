@@ -18,7 +18,6 @@ export const UserProvider: React.FC<React.PropsWithChildren<{}>> = ({
 }) => {
   const [token, setToken] = useState<string | null>(null);
   const [user, setUser] = useState<User | null>(null);
-  console.log('USER', user);
   
   const login = async (email: string, password: string) => {
     const loginForm = { email: email, password: password };
