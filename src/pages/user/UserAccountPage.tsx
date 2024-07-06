@@ -22,6 +22,9 @@ const UserAccountPage: React.FC = () => {
     history.push('/register'); // Replace with your sign-up page path
   };
 
+  const navigateTo = (path: string) => {
+    history.push(path);
+  };
   return (
     <IonPage>
       <div className='grid grid-rows-reg h-full w-full bg-white overflow-hidden'>
@@ -60,6 +63,16 @@ const UserAccountPage: React.FC = () => {
                     Sign Up
                   </button>
                 </div>
+                <section className='mt-10'>
+                  <div>
+                    <button
+                      className='px-2 py-2 rounded-lg w-full h-[48px] bg-main-colour text-white text-2xl font-semibold active:scale-95 active:bg-main-colour-alt shadow-xl'
+                      onClick={() => navigateTo('/menu')}
+                    >
+                      Back
+                    </button>
+                  </div>
+                </section>
               </div>
             </section>
           ) : (
