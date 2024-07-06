@@ -89,20 +89,20 @@ const RegisterPage: React.FC = () => {
         </header>
 
         <main className='grid h-full w-full overflow-hidden'>
-          <div className='grid h-full w-full overflow-hidden p-4'>
-            <section className='grid gap-1 w-[65%] mx-auto'>
+          <div className='grid h-full w-full overflow-hidden'>
+            <section className='grid gap-1 w-[75%] mx-auto pt-4'>
               {inputFields.map(({ id, type, label }) => (
                 <div
                   key={id}
                   className='grid grid-rows-reg gap-1 text-center items-center'
                 >
                   <label htmlFor={id}>{label}</label>
-                  <div className='grid justify-center'>
+                  <div className='grid'>
                     <input
                       type={type}
                       id={id}
                       value={(formData as any)[id]} // Type assertion to access formData properties dynamically
-                      className='outline outline-1 outline-gray-600 shadow-md rounded-lg px-1 py-1 h-fit w-full min-w-[350px] max-w-[350px]'
+                      className='outline outline-1 outline-gray-600 shadow-md rounded-lg px-1 py-1 h-fit w-full'
                       onChange={handleInputChange}
                     />
                   </div>

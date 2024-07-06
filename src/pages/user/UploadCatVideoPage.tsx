@@ -3,6 +3,9 @@ import { IonPage, IonToast } from '@ionic/react';
 import { useHistory } from 'react-router';
 // Api
 import client from '../../api/client';
+// Images
+import BlueCat1 from '../../assets/images/background/small_cat_blue_1.png';
+import WhiteCat1 from '../../assets/images/background/small_cat_white_1.png';
 
 const UploadCatVideoPage: React.FC = () => {
   const [videoFile, setVideoFile] = useState<File | null>(null);
@@ -64,17 +67,17 @@ const UploadCatVideoPage: React.FC = () => {
             </div>
           </header>
 
-          <main className='grid overflow-hidden h-full w-full'>
-            <div className='grid overflow-hidden items-center h-full w-full p-4'>
-              <section className='grid h-full grid-rows-2 gap-8 w-[65%] mx-auto items-center'>
-                <div className='grid h-full items-end'>
+          <main className='grid relative overflow-hidden h-full w-full bg-red-300'>
+            <div className='grid overflow-hidden items-center h-full w-full '>
+              <section className='grid h-full grid-rows-2 gap-8 w-[75%] mx-auto items-center'>
+                <div className='grid h-full w-full items-end'>
                   <div className='grid gap-6'>
                     <div className='grid'>
                       <input
                         type='file'
                         accept='video/*'
                         onChange={handleFileChange}
-                        className='text-2xl '
+                        className=''
                       />
                     </div>
                     <div>
@@ -90,7 +93,7 @@ const UploadCatVideoPage: React.FC = () => {
                 </div>
 
                 <section className='grid h-full items-end'>
-                  <div>
+                  <div className='mb-10'>
                     <button
                       className='px-2 py-2 rounded-lg w-full h-[48px] bg-main-colour text-white text-2xl font-semibold active:scale-95 active:bg-main-colour-alt shadow-xl'
                       onClick={() => navigateTo('/menu')}
@@ -100,6 +103,21 @@ const UploadCatVideoPage: React.FC = () => {
                   </div>
                 </section>
               </section>
+            </div>
+
+            <div className='absolute top-8 left-0 transform'>
+              <img
+                src={BlueCat1}
+                alt='Blue cat one'
+                className='z-10 w-20 h-auto'
+              />
+            </div>
+            <div className='absolute top-2 right-0'>
+              <img
+                src={WhiteCat1}
+                alt='White cat one'
+                className='z-10 w-24 h-auto'
+              />
             </div>
           </main>
         </div>

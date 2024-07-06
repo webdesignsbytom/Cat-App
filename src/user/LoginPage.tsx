@@ -63,88 +63,89 @@ const LoginPage: React.FC = () => {
 
   return (
     <IonPage>
-      <div className='grid grid-rows-reg h-full w-full bg-white overflow-hidden'>
-        <header className='grid grid-cols-rev py-4 px-4 border-solid border-b-2 border-gray-600'>
-          <div className='grid items-center w-full'>
-            <h1 className='text-2xl font-semibold'>Login</h1>
-          </div>
-        </header>
+      <div className='grid w-full h-full overflow-hidden'>
+        <div className='grid grid-rows-reg h-full w-full bg-white overflow-hidden'>
+          <header className='grid grid-cols-rev py-4 px-4 border-solid border-b-2 border-gray-600'>
+            <div className='grid items-center w-full'>
+              <h1 className='text-2xl font-semibold'>Login</h1>
+            </div>
+          </header>
 
-        <main className='grid w-full h-full overflow-hidden'>
-          <div className='grid w-full h-full p-4 overflow-hidden'>
-            {/* Logo section */}
-            <section className='grid justify-center items-center p-2'>
-              <img
-                src={CatAppLogo}
-                alt='Cat App logo'
-                className='w-full h-full'
-              />
-            </section>
+          <main className='grid w-full h-full overflow-hidden'>
+            <div className='grid w-full h-full overflow-hidden'>
+              {/* Logo section */}
+              <section className='grid justify-center items-center p-2'>
+                <img
+                  src={CatAppLogo}
+                  alt='Cat App logo'
+                  className='w-full h-full'
+                />
+              </section>
 
-            {/* Main content */}
-            <section className='grid gap-1 w-[65%] mx-auto h-full'>
-              <section className='mt-10'>
-
-                <section className='grid gap-4 '>
-                  <div className='grid grid-rows-reg gap-1 text-center items-center h-fit'>
-                    <label htmlFor='email'>Email</label>
-                    <div className='grid justify-center'>
-                      <input
-                        type='text'
-                        id='email'
-                        value={email}
-                        className='outline outline-1 outline-gray-600 shadow-md rounded-lg px-1 py-1 h-fit w-full min-w-[350px] max-w-[350px]'
-                        onChange={(e) => setEmail(e.target.value)}
-                      />
+              {/* Main content */}
+              <section className='grid grid-rows-rev w-[75%] mx-auto h-full'>
+                <section className='grid h-fit'>
+                  <section className='grid gap-4 w-full'>
+                    <div className='grid grid-rows-reg gap-1 text-center items-center h-fit w-full'>
+                      <label htmlFor='email'>Email</label>
+                      <div className='grid'>
+                        <input
+                          type='text'
+                          id='email'
+                          value={email}
+                          className='outline outline-1 outline-gray-600 shadow-md rounded-lg px-1 py-1 h-fit w-full'
+                          onChange={(e) => setEmail(e.target.value)}
+                        />
+                      </div>
                     </div>
-                  </div>
 
-                  <div className='grid grid-rows-reg gap-1 text-center items-center h-fit'>
-                    <label htmlFor='password'>Password</label>
-                    <div className='grid justify-center'>
-                      <input
-                        type='text'
-                        id='password'
-                        value={password}
-                        className='outline outline-1 outline-gray-600 shadow-md rounded-lg px-1 py-1 h-fit w-full min-w-[350px] max-w-[350px]'
-                        onChange={(e) => setPassword(e.target.value)}
-                      />
+                    <div className='grid grid-rows-reg gap-1 text-center items-center h-fit w-full'>
+                      <label htmlFor='password'>Password</label>
+                      <div className='grid'>
+                        <input
+                          type='text'
+                          id='password'
+                          value={password}
+                          className='outline outline-1 outline-gray-600 shadow-md rounded-lg px-1 py-1 h-fit w-full'
+                          onChange={(e) => setPassword(e.target.value)}
+                        />
+                      </div>
                     </div>
+                  </section>
+
+                  <div className='mt-10'>
+                    <button
+                      className='px-2 py-2 rounded-lg w-full h-[52px] bg-main-colour text-white text-2xl font-semibold active:scale-95 active:bg-main-colour-alt shadow-xl active:outline-[6px] active:outline active:outline-main-colour'
+                      onClick={handleLogin}
+                    >
+                      Login
+                    </button>
                   </div>
                 </section>
 
-                <div className='mt-10'>
-                  <button
-                    className='px-2 py-2 rounded-lg w-full h-[52px] bg-main-colour text-white text-2xl font-semibold active:scale-95 active:bg-main-colour-alt shadow-xl active:outline-[6px] active:outline active:outline-main-colour'
-                    onClick={handleLogin}
-                  >
-                    Login
-                  </button>
-                </div>
+                <section className='grid h-full items-end'>
+                  <div className='mb-10'>
+                    <button
+                      className='px-2 py-2 rounded-lg w-full h-[48px] bg-main-colour text-white text-2xl font-semibold active:scale-95 active:bg-main-colour-alt shadow-xl'
+                      onClick={() => navigateTo('/account')}
+                    >
+                      Back
+                    </button>
+                  </div>
+                </section>
               </section>
+            </div>
+          </main>
+        </div>
 
-              <section className='mt-10'>
-                <div>
-                  <button
-                    className='px-2 py-2 rounded-lg w-full h-[48px] bg-main-colour text-white text-2xl font-semibold active:scale-95 active:bg-main-colour-alt shadow-xl'
-                    onClick={() => navigateTo('/menu')}
-                  >
-                    Back
-                  </button>
-                </div>
-              </section>
-            </section>
-          </div>
-        </main>
+        <IonLoading isOpen={showLoading} message={'Please wait...'} />
+        <IonToast
+          isOpen={showToast}
+          message={toastMessage}
+          duration={2000}
+          onDidDismiss={() => setShowToast(false)}
+        />
       </div>
-
-      <IonLoading isOpen={showLoading} message={'Please wait...'} />
-      <IonToast
-        isOpen={showToast}
-        message={toastMessage}
-        duration={2000}
-        onDidDismiss={() => setShowToast(false)}
-      />
     </IonPage>
   );
 };
