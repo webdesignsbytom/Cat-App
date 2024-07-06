@@ -1,38 +1,49 @@
 import React, { createContext, useContext, useState } from 'react';
-import axios from 'axios';
+// Api
+import client from '../api/client';
+// Interfaces
+import { User } from '../utils/User/UserInterfaces';
 
 interface UserContextType {
   token: string | null;
-  login: (username: string, password: string) => Promise<void>;
+  user: User | null;
+  login: (email: string, password: string) => Promise<void>;
   logout: () => void;
 }
 
 const UserContext = createContext<UserContextType | undefined>(undefined);
 
-export const UserProvider: React.FC<React.PropsWithChildren<{}>> = ({ children }) => {
+export const UserProvider: React.FC<React.PropsWithChildren<{}>> = ({
+  children,
+}) => {
   const [token, setToken] = useState<string | null>(null);
+  const [user, setUser] = useState<User | null>(null);
+  console.log('USER', user);
+  
+  const login = async (email: string, password: string) => {
+    const loginForm = { email: email, password: password };
 
-  const login = async (username: string, password: string) => {
-    try {
-      const response = await axios.post('/api/login', { username, password });
-      setToken(response.data.token);
-      localStorage.setItem('token', response.data.token);
-    } catch (error) {
-      if (axios.isAxiosError(error) && error.response) {
-        throw new Error(error.response.data.message || 'Invalid credentials');
-      } else {
-        throw new Error('An error occurred during login ');
-      }
-    }
+    client
+    .post('/login', loginForm, false)
+    .then((res) => {
+      localStorage.setItem('token', res.data.data.token);
+      setToken(res.data.data.token);
+      setUser(res.data.data.existingUser);
+    })
+
+    .catch((err) => {
+      console.error('Unable to login', err);
+    });
   };
 
   const logout = () => {
     setToken(null);
+    setUser(null);
     localStorage.removeItem('token');
   };
 
   return (
-    <UserContext.Provider value={{ token, login, logout }}>
+    <UserContext.Provider value={{ token, user, login, logout }}>
       {children}
     </UserContext.Provider>
   );
