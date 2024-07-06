@@ -66,25 +66,30 @@ const UploadCatVideoPage: React.FC = () => {
 
           <main className='grid overflow-hidden h-full w-full'>
             <div className='grid overflow-hidden items-center h-full w-full p-4'>
-              <section className='grid grid-rows-reg h-fit gap-8 w-fit mx-auto items-center'>
-                <div className='grid justify-center'>
-                  <input
-                    type='file'
-                    accept='video/*'
-                    onChange={handleFileChange}
-                    className='text-2xl '
-                  />
+              <section className='grid h-full grid-rows-2 gap-8 w-[65%] mx-auto items-center'>
+                <div className='grid h-full items-end'>
+                  <div className='grid gap-6'>
+                    <div className='grid'>
+                      <input
+                        type='file'
+                        accept='video/*'
+                        onChange={handleFileChange}
+                        className='text-2xl '
+                      />
+                    </div>
+                    <div>
+                      <button
+                        className='px-2 py-2 rounded-lg w-full h-[48px] bg-main-colour text-white text-2xl font-semibold active:scale-95 active:bg-main-colour-alt shadow-xl'
+                        onClick={handleUpload}
+                        disabled={!videoFile}
+                      >
+                        Upload Video
+                      </button>
+                    </div>
+                  </div>
                 </div>
-                <div>
-                  <button
-                    className='px-2 py-2 rounded-lg w-full h-[48px] bg-main-colour text-white text-2xl font-semibold active:scale-95 active:bg-main-colour-alt shadow-xl'
-                    onClick={handleUpload}
-                    disabled={!videoFile}
-                  >
-                    Upload Video
-                  </button>
-                </div>
-                <section className='mt-10'>
+
+                <section className='grid h-full items-end'>
                   <div>
                     <button
                       className='px-2 py-2 rounded-lg w-full h-[48px] bg-main-colour text-white text-2xl font-semibold active:scale-95 active:bg-main-colour-alt shadow-xl'

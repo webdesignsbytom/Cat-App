@@ -57,6 +57,10 @@ const LoginPage: React.FC = () => {
     }
   };
 
+  const navigateTo = (path: string) => {
+    history.push(path);
+  };
+
   return (
     <IonPage>
       <div className='grid grid-rows-reg h-full w-full bg-white overflow-hidden'>
@@ -66,8 +70,8 @@ const LoginPage: React.FC = () => {
           </div>
         </header>
 
-        <main className='grid p-4'>
-          <div>
+        <main className='grid w-full h-full overflow-hidden'>
+          <div className='grid w-full h-full p-4 overflow-hidden'>
             {/* Logo section */}
             <section className='grid justify-center items-center p-2'>
               <img
@@ -76,40 +80,56 @@ const LoginPage: React.FC = () => {
                 className='w-full h-full'
               />
             </section>
-            <section className='grid gap-1 w-fit mx-auto'>
-              <div className='grid grid-rows-reg gap-1 text-center items-center'>
-                <label htmlFor='email'>Email</label>
-                <div className='grid justify-end'>
-                  <input
-                    type='text'
-                    id='email'
-                    value={email}
-                    className='outline outline-1 outline-gray-600 shadow-md rounded-lg px-1 py-1 h-fit w-full max-w-[200px]'
-                    onChange={(e) => setEmail(e.target.value)}
-                  />
-                </div>
-              </div>
-              <div className='grid grid-rows-reg gap-1 text-center items-center'>
-                <label htmlFor='password'>Password</label>
-                <div className='grid justify-end'>
-                  <input
-                    type='text'
-                    id='password'
-                    value={password}
-                    className='outline outline-1 outline-gray-600 shadow-md rounded-lg px-1 py-1 h-fit w-full max-w-[200px]'
-                    onChange={(e) => setPassword(e.target.value)}
-                  />
-                </div>
-              </div>
 
-              <div className='mt-6'>
-                <button
-                  className='px-2 py-2 rounded-lg w-full h-[52px] bg-main-colour text-white text-2xl font-semibold active:scale-95 active:bg-main-colour-alt shadow-xl active:outline-[6px] active:outline active:outline-main-colour'
-                  onClick={handleLogin}
-                >
-                  Login
-                </button>
-              </div>
+            {/* Main content */}
+            <section className='grid gap-1 w-[65%] mx-auto h-full'>
+              <section className='mt-10'>
+                <div className='grid grid-rows-reg gap-1 text-center items-center h-fit'>
+                  <label htmlFor='email'>Email</label>
+                  <div className='grid justify-center'>
+                    <input
+                      type='text'
+                      id='email'
+                      value={email}
+                      className='outline outline-1 outline-gray-600 shadow-md rounded-lg px-1 py-1 h-fit w-full max-w-[350px]'
+                      onChange={(e) => setEmail(e.target.value)}
+                    />
+                  </div>
+                </div>
+
+                <div className='grid grid-rows-reg gap-1 text-center items-center h-fit'>
+                  <label htmlFor='password'>Password</label>
+                  <div className='grid justify-center'>
+                    <input
+                      type='text'
+                      id='password'
+                      value={password}
+                      className='outline outline-1 outline-gray-600 shadow-md rounded-lg px-1 py-1 h-fit w-full max-w-[300px]'
+                      onChange={(e) => setPassword(e.target.value)}
+                    />
+                  </div>
+                </div>
+
+                <div className='mt-6'>
+                  <button
+                    className='px-2 py-2 rounded-lg w-full h-[52px] bg-main-colour text-white text-2xl font-semibold active:scale-95 active:bg-main-colour-alt shadow-xl active:outline-[6px] active:outline active:outline-main-colour'
+                    onClick={handleLogin}
+                  >
+                    Login
+                  </button>
+                </div>
+              </section>
+
+              <section className='mt-10'>
+                <div>
+                  <button
+                    className='px-2 py-2 rounded-lg w-full h-[48px] bg-main-colour text-white text-2xl font-semibold active:scale-95 active:bg-main-colour-alt shadow-xl'
+                    onClick={() => navigateTo('/menu')}
+                  >
+                    Back
+                  </button>
+                </div>
+              </section>
             </section>
           </div>
         </main>

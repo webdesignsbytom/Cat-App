@@ -75,6 +75,10 @@ const RegisterPage: React.FC = () => {
     { id: 'country', type: 'text', label: 'Country' },
   ];
 
+  const navigateTo = (path: string) => {
+    history.push(path);
+  };
+
   return (
     <IonPage>
       <div className='grid grid-rows-reg h-full w-full bg-white overflow-hidden'>
@@ -84,27 +88,27 @@ const RegisterPage: React.FC = () => {
           </div>
         </header>
 
-        <main className='grid p-4'>
-          <div>
-            <section className='grid gap-1 w-fit mx-auto'>
+        <main className='grid h-full w-full overflow-hidden'>
+          <div className='grid h-full w-full overflow-hidden p-4'>
+            <section className='grid gap-1 w-[65%] mx-auto'>
               {inputFields.map(({ id, type, label }) => (
                 <div
                   key={id}
                   className='grid grid-rows-reg gap-1 text-center items-center'
                 >
                   <label htmlFor={id}>{label}</label>
-                  <div className='grid justify-end'>
+                  <div className='grid justify-center'>
                     <input
                       type={type}
                       id={id}
                       value={(formData as any)[id]} // Type assertion to access formData properties dynamically
-                      className='outline outline-1 outline-gray-600 shadow-md rounded-lg px-1 py-1 h-fit w-full max-w-[200px]'
+                      className='outline outline-1 outline-gray-600 shadow-md rounded-lg px-1 py-1 h-fit w-full max-w-[350px]'
                       onChange={handleInputChange}
                     />
                   </div>
                 </div>
               ))}
-              <div className='mt-2'>
+              <div className='grid justify-center mt-2'>
                 <div className='grid grid-rows-reg gap-2 items-center'>
                   <label>
                     <input
@@ -136,6 +140,16 @@ const RegisterPage: React.FC = () => {
                   Register
                 </button>
               </div>
+              <section className='mt-10'>
+                <div>
+                  <button
+                    className='px-2 py-2 rounded-lg w-full h-[48px] bg-main-colour text-white text-2xl font-semibold active:scale-95 active:bg-main-colour-alt shadow-xl'
+                    onClick={() => navigateTo('/menu')}
+                  >
+                    Back
+                  </button>
+                </div>
+              </section>
             </section>
           </div>
         </main>
