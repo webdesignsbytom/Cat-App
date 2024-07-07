@@ -22,19 +22,26 @@ export const REGISTERPAGE_URL: string = '/register';
 export const ADMINPAGE_URL: string = '/admin';
 
 // Links
-export const SPONSORLINK = 'http://sponsor.com'
+export const SPONSORLINK = 'http://sponsor.com';
 
-// Timing 
-export const TOAST_TIMER = 5000
-export const BUTTON_TIMER = 10000
+// Timing
+export const TOAST_TIMER = 5000;
+export const BUTTON_TIMER = 10000;
 
-// API 
+// API
 export const COTD_VIDEO_URL = '/videos/video';
 export const COTD_NEXT_VIDEO_URL = '/videos/next-video';
 export const COTD_PREVIOUS_VIDEO_URL = '/videos/previous-video';
-export const ADMIN_REVIEW_VIDEO_URL = '/admin/video-uploads/video-review/new-video';
-export const ADMIN_REVIEW_NEXT_VIDEO_URL = '/admin/video-uploads/video-review/new-video/next-video';
-export const ADMIN_REVIEW_PREVIOUS_VIDEO_URL = '/admin/video-uploads/video-review/new-video/previous-video';
-export const ADMIN_APPROVE_VIDEO_URL = '/admin/video-uploads/video-review/new-video/approve-video'; // id
-export const ADMIN_DELETE_VIDEO_URL = '/admin/video-uploads/video-review/new-video/delete-video'; // id
-export const EVENTS_GETALL_URL = '/events/get-all-events'; 
+export const ADMIN_REVIEW_VIDEO_URL =
+  '/admin/video-uploads/video-review/new-video';
+export const ADMIN_REVIEW_NEXT_VIDEO_URL =
+  '/admin/video-uploads/video-review/new-video/next-video';
+export const ADMIN_REVIEW_PREVIOUS_VIDEO_URL =
+  '/admin/video-uploads/video-review/new-video/previous-video';
+export const ADMIN_APPROVE_VIDEO_URL =
+  '/admin/video-uploads/video-review/new-video/approve-video'; // id
+export const ADMIN_DELETE_VIDEO_URL =
+  '/admin/video-uploads/video-review/new-video/delete-video'; // id
+export const EVENTS_GETALL_URL = '/events/get-all-events';
+export const DELETE_EVENT_URL = '/events/delete-event'; // id
+export const DELETEALL_EVENT_URL = '/events/delete-all-events'; // id

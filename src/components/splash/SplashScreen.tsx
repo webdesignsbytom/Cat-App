@@ -8,7 +8,6 @@ import {
   IonText,
   IonSpinner,
 } from '@ionic/react';
-import './splash.css';
 
 const SplashScreen: React.FC<{ onLoaded: () => void }> = ({ onLoaded }) => {
   const [loadingProgress, setLoadingProgress] = useState(0);

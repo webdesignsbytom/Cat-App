@@ -5,13 +5,13 @@ export interface AppSettingsOption {
   runFunction: () => void;
 }
 
-export type EventType = 'ERROR' | 'USER' | 'ADMIN' | 'VISITOR' | 'DEVELOPER' | 'PURCHASE' | 'MINING' | 'TEST';
+export type EventType = 'ERROR' | 'USER' | 'ADMIN' | 'VISITOR' | 'DEVELOPER' | 'PURCHASE' | 'TEST';
 
 export interface EventItem {
   id: string;
   type: EventType;
-  topic?: string;
-  code?: number;
+  topic: string;
+  code: number;
   content?: string;
   createdById?: string;
   receivedById?: string;
@@ -39,4 +39,10 @@ export const blankCat: OwnedCat = {
 
 export interface AdminCurrentView {
   setCurrentView: (view: string) => void;
+}
+
+export interface ConfirmationModalProps {
+  message: string;
+  onConfirm: () => void;
+  onCancel: () => void;
 }

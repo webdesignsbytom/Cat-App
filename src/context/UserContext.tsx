@@ -65,6 +65,7 @@ export const UserProvider: React.FC<React.PropsWithChildren<{}>> = ({
     setToken(null);
     setUser(null);
     localStorage.removeItem(TOKEN_NAME);
+    localStorage.removeItem(ACCOUNT_TOKEN_NAME);
   };
 
   const register = async (newUser: NewUser) => {
@@ -77,7 +78,7 @@ export const UserProvider: React.FC<React.PropsWithChildren<{}>> = ({
       })
 
       .catch((err) => {
-        console.error('Unable to login', err);
+        console.error('Unable to register', err);
       });
   };
 

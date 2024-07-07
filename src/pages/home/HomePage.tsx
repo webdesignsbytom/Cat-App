@@ -13,6 +13,8 @@ import BlueCat3 from '../../assets/images/background/small_cat_blue_3.png';
 import WhiteCat1 from '../../assets/images/background/small_cat_white_1.png';
 import WhiteCat2 from '../../assets/images/background/small_cat_white_2.png';
 import RedCat1 from '../../assets/images/background/small_cat_red_1.png';
+// Constants
+import { COTDPAGE_URL, ENDLESSPAGE_URL, THERAPYPAGE_URL, MENU_URL, ADMINPAGE_URL } from '../../utils/contstants/Constants';
 
 const HomePage: React.FC = () => {
   const history = useHistory();
@@ -22,19 +24,19 @@ const HomePage: React.FC = () => {
   const [listOfButtons] = useState([
     {
       title: 'Cat of the Day',
-      link: '/cotd',
+      link: COTDPAGE_URL,
     },
     {
       title: 'Endless Cats',
-      link: '/endless-cats',
+      link: ENDLESSPAGE_URL,
     },
     {
       title: 'Therapy Mode',
-      link: '/therapy-mode',
+      link: THERAPYPAGE_URL,
     },
     {
       title: 'Menu',
-      link: '/menu',
+      link: MENU_URL,
     },
   ]);
 
@@ -70,7 +72,7 @@ const HomePage: React.FC = () => {
               <div className='mt-4'>
                 <button
                   className='px-2 py-2 rounded-lg w-full h-[52px] bg-red-600 text-white text-2xl font-semibold active:scale-95 active:bg-red-700 shadow-xl active:outline-[6px] active:outline-red-600'
-                  onClick={() => navigateTo('/admin')}
+                  onClick={() => navigateTo(ADMINPAGE_URL)}
                 >
                   Admin
                 </button>
