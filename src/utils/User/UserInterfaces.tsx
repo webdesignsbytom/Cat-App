@@ -40,3 +40,9 @@ export interface UserVerification {
   createdAt: Date;
   updatedAt?: Date;
 }
+
+export interface UserToken {
+  id: string;
+  iat: number;
+  exp: number;
+}
