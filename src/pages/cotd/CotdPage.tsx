@@ -4,10 +4,8 @@ import { IonPage } from '@ionic/react';
 import MainButtonsComponent from '../../components/buttons/MainButtonsComponent';
 // Api
 import client from '../../api/client';
-
-const cotdVideoUrl = '/videos/video';
-const cotdNextVideoUrl = '/videos/next-video';
-const cotdPreviousVideoUrl = '/videos/previous-video';
+// Constants
+import { BUTTON_TIMER, COTD_NEXT_VIDEO_URL, COTD_PREVIOUS_VIDEO_URL, COTD_VIDEO_URL } from '../../utils/contstants/Constants';
 
 const CotdPage: React.FC = () => {
   const videoRef = useRef<HTMLVideoElement>(null);
@@ -17,7 +15,7 @@ const CotdPage: React.FC = () => {
   useEffect(() => {
     const timer = setTimeout(() => {
       setButtonsVisible(false);
-    }, 5000);
+    }, BUTTON_TIMER);
 
     return () => clearTimeout(timer);
   }, [buttonsVisible]);
@@ -38,11 +36,11 @@ const CotdPage: React.FC = () => {
   };
 
   useEffect(() => {
-    fetchVideo(cotdVideoUrl);
+    fetchVideo(COTD_VIDEO_URL);
   }, []);
 
-  const requestNextVideo = () => fetchVideo(cotdNextVideoUrl);
-  const requestPreviousVideo = () => fetchVideo(cotdPreviousVideoUrl);
+  const requestNextVideo = () => fetchVideo(COTD_NEXT_VIDEO_URL);
+  const requestPreviousVideo = () => fetchVideo(COTD_PREVIOUS_VIDEO_URL);
 
   const handleScreenTap = () => {
     if (buttonsVisible) return;

@@ -69,7 +69,9 @@ import {
   UPLOADVIDEO_URL,
   MENU_URL,
   REGISTERPAGE_URL,
+  ADMINPAGE_URL,
 } from './utils/contstants/Constants';
+import AdminPage from './pages/admin/AdminPage';
 
 setupIonicReact();
 
@@ -132,6 +134,9 @@ const App: React.FC = () => {
           </Route>
           <Route exact path={ACCOUNTPAGE_URL}>
             <UserAccountPage />
+          </Route>
+          <Route exact path={ADMINPAGE_URL}>
+            <AdminPage />
           </Route>
           <Route exact path='/'>
             <Redirect to={HOMEPAGE_URL} />
