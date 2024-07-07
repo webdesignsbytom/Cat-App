@@ -8,7 +8,7 @@ import BlueCat1 from '../../assets/images/background/small_cat_blue_1.png';
 import WhiteCat1 from '../../assets/images/background/small_cat_white_1.png';
 // Components
 import LoadingSpinner from '../../components/utils/LoadingSpinner';
-import { MENU_URL } from '../../utils/contstants/Constants';
+import { MENU_URL, TOAST_TIMER } from '../../utils/contstants/Constants';
 
 const UploadCatVideoPage: React.FC = () => {
   const [videoFile, setVideoFile] = useState<File | null>(null);
@@ -36,13 +36,10 @@ const UploadCatVideoPage: React.FC = () => {
 
     const formData = new FormData();
     formData.append('video', videoFile);
-    console.log('formdata', formData);
 
     client
-      .postVideo('/videos/upload-video', formData, false)
+      .postVideo('/videos/upload-video', formData)
       .then((res) => {
-        console.log('res', res.data);
-        console.log('res', res.data.message);
         setMessage('Video upload successful.');
         setShowToast(true);
         setIsUploading(false);
@@ -50,12 +47,14 @@ const UploadCatVideoPage: React.FC = () => {
 
       .catch((err) => {
         console.error('Error uploading file:', err);
-        setMessage('Error uploading video.');
+        if (err.response && err.response.status === 413) {
+          setMessage('Error: Video file is too large.');
+        } else {
+          setMessage('Error uploading video.');
+        }
         setShowToast(true);
         setIsUploading(false);
       });
-
-    setShowToast(true);
   };
 
   const navigateTo = (path: string) => {
@@ -137,11 +136,13 @@ const UploadCatVideoPage: React.FC = () => {
             </div>
           </main>
         </div>
+
+        {/* Popup messages */}
         <IonToast
           isOpen={showToast}
           onDidDismiss={() => setShowToast(false)}
           message={message}
-          duration={2000}
+          duration={TOAST_TIMER}
         />
       </div>
     </IonPage>

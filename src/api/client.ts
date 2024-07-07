@@ -8,6 +8,13 @@ const tokenKey: string = TOKEN_NAME;
 const client = {
   get: (path: string) => {
     const url = `${host}${path}`;
+
+    return axios.get(url);
+  },
+
+  getAuth: (path: string) => {
+    const url = `${host}${path}`;
+
     const headers = {
       Authorization: `Bearer ${localStorage.getItem(tokenKey)}`,
     };
@@ -17,9 +24,11 @@ const client = {
 
   getVideo: (path: string) => {
     const url = `${host}${path}`;
+
     const headers = {
       Authorization: `Bearer ${localStorage.getItem(tokenKey)}`,
     };
+
     return axios.get(url, { headers, responseType: 'blob' });
   },
 
@@ -34,8 +43,9 @@ const client = {
     return axios.post(url, data, { headers });
   },
 
-  postVideo: (path: string, data: any, withToken: boolean = false) => {
+  postVideo: (path: string, data: any) => {
     const url = `${host}${path}`;
+
     let headers = {
       'Content-Type': 'multipart/form-data',
     };
@@ -46,7 +56,9 @@ const client = {
   patch: (path: string, data: any, withToken: boolean = true) => {
     const url = `${host}${path}`;
     const token = localStorage.getItem(tokenKey);
+
     let headers: Record<string, string> = {};
+
     if (withToken) {
       headers['Authorization'] = `Bearer ${token}`;
     }

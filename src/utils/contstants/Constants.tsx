@@ -1,6 +1,7 @@
 export const TOKEN_NAME: string = 'userToken';
 export const ACCOUNT_TOKEN_NAME: string = 'userAccount';
-// Routs
+
+// Routes
 export const HOMEPAGE_URL: string = '/home';
 export const ACCOUNTPAGE_URL: string = '/account';
 export const LOGINPAGE_URL: string = '/login';
@@ -21,3 +22,6 @@ export const REGISTERPAGE_URL: string = '/register';
 
 // Links
 export const SPONSORLINK = 'http://sponsor.com'
+
+// Timing 
+export const TOAST_TIMER = 5000
