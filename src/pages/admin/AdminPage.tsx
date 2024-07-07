@@ -1,12 +1,11 @@
 import React, { useState } from 'react';
-import { useHistory } from 'react-router';
 import { IonPage } from '@ionic/react';
-
+// Components
 import ReviewVideoComponent from '../../components/admin/ReviewVideoComponent';
 import UserDataComponent from '../../components/admin/UserDataComponent';
 import EventsComponent from '../../components/admin/EventsComponent';
-import { HOMEPAGE_URL } from '../../utils/contstants/Constants';
 import DefaultAdminComponent from '../../components/admin/DefaultAdminComponent';
+
 
 const AdminPage: React.FC = () => {
   const [currentView, setCurrentView] = useState('main');
