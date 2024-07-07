@@ -34,7 +34,7 @@ export const UserProvider: React.FC<React.PropsWithChildren<{}>> = ({
 
   const getUser = async (foundUserToken: UserToken) => {
     client
-    .get(`/user/get-user-by-id/${foundUserToken.id}`)
+    .getAuth(`/user/get-user-by-id/${foundUserToken.id}`)
     .then((res) => {
       setUser(res.data.data.user);
     })
