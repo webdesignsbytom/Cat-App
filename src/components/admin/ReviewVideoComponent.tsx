@@ -12,8 +12,8 @@ import {
 
 const ReviewVideoComponent: React.FC = () => {
   const [started, setStarted] = useState(false);
-  const [videoSrc, setVideoSrc] = useState('');
   const [currentVideoId, setCurrentVideoId] = useState('xxx');
+  const [muted, setMuted] = useState(false);
 
   const videoRef = useRef<HTMLVideoElement>(null);
 
@@ -93,15 +93,17 @@ const ReviewVideoComponent: React.FC = () => {
 
   return (
     <div className='grid h-full w-full overflow-hidden'>
-      <div className='grid grid-rows-2 h-full'>
-        <section className='grid items-center justify-center bg-gray-200'>
-          {videoSrc ? (
+      <div className='grid grid-rows-2 h-full overflow-hidden'>
+        <section className='grid items-center justify-center bg-gray-200 w-full h-full overflow-hidden'>
+          {videoRef ? (
             <video
-              id='video-player'
-              controls
-              src={videoSrc}
-              className='w-full h-full p-2'
-            ></video>
+              ref={videoRef}
+              autoPlay
+              muted={muted}
+              style={{ width: '100%', height: '100%', objectFit: 'cover', padding: '1rem' }}
+            >
+              Your browser does not support the video tag.
+            </video>
           ) : (
             <p>No video to display</p>
           )}

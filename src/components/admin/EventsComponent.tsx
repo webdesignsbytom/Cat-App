@@ -38,8 +38,10 @@ const EventsComponent: React.FC = () => {
   }, [filterType, events]);
 
   return (
-    <div className='grid p-4'>
-      <div className='flex justify-between mb-4'>
+    <div className='grid grid-rows-reg overflow-hidden h-full w-full'>
+      
+      {/* Filters */}
+      <section className='flex justify-between mb-4 p-4'>
         <h1 className='text-2xl font-bold'>Events</h1>
         <select
           value={filterType}
@@ -56,27 +58,31 @@ const EventsComponent: React.FC = () => {
           <option value='MINING'>Mining</option>
           <option value='TEST'>Test</option>
         </select>
-      </div>
-      <div className='overflow-auto h-96'>
-        {filteredEvents.map((event) => (
-          <div key={event.id} className='border p-2 mb-2 rounded'>
-            <h2 className='text-xl'>{event.topic}</h2>
-            <p>Type: {event.type}</p>
-            <p>Code: {event.code}</p>
-            <p>Content: {event.content}</p>
-            <p>Created By: {event.createdById}</p>
-            <p>Received By: {event.receivedById}</p>
-            <p>Viewed: {event.viewed ? 'Yes' : 'No'}</p>
-            <p>Created At: {new Date(event.createdAt).toLocaleString()}</p>
-            <p>
-              Updated At:{' '}
-              {event.updatedAt
-                ? new Date(event.updatedAt).toLocaleString()
-                : 'N/A'}
-            </p>
-          </div>
-        ))}
-      </div>
+      </section>
+
+      {/* Reviews */}
+      <section className='grid overflow-hidden h-full w-full p-2'>
+        <div className='grid overflow-y-auto h-full w-full'>
+          {filteredEvents.map((event) => (
+            <article key={event.id} className='border p-2 mb-2 rounded text-sm'>
+              <h2 className='text-xl'>{event.topic}</h2>
+              <p>Type: {event.type}</p>
+              <p>Code: {event.code}</p>
+              <p>Content: {event.content}</p>
+              <p>Created By: {event.createdById}</p>
+              <p>Received By: {event.receivedById}</p>
+              <p>Viewed: {event.viewed ? 'Yes' : 'No'}</p>
+              <p>Created At: {new Date(event.createdAt).toLocaleString()}</p>
+              <p>
+                Updated At:{' '}
+                {event.updatedAt
+                  ? new Date(event.updatedAt).toLocaleString()
+                  : 'N/A'}
+              </p>
+            </article>
+          ))}
+        </div>
+      </section>
     </div>
   );
 };

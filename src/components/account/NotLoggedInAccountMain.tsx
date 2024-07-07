@@ -4,6 +4,7 @@ import { useHistory } from 'react-router';
 import { useUser } from '../../context/UserContext';
 // Logo
 import CatAppLogo from '../../assets/images/logos/cat_app_logo_of_cat.svg';
+import { MENU_URL } from '../../utils/contstants/Constants';
 
 const NotLoggedInAccountMain: React.FC = () => {
   const { user } = useUser();
@@ -50,7 +51,7 @@ const NotLoggedInAccountMain: React.FC = () => {
           <div>
             <button
               className='px-2 py-2 rounded-lg w-full h-[48px] bg-main-colour text-white text-2xl font-semibold active:scale-95 active:bg-main-colour-alt shadow-xl'
-              onClick={() => navigateTo('/menu')}
+              onClick={() => navigateTo(MENU_URL)}
             >
               Back
             </button>

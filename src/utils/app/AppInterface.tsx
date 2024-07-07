@@ -35,3 +35,8 @@ export const blankCat: OwnedCat = {
   favouriteFood: '',
   dob: new Date(),
 };
+
+
+export interface AdminCurrentView {
+  setCurrentView: (view: string) => void;
+}
