@@ -19,6 +19,8 @@ import MyCatsPage from './pages/user/MyCatsPage';
 import SponsorPage from './pages/sponsor/SponsorPage';
 import AddEditCatPage from './pages/user/AddEditCatPage';
 import CatigotchiPage from './pages/catigotchi/CatigotchiPage';
+import UploadCatVideoPage from './pages/user/UploadCatVideoPage';
+import UserAccountPage from './pages/user/UserAccountPage';
 
 /* Analytics */
 import { trackPage } from './analytics/analytics';
@@ -39,15 +41,7 @@ import '@ionic/react/css/text-transformation.css';
 import '@ionic/react/css/flex-utils.css';
 import '@ionic/react/css/display.css';
 
-/**
- * Ionic Dark Mode
- * -----------------------------------------------------
- * For more info, please see:
- * https://ionicframework.com/docs/theming/dark-mode
- */
-
-/* import '@ionic/react/css/palettes/dark.always.css'; */
-/* import '@ionic/react/css/palettes/dark.class.css'; */
+/* Dark Mode */
 import '@ionic/react/css/palettes/dark.system.css';
 
 /* Style */
@@ -55,13 +49,31 @@ import './styles/reset.css';
 import './styles/tailwind.css';
 import './styles/video_player.css';
 import './styles/animations.css';
-import UploadCatVideoPage from './pages/user/UploadCatVideoPage';
-import UserAccountPage from './pages/user/UserAccountPage';
+
+/* Constants */
+import {
+  ACCOUNTPAGE_URL,
+  COTDPAGE_URL,
+  ENDLESSPAGE_URL,
+  HOMEPAGE_URL,
+  LOGINPAGE_URL,
+  SPONSORPAGE_URL,
+  THERAPYPAGE_URL,
+  PRIVACYPOLICY_URL,
+  TERMSANDCONDITIONS_URL,
+  AICATS_URL,
+  DRAWING_URL,
+  CATIGOTCHI_URL,
+  MYCATS_URL,
+  ADDEDITCAT_URL,
+  UPLOADVIDEO_URL,
+  MENU_URL,
+  REGISTERPAGE_URL,
+} from './utils/contstants/Constants';
 
 setupIonicReact();
 
 const App: React.FC = () => {
-  
   useEffect(() => {
     trackPage(location.pathname);
   }, [location]);
@@ -70,59 +82,59 @@ const App: React.FC = () => {
     <IonApp>
       <IonReactRouter>
         <IonRouterOutlet>
-          <Route exact path='/home'>
+          <Route exact path={HOMEPAGE_URL}>
             <HomePage />
           </Route>
-          <Route exact path='/cotd'>
+          <Route exact path={COTDPAGE_URL}>
             <CotdPage />
           </Route>
-          <Route exact path='/endless-cats'>
+          <Route exact path={ENDLESSPAGE_URL}>
             <EndlessCatsPage />
           </Route>
-          <Route exact path='/therapy-mode'>
+          <Route exact path={THERAPYPAGE_URL}>
             <TherapyModePage />
           </Route>
-          <Route exact path='/privacy-policy'>
+          <Route exact path={PRIVACYPOLICY_URL}>
             <PrivacyPolicyPage />
           </Route>
-          <Route exact path='/terms-and-conditions'>
+          <Route exact path={TERMSANDCONDITIONS_URL}>
             <TermsAndConditionsPage />
           </Route>
-          <Route exact path='/ai-cats'>
+          <Route exact path={AICATS_URL}>
             <AiCatsPage />
           </Route>
-          <Route exact path='/drawing'>
+          <Route exact path={DRAWING_URL}>
             <DrawingPage />
           </Route>
-          <Route exact path='/catigotchi'>
+          <Route exact path={CATIGOTCHI_URL}>
             <CatigotchiPage />
           </Route>
-          <Route exact path='/my-cats'>
+          <Route exact path={MYCATS_URL}>
             <MyCatsPage />
           </Route>
-          <Route exact path='/add-edit-cat'>
+          <Route exact path={ADDEDITCAT_URL}>
             <AddEditCatPage />
           </Route>
-          <Route exact path='/upload-video'>
+          <Route exact path={UPLOADVIDEO_URL}>
             <UploadCatVideoPage />
           </Route>
-          <Route exact path='/menu'>
+          <Route exact path={MENU_URL}>
             <MenuPage />
           </Route>
-          <Route exact path='/sponsor'>
+          <Route exact path={SPONSORPAGE_URL}>
             <SponsorPage />
           </Route>
-          <Route exact path='/login'>
+          <Route exact path={LOGINPAGE_URL}>
             <LoginPage />
           </Route>
-          <Route exact path='/register'>
+          <Route exact path={REGISTERPAGE_URL}>
             <RegisterPage />
           </Route>
-          <Route exact path='/account'>
+          <Route exact path={ACCOUNTPAGE_URL}>
             <UserAccountPage />
           </Route>
           <Route exact path='/'>
-            <Redirect to='/home' />
+            <Redirect to={HOMEPAGE_URL} />
           </Route>
         </IonRouterOutlet>
       </IonReactRouter>

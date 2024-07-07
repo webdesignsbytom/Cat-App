@@ -1,14 +1,6 @@
 import React, { useState } from 'react';
 import {
   IonPage,
-  IonHeader,
-  IonToolbar,
-  IonTitle,
-  IonContent,
-  IonInput,
-  IonItem,
-  IonLabel,
-  IonButton,
   IonLoading,
   IonToast,
 } from '@ionic/react';
@@ -17,6 +9,8 @@ import { useHistory } from 'react-router-dom';
 import { useUser } from '../context/UserContext';
 // Logo
 import CatAppLogo from '../assets/images/logos/cat_app_logo_of_cat.svg';
+// Constants
+import { ACCOUNTPAGE_URL, HOMEPAGE_URL } from '../utils/contstants/Constants';
 
 const LoginPage: React.FC = () => {
   const [email, setEmail] = useState('');
@@ -34,15 +28,12 @@ const LoginPage: React.FC = () => {
     setShowLoading(true);
 
     try {
-      console.log('email', email);
-      console.log('password', password);
-
       await login(email, password);
 
       setToastMessage('Login successful');
       setShowToast(true);
 
-      history.push('/home');
+      history.push(HOMEPAGE_URL);
     } catch (error: unknown) {
       //
       if (error instanceof Error) {
@@ -74,7 +65,7 @@ const LoginPage: React.FC = () => {
           <main className='grid w-full h-full overflow-hidden'>
             <div className='grid w-full h-full overflow-hidden'>
               {/* Logo section */}
-              <section className='grid justify-center items-center p-2'>
+              <section className='grid justify-center items-center'>
                 <img
                   src={CatAppLogo}
                   alt='Cat App logo'
@@ -83,7 +74,7 @@ const LoginPage: React.FC = () => {
               </section>
 
               {/* Main content */}
-              <section className='grid grid-rows-rev w-[75%] mx-auto h-full'>
+              <section className='grid grid-rows-rev w-[65%] mx-auto h-full'>
                 <section className='grid h-fit'>
                   <section className='grid gap-4 w-full'>
                     <div className='grid grid-rows-reg gap-1 text-center items-center h-fit w-full'>
@@ -127,7 +118,7 @@ const LoginPage: React.FC = () => {
                   <div className='mb-10'>
                     <button
                       className='px-2 py-2 rounded-lg w-full h-[48px] bg-main-colour text-white text-2xl font-semibold active:scale-95 active:bg-main-colour-alt shadow-xl'
-                      onClick={() => navigateTo('/account')}
+                      onClick={() => navigateTo(ACCOUNTPAGE_URL)}
                     >
                       Back
                     </button>

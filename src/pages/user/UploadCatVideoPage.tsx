@@ -6,11 +6,15 @@ import client from '../../api/client';
 // Images
 import BlueCat1 from '../../assets/images/background/small_cat_blue_1.png';
 import WhiteCat1 from '../../assets/images/background/small_cat_white_1.png';
+// Components
+import LoadingSpinner from '../../components/utils/LoadingSpinner';
+import { MENU_URL } from '../../utils/contstants/Constants';
 
 const UploadCatVideoPage: React.FC = () => {
   const [videoFile, setVideoFile] = useState<File | null>(null);
   const [message, setMessage] = useState('');
   const [showToast, setShowToast] = useState(false);
+  const [isUploading, setIsUploading] = useState(false);
 
   const history = useHistory();
 
@@ -28,8 +32,11 @@ const UploadCatVideoPage: React.FC = () => {
       return;
     }
 
+    setIsUploading(true);
+
     const formData = new FormData();
     formData.append('video', videoFile);
+    console.log('formdata', formData);
 
     client
       .postVideo('/videos/upload-video', formData, false)
@@ -38,16 +45,19 @@ const UploadCatVideoPage: React.FC = () => {
         console.log('res', res.data.message);
         setMessage('Video upload successful.');
         setShowToast(true);
+        setIsUploading(false);
       })
 
       .catch((err) => {
         console.error('Error uploading file:', err);
         setMessage('Error uploading video.');
         setShowToast(true);
+        setIsUploading(false);
       });
 
     setShowToast(true);
   };
+
   const navigateTo = (path: string) => {
     history.push(path);
   };
@@ -67,7 +77,7 @@ const UploadCatVideoPage: React.FC = () => {
             </div>
           </header>
 
-          <main className='grid relative overflow-hidden h-full w-full bg-red-300'>
+          <main className='grid relative overflow-hidden h-full w-full bg-main-colour-alt'>
             <div className='grid overflow-hidden items-center h-full w-full '>
               <section className='grid h-full grid-rows-2 gap-8 w-[75%] mx-auto items-center'>
                 <div className='grid h-full w-full items-end'>
@@ -86,7 +96,13 @@ const UploadCatVideoPage: React.FC = () => {
                         onClick={handleUpload}
                         disabled={!videoFile}
                       >
-                        Upload Video
+                        {isUploading ? (
+                          <span>
+                            <LoadingSpinner />
+                          </span>
+                        ) : (
+                          <span>Upload Video</span>
+                        )}
                       </button>
                     </div>
                   </div>
@@ -96,7 +112,7 @@ const UploadCatVideoPage: React.FC = () => {
                   <div className='mb-10'>
                     <button
                       className='px-2 py-2 rounded-lg w-full h-[48px] bg-main-colour text-white text-2xl font-semibold active:scale-95 active:bg-main-colour-alt shadow-xl'
-                      onClick={() => navigateTo('/menu')}
+                      onClick={() => navigateTo(MENU_URL)}
                     >
                       Back
                     </button>

@@ -2,7 +2,9 @@ import React, { createContext, useContext, useState } from 'react';
 // Api
 import client from '../api/client';
 // Interfaces
-import { NewUser, User } from '../utils/User/UserInterfaces';
+import { NewUser, User } from '../utils/user/UserInterfaces';
+// Constants
+import { TOKEN_NAME } from '../utils/contstants/Constants';
 
 interface UserContextType {
   token: string | null;
@@ -26,7 +28,7 @@ export const UserProvider: React.FC<React.PropsWithChildren<{}>> = ({
     client
       .post('/login', loginForm, false)
       .then((res) => {
-        localStorage.setItem('token', res.data.data.token);
+        localStorage.setItem(TOKEN_NAME, res.data.data.token);
         setToken(res.data.data.token);
         setUser(res.data.data.existingUser);
       })
@@ -39,14 +41,14 @@ export const UserProvider: React.FC<React.PropsWithChildren<{}>> = ({
   const logout = () => {
     setToken(null);
     setUser(null);
-    localStorage.removeItem('token');
+    localStorage.removeItem(TOKEN_NAME);
   };
 
   const register = async (newUser: NewUser) => {
     client
       .post('/user/register', newUser, false)
       .then((res) => {
-        localStorage.setItem('token', res.data.data.token);
+        localStorage.setItem(TOKEN_NAME, res.data.data.token);
         setToken(res.data.data.token);
         setUser(res.data.data.newUser);
       })

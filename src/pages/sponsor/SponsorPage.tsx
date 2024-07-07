@@ -3,16 +3,19 @@ import { IonPage } from '@ionic/react';
 import { useHistory } from 'react-router';
 // Interface
 import { SponsorshipData, sponsorData } from '../../utils/app/SponsorData';
+// Constants
+import { MENU_URL, SPONSORLINK } from '../../utils/contstants/Constants';
 
 const SponsorPage: React.FC = () => {
-  const [sponsorInfo, setSponsorInfo] = useState<SponsorshipData>(sponsorData);
+  const [sponsorInfo] = useState<SponsorshipData>(sponsorData);
   const history = useHistory();
 
   const visitSponsor = () => {
-    window.open('https://www.sponsor-website.com', '_blank');
+    window.open(SPONSORLINK, '_blank');
   };
-  const navigateHome = () => {
-    history.push('/home'); // Navigate to the home page
+
+  const navigateTo = (path: string) => {
+    history.push(path);
   };
 
   return (
@@ -68,7 +71,7 @@ const SponsorPage: React.FC = () => {
                 <div>
                   <button
                     className='px-2 py-2 rounded-lg w-full h-[52px] bg-main-colour text-white text-2xl font-semibold active:scale-95 active:bg-main-colour-alt shadow-xl active:outline-[6px] active:outline active:outline-main-colour'
-                    onClick={() => navigateHome()}
+                    onClick={() => navigateTo(MENU_URL)}
                   >
                     Back
                   </button>

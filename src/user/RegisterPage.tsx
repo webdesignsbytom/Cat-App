@@ -2,8 +2,9 @@ import React, { useState } from 'react';
 import { IonPage } from '@ionic/react';
 import { useHistory } from 'react-router-dom';
 // Interfaces
-import { NewUser } from '../utils/User/UserInterfaces';
+import { NewUser } from '../utils/user/UserInterfaces';
 import { useUser } from '../context/UserContext';
+import { ACCOUNTPAGE_URL, MENU_URL } from '../utils/contstants/Constants';
 
 const RegisterPage: React.FC = () => {
   const [formData, setFormData] = useState<NewUser>({
@@ -23,7 +24,9 @@ const RegisterPage: React.FC = () => {
   const history = useHistory();
 
   const { register } = useUser();
+
   console.log('agreedToTerms', formData.agreedToTerms);
+  
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { id, value, type, checked } = e.target;
 
@@ -90,7 +93,7 @@ const RegisterPage: React.FC = () => {
 
         <main className='grid h-full w-full overflow-hidden'>
           <div className='grid h-full w-full overflow-hidden'>
-            <section className='grid gap-1 w-[75%] mx-auto pt-4'>
+            <section className='grid gap-1 w-[65%] mx-auto pt-4'>
               {inputFields.map(({ id, type, label }) => (
                 <div
                   key={id}
@@ -144,7 +147,7 @@ const RegisterPage: React.FC = () => {
                 <div>
                   <button
                     className='px-2 py-2 rounded-lg w-full h-[48px] bg-main-colour text-white text-2xl font-semibold active:scale-95 active:bg-main-colour-alt shadow-xl'
-                    onClick={() => navigateTo('/menu')}
+                    onClick={() => navigateTo(ACCOUNTPAGE_URL)}
                   >
                     Back
                   </button>
