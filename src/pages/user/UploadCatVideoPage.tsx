@@ -8,7 +8,7 @@ import BlueCat1 from '../../assets/images/background/small_cat_blue_1.png';
 import WhiteCat1 from '../../assets/images/background/small_cat_white_1.png';
 // Components
 import LoadingSpinner from '../../components/utils/LoadingSpinner';
-import { MENU_URL, TOAST_TIMER } from '../../utils/contstants/Constants';
+import { MENU_URL, TOAST_TIMER, UPLOADNEW_VIDEO_URL } from '../../utils/contstants/Constants';
 
 const UploadCatVideoPage: React.FC = () => {
   const [videoFile, setVideoFile] = useState<File | null>(null);
@@ -38,7 +38,7 @@ const UploadCatVideoPage: React.FC = () => {
     formData.append('video', videoFile);
 
     client
-      .postVideo('/videos/upload-video', formData)
+      .postVideo(UPLOADNEW_VIDEO_URL, formData)
       .then((res) => {
         setMessage('Video upload successful.');
         setShowToast(true);
