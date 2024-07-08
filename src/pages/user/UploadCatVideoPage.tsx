@@ -8,6 +8,7 @@ import BlueCat1 from '../../assets/images/background/small_cat_blue_1.png';
 import WhiteCat1 from '../../assets/images/background/small_cat_white_1.png';
 // Components
 import LoadingSpinner from '../../components/utils/LoadingSpinner';
+// Constants
 import { MENU_URL, TOAST_TIMER, UPLOADNEW_VIDEO_URL } from '../../utils/contstants/Constants';
 
 const UploadCatVideoPage: React.FC = () => {

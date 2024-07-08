@@ -31,6 +31,9 @@ const ReviewVideoComponent: React.FC = () => {
     client
       .getVideo(url)
       .then((res) => {
+        console.log('res', res);
+        console.log('res.data', res.data);
+        console.log('res.data', res.headers);
         const videoUrl = URL.createObjectURL(res.data);
 
         if (videoRef.current) {

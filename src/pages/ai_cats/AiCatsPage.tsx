@@ -14,6 +14,8 @@ const AiCatsPage: React.FC = () => {
   const [isSlideshow, setIsSlideshow] = useState(false);
   const [isMuted, setIsMuted] = useState(false);
   const [buttonsVisible, setButtonsVisible] = useState(true);
+
+  // Audio
   const audioRef = useRef<HTMLAudioElement>(null);
 
   const history = useHistory();
