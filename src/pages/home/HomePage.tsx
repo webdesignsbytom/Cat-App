@@ -14,7 +14,7 @@ import WhiteCat1 from '../../assets/images/background/small_cat_white_1.png';
 import WhiteCat2 from '../../assets/images/background/small_cat_white_2.png';
 import RedCat1 from '../../assets/images/background/small_cat_red_1.png';
 // Constants
-import { COTDPAGE_URL, ENDLESSPAGE_URL, THERAPYPAGE_URL, MENU_URL, ADMINPAGE_URL } from '../../utils/contstants/Constants';
+import { COTDPAGE_URL, ENDLESSPAGE_URL, THERAPYPAGE_URL, MENU_URL, ADMINPAGE_URL, DEVELOPER_ROLE, ADMIN_ROLE } from '../../utils/contstants/Constants';
 
 const HomePage: React.FC = () => {
   const history = useHistory();
@@ -68,7 +68,7 @@ const HomePage: React.FC = () => {
             </section>
             
             {/* Conditional Admin Button */}
-            {user && (user.role === 'ADMIN' || user.role === 'DEVELOPER') && (
+            {user && (user.role === ADMIN_ROLE || user.role === DEVELOPER_ROLE) && (
               <div className='mt-4'>
                 <button
                   className='px-2 py-2 rounded-lg w-full h-[52px] bg-red-600 text-white text-2xl font-semibold active:scale-95 active:bg-red-700 shadow-xl active:outline-[6px] active:outline-red-600'
@@ -80,7 +80,6 @@ const HomePage: React.FC = () => {
             )}
           </div>
 
-          {/* Background images top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2  */}
           {/* Left */}
           <div className='absolute top-1/2 left-0 transform -translate-y-1/2 pb-6'>
             <img

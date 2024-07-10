@@ -41,3 +41,8 @@ export const EVENTS_GETALL_URL = '/events/get-all-events';
 export const DELETE_EVENT_URL = '/events/delete-event'; // id
 export const DELETEALL_EVENT_URL = '/events/delete-all-events'; // id
 export const UPLOADNEW_VIDEO_URL = '/uploads/upload-video'; // id
+
+// Roles
+export const USER_ROLE = 'USER'
+export const ADMIN_ROLE = 'ADMIN'
+export const DEVELOPER_ROLE = 'DEVELOPER'

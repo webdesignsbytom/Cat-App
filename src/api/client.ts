@@ -25,6 +25,12 @@ const client = {
   getVideo: (path: string) => {
     const url = `${host}${path}`;
 
+    return axios.get(url, { responseType: 'blob' });
+  },
+
+  getVideoAuth: (path: string) => {
+    const url = `${host}${path}`;
+
     const headers = {
       Authorization: `Bearer ${localStorage.getItem(tokenKey)}`,
     };
@@ -34,12 +40,13 @@ const client = {
 
   post: (path: string, data: any, withToken: boolean = true) => {
     const url = `${host}${path}`;
-    const token = localStorage.getItem(tokenKey);
+
     let headers: Record<string, string> = {};
 
     if (withToken) {
-      headers['Authorization'] = `Bearer ${token}`;
+      headers['Authorization'] = `Bearer ${localStorage.getItem(tokenKey)}`;
     }
+
     return axios.post(url, data, { headers });
   },
 
@@ -55,21 +62,21 @@ const client = {
 
   patch: (path: string, data: any, withToken: boolean = true) => {
     const url = `${host}${path}`;
-    const token = localStorage.getItem(tokenKey);
 
     let headers: Record<string, string> = {};
 
     if (withToken) {
-      headers['Authorization'] = `Bearer ${token}`;
+      headers['Authorization'] = `Bearer ${localStorage.getItem(tokenKey)}`;
     }
     return axios.patch(url, data, { headers });
   },
 
   delete: (path: string) => {
     const url = `${host}${path}`;
-    const headers = {
-      Authorization: `Bearer ${localStorage.getItem(tokenKey)}`,
-    };
+    
+    let headers: Record<string, string> = {};
+
+    headers['Authorization'] = `Bearer ${localStorage.getItem(tokenKey)}`;  
 
     return axios.delete(url, { headers });
   },

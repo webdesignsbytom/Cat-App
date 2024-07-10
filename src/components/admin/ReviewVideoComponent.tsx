@@ -29,7 +29,7 @@ const ReviewVideoComponent: React.FC = () => {
 
   const fetchVideo = async (url: string) => {
     client
-      .getVideo(url)
+      .getVideoAuth(url)
       .then((res) => {
         console.log('res', res);
         console.log('res.data', res.data);

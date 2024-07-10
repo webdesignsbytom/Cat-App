@@ -4,6 +4,10 @@ import { IonPage } from '@ionic/react';
 import MainButtonsComponent from '../../components/buttons/MainButtonsComponent';
 // Api
 import client from '../../api/client';
+// Videos
+import { CatVideo, cotdVideos } from '../../utils/video/CatVideoUtils';
+// Constants
+import { BUTTON_TIMER } from '../../utils/contstants/Constants';
 
 const cotdVideoUrl = '/videos/video';
 const cotdNextVideoUrl = '/videos/next-video';
@@ -13,41 +17,39 @@ const EndlessCatsPage: React.FC = () => {
   const videoRef = useRef<HTMLVideoElement>(null);
   const [buttonsVisible, setButtonsVisible] = useState(true);
   const [muted, setMuted] = useState(false);
+  const [catVideoArray, setCatVideoArray] = useState<CatVideo[]>(cotdVideos);
+  const [currentVideoIndex, setCurrentVideoIndex] = useState(0);
 
   useEffect(() => {
+    // Timer to hide buttons after 5 seconds
     const timer = setTimeout(() => {
       setButtonsVisible(false);
-    }, 5000);
+    }, BUTTON_TIMER);
 
     return () => clearTimeout(timer);
   }, [buttonsVisible]);
 
-  const fetchVideo = async (url: string) => {
-    client
-      .getVideo(url)
-      .then((res) => {
-        const videoUrl = URL.createObjectURL(res.data);
-
-        if (videoRef.current) {
-          videoRef.current.src = videoUrl;
-        }
-      })
-      .catch((err) => {
-        console.error('Unable to get video', err);
-      });
-  };
-
   useEffect(() => {
-    fetchVideo(cotdVideoUrl);
-  }, []);
-
-  const requestNextVideo = () => fetchVideo(cotdNextVideoUrl);
-  const requestPreviousVideo = () => fetchVideo(cotdPreviousVideoUrl);
+    // Update video source when currentVideoIndex changes
+    if (videoRef.current) {
+      videoRef.current.src = catVideoArray[currentVideoIndex].videoUrl;
+      videoRef.current.load(); // Load the new video
+      videoRef.current.play(); // Play the new video
+    }
+  }, [currentVideoIndex, catVideoArray]);
 
   const handleScreenTap = () => {
     if (buttonsVisible) return;
 
     setButtonsVisible(true);
+  };
+
+  const goBack = () => {
+    setCurrentVideoIndex((prevIndex) => (prevIndex === 0 ? catVideoArray.length - 1 : prevIndex - 1));
+  };
+
+  const goForward = () => {
+    setCurrentVideoIndex((prevIndex) => (prevIndex === catVideoArray.length - 1 ? 0 : prevIndex + 1));
   };
 
   const toggleMute = () => {
@@ -72,8 +74,8 @@ const EndlessCatsPage: React.FC = () => {
 
         {buttonsVisible && (
           <MainButtonsComponent
-            onGoBack={requestPreviousVideo}
-            onGoForward={requestNextVideo}
+            onGoBack={goBack}
+            onGoForward={goForward}
             onToggleMute={toggleMute}
             onLike={likeVideo}
             isMuted={muted}

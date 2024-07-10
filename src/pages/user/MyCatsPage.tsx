@@ -6,6 +6,8 @@ import { UserCats } from '../../utils/temp/TempData';
 import { OwnedCat, blankCat } from '../../utils/app/AppInterface';
 // Images
 import BlueCat1 from '../../assets/images/background/small_cat_blue_1.png';
+// Constants
+import { ADDEDITCAT_URL, MENU_URL } from '../../utils/contstants/Constants';
 
 const MyCatsPage: React.FC = () => {
   const history = useHistory();
@@ -13,7 +15,7 @@ const MyCatsPage: React.FC = () => {
 
   const handleAddEditCat = (cat: OwnedCat) => {
     history.push({
-      pathname: '/add-edit-cat',
+      pathname: ADDEDITCAT_URL,
       state: { cat },
     });
   };
@@ -67,7 +69,7 @@ const MyCatsPage: React.FC = () => {
           <div className='grid items-center h-full w-full px-4'>
             <button
               className='px-2 py-2 rounded-lg w-full h-[52px] bg-main-colour text-white text-2xl font-semibold active:scale-95 active:bg-main-colour-alt shadow-xl'
-              onClick={() => navigateTo('/menu')}
+              onClick={() => navigateTo(MENU_URL)}
             >
               Back
             </button>

@@ -9,44 +9,55 @@ import WhiteCat1 from '../../assets/images/background/small_cat_white_1.png';
 import WhiteCat2 from '../../assets/images/background/small_cat_white_2.png';
 import RedCat1 from '../../assets/images/background/small_cat_red_1.png';
 import YellowCat1 from '../../assets/images/background/small_cat_yellow_1.png';
+// Constants
+import {
+  ACCOUNTPAGE_URL,
+  AICATS_URL,
+  CATIGOTCHI_URL,
+  DRAWING_URL,
+  HOMEPAGE_URL,
+  MYCATS_URL,
+  SPONSORPAGE_URL,
+  UPLOADVIDEO_URL,
+} from '../../utils/contstants/Constants';
 
 const MenuPage: React.FC = () => {
   const history = useHistory();
   const [firstListOfButtons] = useState([
     {
       title: 'AI Cats',
-      link: '/ai-cats',
+      link: AICATS_URL,
     },
-    {
-      title: 'Drawing',
-      link: '/drawing',
-    },
+    // {
+    //   title: 'Drawing',
+    //   link: DRAWING_URL,
+    // },
     {
       title: 'Catigotchi',
-      link: '/catigotchi',
+      link: CATIGOTCHI_URL,
     },
     {
       title: 'My Cats',
-      link: '/my-cats',
+      link: MYCATS_URL,
     },
     {
       title: 'Sponsor',
-      link: '/sponsor',
+      link: SPONSORPAGE_URL,
     },
     {
       title: 'Upload',
-      link: '/upload-video',
+      link: UPLOADVIDEO_URL,
     },
     {
       title: 'Account',
-      link: '/account',
+      link: ACCOUNTPAGE_URL,
     },
   ]);
 
   const [secondListOfButtons] = useState([
     {
       title: 'Back',
-      link: '/home',
+      link: HOMEPAGE_URL,
     },
   ]);
 
@@ -77,7 +88,7 @@ const MenuPage: React.FC = () => {
           </section>
 
           {/* Back button */}
-          <section className='relative grid h-full w-full pb-20'>
+          <section className='relative grid h-full w-full pb-20 md:mb-10'>
             <div className='grid w-[65%] mx-auto h-full items-center'>
               <section className='grid gap-2 w-full h-fit'>
                 {secondListOfButtons.map((button, index) => (

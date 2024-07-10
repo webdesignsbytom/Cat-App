@@ -4,6 +4,8 @@ import { IonPage } from '@ionic/react';
 import MainButtonsComponent from '../../components/buttons/MainButtonsComponent';
 // Utils
 import { CatVideo, therapyVideos } from '../../utils/video/CatVideoUtils';
+// Constants
+import { BUTTON_TIMER } from '../../utils/contstants/Constants';
 
 const TherapyModePage: React.FC = () => {
   const videoRef = useRef<HTMLVideoElement>(null);
@@ -17,7 +19,7 @@ const TherapyModePage: React.FC = () => {
     // Timer to hide buttons after 5 seconds
     const timer = setTimeout(() => {
       setButtonsVisible(false);
-    }, 5000);
+    }, BUTTON_TIMER);
 
     return () => clearTimeout(timer);
   }, [buttonsVisible]);
@@ -25,7 +27,7 @@ const TherapyModePage: React.FC = () => {
   useEffect(() => {
     // Update video source when currentVideoIndex changes
     if (videoRef.current) {
-      videoRef.current.src = catVideoArray[currentVideoIndex].videoUrl;
+      videoRef.current.src = 'http://commondatastorage.googleapis.com/gtv-videos-bucket/sample/BigBuckBunny.mp4';
       videoRef.current.load(); // Load the new video
       videoRef.current.play(); // Play the new video
     }

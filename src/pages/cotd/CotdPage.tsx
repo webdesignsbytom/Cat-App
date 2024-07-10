@@ -5,12 +5,18 @@ import MainButtonsComponent from '../../components/buttons/MainButtonsComponent'
 // Api
 import client from '../../api/client';
 // Constants
-import { BUTTON_TIMER, COTD_NEXT_VIDEO_URL, COTD_PREVIOUS_VIDEO_URL, COTD_VIDEO_URL } from '../../utils/contstants/Constants';
+import {
+  BUTTON_TIMER,
+  COTD_NEXT_VIDEO_URL,
+  COTD_PREVIOUS_VIDEO_URL,
+  COTD_VIDEO_URL,
+} from '../../utils/contstants/Constants';
 
 const CotdPage: React.FC = () => {
   const videoRef = useRef<HTMLVideoElement>(null);
   const [buttonsVisible, setButtonsVisible] = useState(true);
   const [muted, setMuted] = useState(false);
+  const [videoUrl, setVideoUrl] = useState<string | null>(null);
 
   useEffect(() => {
     const timer = setTimeout(() => {
@@ -25,6 +31,7 @@ const CotdPage: React.FC = () => {
       .getVideo(url)
       .then((res) => {
         const videoUrl = URL.createObjectURL(res.data);
+        setVideoUrl(videoUrl);
 
         if (videoRef.current) {
           videoRef.current.src = videoUrl;
@@ -38,6 +45,7 @@ const CotdPage: React.FC = () => {
   useEffect(() => {
     fetchVideo(COTD_VIDEO_URL);
   }, []);
+
 
   const requestNextVideo = () => fetchVideo(COTD_NEXT_VIDEO_URL);
   const requestPreviousVideo = () => fetchVideo(COTD_PREVIOUS_VIDEO_URL);
@@ -67,7 +75,6 @@ const CotdPage: React.FC = () => {
         >
           Your browser does not support the video tag.
         </video>
-
         {buttonsVisible && (
           <MainButtonsComponent
             onGoBack={requestPreviousVideo}

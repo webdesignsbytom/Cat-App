@@ -7,12 +7,12 @@ import WhiteCat1 from '../../assets/images/background/small_cat_white_1.png';
 import { FaRegImage } from 'react-icons/fa6';
 // Interfaces
 import { OwnedCat, blankCat } from '../../utils/app/AppInterface';
+// Constants
+import { MYCATS_URL } from '../../utils/contstants/Constants';
 
 const AddEditCatPage: React.FC = () => {
   const history = useHistory();
-  const location = useLocation<{
-    cat: OwnedCat;
-  }>();
+  const location = useLocation<{ cat: OwnedCat; }>();
 
   const cat = location.state?.cat || blankCat;
 
@@ -59,7 +59,7 @@ const AddEditCatPage: React.FC = () => {
           console.log('Cat profile saved:', data);
           setToastMessage('Cat profile saved successfully');
           setShowToast(true);
-          history.push('/my-cats');
+          history.push(MYCATS_URL);
         } else {
           setToastMessage('Failed to save cat profile');
           setShowToast(true);
@@ -71,12 +71,12 @@ const AddEditCatPage: React.FC = () => {
       }
     } else {
       console.log({ catName, catBreed });
-      history.push('/my-cats');
+      history.push(MYCATS_URL);
     }
   };
 
   const navigateHome = () => {
-    history.push('/my-cats');
+    history.push(MYCATS_URL);
   };
 
   return (

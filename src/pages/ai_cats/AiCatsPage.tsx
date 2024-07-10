@@ -4,9 +4,11 @@ import { useHistory } from 'react-router-dom';
 // Components
 import MainButtonsComponent from '../../components/buttons/MainButtonsComponent';
 // Images
-import { CatImage, arrayOfCatImages, slideshowImages } from './CatImages';
+import { CatImage, arrayOfCatImages, slideshowImages } from '../../utils/images/CatImages';
 // Audio
-import audioFile from '../../assets/audio/slideshow/rossini_il_barbiere_di_siviglia_overture.mp3'; // Import your audio file
+import audioFile from '../../assets/audio/slideshow/rossini_il_barbiere_di_siviglia_overture.mp3';
+// Constants
+import { BUTTON_TIMER } from '../../utils/contstants/Constants';
 
 const AiCatsPage: React.FC = () => {
   const [currentIndex, setCurrentIndex] = useState(0);
@@ -35,7 +37,7 @@ const AiCatsPage: React.FC = () => {
   useEffect(() => {
     const timer = setTimeout(() => {
       setButtonsVisible(false);
-    }, 5000);
+    }, BUTTON_TIMER);
 
     return () => clearTimeout(timer);
   }, [buttonsVisible]);

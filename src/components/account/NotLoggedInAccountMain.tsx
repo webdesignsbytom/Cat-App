@@ -4,18 +4,18 @@ import { useHistory } from 'react-router';
 import { useUser } from '../../context/UserContext';
 // Logo
 import CatAppLogo from '../../assets/images/logos/cat_app_logo_of_cat.svg';
-import { MENU_URL } from '../../utils/contstants/Constants';
+import { LOGINPAGE_URL, MENU_URL, REGISTERPAGE_URL } from '../../utils/contstants/Constants';
 
 const NotLoggedInAccountMain: React.FC = () => {
   const { user } = useUser();
   const history = useHistory();
 
   const handleLogin = () => {
-    history.push('/login'); // Replace with your login page path
+    history.push(LOGINPAGE_URL); // Replace with your login page path
   };
 
   const handleSignUp = () => {
-    history.push('/register'); // Replace with your sign-up page path
+    history.push(REGISTERPAGE_URL); // Replace with your sign-up page path
   };
 
   const navigateTo = (path: string) => {
