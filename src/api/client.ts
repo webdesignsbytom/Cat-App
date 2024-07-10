@@ -2,7 +2,7 @@ import axios from 'axios';
 // Constants
 import { TOKEN_NAME } from '../utils/contstants/Constants';
 
-const host: string = 'http://localhost:4000'; //'https://api.cat-app.app'; // http://localhost:4000
+const host: string = 'https://api.cat-app.app'; //'https://api.cat-app.app'; // http://localhost:4000
 const tokenKey: string = TOKEN_NAME;
 
 const client = {
