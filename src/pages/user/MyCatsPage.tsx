@@ -19,6 +19,7 @@ const MyCatsPage: React.FC = () => {
       state: { cat },
     });
   };
+  
   const totalBoxes = 8;
   const catsToShow = [...userCats];
 
