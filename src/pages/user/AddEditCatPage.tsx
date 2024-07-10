@@ -71,7 +71,7 @@ const AddEditCatPage: React.FC = () => {
         .post(`${NEW_USER_CAT_URL}/${user.id}`, cat, true)
         .then((res) => {
           console.log('res.data', res.data);
-          setCat(res.data.data.cat)
+          setCat(res.data.data.newCat)
           setToastMessage('Cat profile saved successfully');
           setShowToast(true);
         })
