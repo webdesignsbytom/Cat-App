@@ -24,6 +24,8 @@ export const UserProvider: React.FC<React.PropsWithChildren<{}>> = ({
   const [token, setToken] = useState<UserToken | null>(null);
   const [user, setUser] = useState<User | null>(null);
 
+  console.log('STATE USER', user);
+
   useEffect(() => {
     const foundUserToken = LoggedInUser() as UserToken;
 
@@ -37,6 +39,7 @@ export const UserProvider: React.FC<React.PropsWithChildren<{}>> = ({
     .getAuth(`/user/get-user-by-id/${foundUserToken.id}`)
     .then((res) => {
       setUser(res.data.data.user);
+      console.log('GET USER', res.data.data.user);
     })
 
     .catch((err) => {
@@ -54,6 +57,7 @@ export const UserProvider: React.FC<React.PropsWithChildren<{}>> = ({
         localStorage.setItem(ACCOUNT_TOKEN_NAME, JSON.stringify(res.data.data.existingUser));
         setToken(res.data.data.token);
         setUser(res.data.data.existingUser);
+        console.log('LOGIN USER', res.data.data.existingUser);
       })
 
       .catch((err) => {

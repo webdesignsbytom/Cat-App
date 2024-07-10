@@ -1,6 +1,6 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { useHistory, useLocation } from 'react-router-dom';
-import { IonPage } from '@ionic/react';
+import { IonPage, IonToast } from '@ionic/react';
 // Images
 import WhiteCat1 from '../../assets/images/background/small_cat_white_1.png';
 // Icons
@@ -8,18 +8,23 @@ import { FaRegImage } from 'react-icons/fa6';
 // Interfaces
 import { OwnedCat, blankCat } from '../../utils/app/AppInterface';
 // Constants
-import { MYCATS_URL } from '../../utils/contstants/Constants';
+import {
+  EDIT_USER_CAT_URL,
+  MYCATS_URL,
+  NEW_USER_CAT_URL,
+  TOAST_TIMER,
+} from '../../utils/contstants/Constants';
+// Context
+import { useUser } from '../../context/UserContext';
+// Api
+import client from '../../api/client';
 
 const AddEditCatPage: React.FC = () => {
   const history = useHistory();
-  const location = useLocation<{ cat: OwnedCat; }>();
+  const location = useLocation<{ cat: OwnedCat }>();
+  const { user } = useUser();
 
-  const cat = location.state?.cat || blankCat;
-
-  const [catName, setCatName] = useState(cat.name || '');
-  const [catBreed, setCatBreed] = useState(cat.breed || '');
-  const [catDob, setCatDob] = useState(cat.dob ? new Date(cat.dob) : new Date());
-
+  const [cat, setCat] = useState(location.state?.cat || blankCat);
   const [uploadCatImage, setUploadCatImage] = useState<File | null>(null);
   const [catPicture, setCatPicture] = useState<string | ArrayBuffer | null>(
     cat.image || null
@@ -29,54 +34,76 @@ const AddEditCatPage: React.FC = () => {
   const [showToast, setShowToast] = useState(false);
   const [toastMessage, setToastMessage] = useState('');
 
+  // Update cat state
+  const updateCatState = (key: keyof OwnedCat, value: any) => {
+    setCat((prevCat) => ({ ...prevCat, [key]: value }));
+  };
+
   // Upload image
   const handleImageUpload = (event: React.ChangeEvent<HTMLInputElement>) => {
     const file = event.target.files?.[0];
-    
+
     if (file) {
       setUploadCatImage(file);
       const reader = new FileReader();
       reader.onloadend = () => {
         setCatPicture(reader.result);
+        updateCatState('image', reader.result);
       };
       reader.readAsDataURL(file);
     }
   };
 
+  const handleSaveCat = (e: any) => {
+    e.preventDefault()
+
+    if (cat.id) {
+      handleUpdateCat()
+    } else {
+      saveNewCat()
+    }
+  }
   // Save cat data
-  const handleSaveCat = async () => {
-    if (uploadCatImage) {
-      const formData = new FormData();
-
-      try {
-        const response = await fetch('/api/upload-cat', {
-          method: 'POST',
-          body: formData,
-        });
-
-        if (response.ok) {
-          const data = await response.json();
-          console.log('Cat profile saved:', data);
+  const saveNewCat = async () => {
+    console.log('OOOOOOOOOOOOOOOo');
+    if (user)
+      client
+        .post(`${NEW_USER_CAT_URL}/${user.id}`, cat, true)
+        .then((res) => {
+          console.log('res.data', res.data);
+          setCat(res.data.data.cat)
           setToastMessage('Cat profile saved successfully');
           setShowToast(true);
-          history.push(MYCATS_URL);
-        } else {
-          setToastMessage('Failed to save cat profile');
+        })
+
+        .catch((err) => {
+          console.error('Unable to save cat data', err);
+          setToastMessage('An error occurred');
           setShowToast(true);
-        }
-      } catch (error) {
-        console.error('Error:', error);
-        setToastMessage('An error occurred');
-        setShowToast(true);
-      }
-    } else {
-      console.log({ catName, catBreed });
-      history.push(MYCATS_URL);
-    }
+        });
   };
 
-  const navigateHome = () => {
-    history.push(MYCATS_URL);
+  // Update cat data
+  const handleUpdateCat = async () => {
+    if (user)
+      client
+        .patch(`${EDIT_USER_CAT_URL}/${user.id}/${cat.id}`, cat, true)
+        .then((res) => {
+          console.log('res.data', res.data);
+          setCat(res.data.data.cat)
+          setToastMessage('Cat profile saved successfully');
+          setShowToast(true);
+        })
+
+        .catch((err) => {
+          console.error('Unable to save cat data', err);
+          setToastMessage('An error occurred');
+          setShowToast(true);
+        });
+  };
+
+  const navigateTo = (path: string) => {
+    history.push(path);
   };
 
   return (
@@ -108,16 +135,15 @@ const AddEditCatPage: React.FC = () => {
 
           <section className='grid h-full w-full pt-4 pb-6'>
             <form className='grid gap-2 h-full w-full px-4 py-4'>
-              
               <div className='grid grid-cols-reg gap-4 items-center'>
                 <label htmlFor='catName'>Cat Name</label>
                 <div className='grid justify-end'>
                   <input
                     type='text'
                     id='catName'
-                    value={catName}
+                    value={cat.name}
                     className='outline outline-1 outline-gray-600 shadow-md rounded-lg px-1 py-1 h-fit w-full max-w-[200px]'
-                    onChange={(e) => setCatName(e.target.value)}
+                    onChange={(e) => updateCatState('name', e.target.value)}
                   />
                 </div>
               </div>
@@ -127,9 +153,9 @@ const AddEditCatPage: React.FC = () => {
                   <input
                     type='date'
                     id='catDob'
-                    value={catDob.toISOString().split('T')[0]}
+                    value={new Date(cat.dob).toISOString().split('T')[0]}
                     className='outline outline-1 outline-gray-600 shadow-md rounded-lg px-1 py-1 h-fit w-full max-w-[200px]'
-                    onChange={(e) => setCatDob(new Date(e.target.value))}
+                    onChange={(e) => updateCatState('dob', new Date(e.target.value))}
                   />
                 </div>
               </div>
@@ -139,9 +165,21 @@ const AddEditCatPage: React.FC = () => {
                   <input
                     type='text'
                     id='catBreed'
-                    value={catBreed}
+                    value={cat.breed}
                     className='outline outline-1 outline-gray-600 shadow-md rounded-lg px-1 py-1 h-fit w-full max-w-[200px]'
-                    onChange={(e) => setCatBreed(e.target.value)}
+                    onChange={(e) => updateCatState('breed', e.target.value)}
+                  />
+                </div>
+              </div>
+              <div className='grid grid-cols-reg gap-4 items-center'>
+                <label htmlFor='favouriteFood'>Favourite Food</label>
+                <div className='grid justify-end'>
+                  <input
+                    type='text'
+                    id='favouriteFood'
+                    value={cat.favouriteFood}
+                    className='outline outline-1 outline-gray-600 shadow-md rounded-lg px-1 py-1 h-fit w-full max-w-[200px]'
+                    onChange={(e) => updateCatState('favouriteFood', e.target.value)}
                   />
                 </div>
               </div>
@@ -157,19 +195,11 @@ const AddEditCatPage: React.FC = () => {
                   />
                 </div>
               </div>
-              <div className='grid grid-cols-reg gap-4'>
-                <label>Cotd Wins</label>
-                <div className='grid justify-end'>
-                  <span className='outline outline-1 outline-gray-600 shadow-md rounded-lg px-1 py-1 h-fit w-full max-w-[200px]'>
-                    0
-                  </span>
-                </div>
-              </div>
 
               <section className='grid grid-cols-2 gap-2 w-full h-full items-end'>
                 <div>
                   <button
-                    onClick={navigateHome}
+                    onClick={() => navigateTo(MYCATS_URL)}
                     className='px-2 py-2 rounded-lg w-full h-[52px] bg-main-colour text-white text-2xl font-semibold active:scale-95 active:bg-main-colour-alt shadow-xl'
                   >
                     Back
@@ -177,7 +207,7 @@ const AddEditCatPage: React.FC = () => {
                 </div>
                 <div>
                   <button
-                    onClick={handleSaveCat}
+                    onClick={(e) => handleSaveCat(e)}
                     className='px-2 py-2 rounded-lg w-full h-[52px] bg-main-colour text-white text-2xl font-semibold active:scale-95 active:bg-main-colour-alt shadow-xl'
                   >
                     Save
@@ -187,6 +217,13 @@ const AddEditCatPage: React.FC = () => {
             </form>
           </section>
         </main>
+        {/* Popup messages */}
+        <IonToast
+          isOpen={showToast}
+          onDidDismiss={() => setShowToast(false)}
+          message={toastMessage}
+          duration={TOAST_TIMER}
+        />
       </div>
     </IonPage>
   );

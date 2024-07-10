@@ -21,6 +21,7 @@ export interface EventItem {
 }
 
 export interface OwnedCat {
+  id: string;
   name: string;
   image: string;
   breed: string;
@@ -29,6 +30,7 @@ export interface OwnedCat {
 }
 
 export const blankCat: OwnedCat = {
+  id: '',
   name: '',
   image: '',
   breed: '',

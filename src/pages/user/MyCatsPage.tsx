@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { useHistory } from 'react-router-dom';
 import { IonPage } from '@ionic/react';
 // Data
@@ -8,10 +8,21 @@ import { OwnedCat, blankCat } from '../../utils/app/AppInterface';
 import BlueCat1 from '../../assets/images/background/small_cat_blue_1.png';
 // Constants
 import { ADDEDITCAT_URL, MENU_URL } from '../../utils/contstants/Constants';
+import { useUser } from '../../context/UserContext';
 
 const MyCatsPage: React.FC = () => {
   const history = useHistory();
-  const [userCats, setUserCats] = useState<OwnedCat[]>(UserCats);
+  const [userCats, setUserCats] = useState<OwnedCat[]>();
+  const { user } = useUser();
+
+  console.log('AAAAAAA');
+
+  useEffect(() => {
+    console.log('XXXX user', user);
+    if (user) {
+      setUserCats(user.profile?.cats ?? []);
+    }
+  }, [user]);
 
   const handleAddEditCat = (cat: OwnedCat) => {
     history.push({
@@ -19,13 +30,14 @@ const MyCatsPage: React.FC = () => {
       state: { cat },
     });
   };
-  
+
   const totalBoxes = 8;
-  const catsToShow = [...userCats];
 
   // Fill the array to ensure there are 16 items
-  while (catsToShow.length < totalBoxes) {
-    catsToShow.push(blankCat);
+  if (userCats) {
+    while (userCats.length < totalBoxes) {
+      userCats.push(blankCat);
+    }
   }
 
   const navigateTo = (path: string) => {
@@ -46,7 +58,7 @@ const MyCatsPage: React.FC = () => {
 
         <main className='grid px-2 py-2'>
           <div className='grid grid-rows-4 grid-cols-4 gap-x-2 gap-y-4'>
-            {catsToShow.map((cat, index) => {
+            {userCats?.map((cat, index) => {
               return (
                 <article
                   key={index}

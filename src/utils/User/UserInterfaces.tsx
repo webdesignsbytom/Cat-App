@@ -1,8 +1,12 @@
+// Interfaces
+import { OwnedCat } from '../app/AppInterface';
+
 export interface Profile {
   id: string;
   firstName: string;
   lastName: string;
   country: string;
+  cats?: OwnedCat[];
   userId: string;
 }
 
