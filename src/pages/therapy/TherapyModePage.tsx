@@ -30,8 +30,8 @@ const TherapyModePage: React.FC = () => {
     // Update video source when currentVideoIndex changes
     if (videoRef.current) {
       videoRef.current.src = 'http://commondatastorage.googleapis.com/gtv-videos-bucket/sample/BigBuckBunny.mp4';
-      // videoRef.current.load(); // Load the new video
-      // videoRef.current.play(); // Play the new video
+      videoRef.current.load(); // Load the new video
+      videoRef.current.play(); // Play the new video
     }
   }, [currentVideoIndex, catVideoArray]);
 

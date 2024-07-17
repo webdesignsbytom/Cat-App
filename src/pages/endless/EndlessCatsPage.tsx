@@ -19,6 +19,8 @@ const EndlessCatsPage: React.FC = () => {
   const [muted, setMuted] = useState(false);
   const [catVideoArray, setCatVideoArray] = useState<CatVideo[]>(cotdVideos);
   const [currentVideoIndex, setCurrentVideoIndex] = useState(0);
+  const [disabledForward, setDisabledForward] = useState(false);
+  const [disabledBack, setDisabledBack] = useState(false);
 
   useEffect(() => {
     // Timer to hide buttons after 5 seconds
@@ -79,7 +81,8 @@ const EndlessCatsPage: React.FC = () => {
             onToggleMute={toggleMute}
             onLike={likeVideo}
             isMuted={muted}
-            disabled={false}
+            disabledForward={disabledForward}
+            disabledBack={disabledBack}
           />
         )}
       </div>
