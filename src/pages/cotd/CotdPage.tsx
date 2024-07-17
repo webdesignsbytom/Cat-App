@@ -16,7 +16,10 @@ const CotdPage: React.FC = () => {
   const videoRef = useRef<HTMLVideoElement>(null);
   const [buttonsVisible, setButtonsVisible] = useState(true);
   const [muted, setMuted] = useState(false);
-  const [videoUrl, setVideoUrl] = useState<string | null>(null);
+  const [disabledForward, setDisabledForward] = useState(false);
+  const [disabledBack, setDisabledBack] = useState(true);
+  // Videos index
+  const [videoIndex, setVideoIndex] = useState<number>(0);
 
   useEffect(() => {
     const timer = setTimeout(() => {
@@ -26,29 +29,44 @@ const CotdPage: React.FC = () => {
     return () => clearTimeout(timer);
   }, [buttonsVisible]);
 
-  const fetchVideo = async (url: string) => {
+  const fetchVideo = async (url: string, videoId: number) => {
     client
-      .getVideo(url)
+      .getVideo(`${url}/${videoId}`)
       .then((res) => {
         const videoUrl = URL.createObjectURL(res.data);
-        setVideoUrl(videoUrl);
 
         if (videoRef.current) {
           videoRef.current.src = videoUrl;
         }
       })
       .catch((err) => {
-        console.error('Unable to get video', err);
+        console.error(`Unable to get video ${videoId}`, err);
       });
   };
 
   useEffect(() => {
-    fetchVideo(COTD_VIDEO_URL);
+    fetchVideo(COTD_VIDEO_URL, videoIndex);
   }, []);
 
+  const requestNextVideo = () => {
+    let newId = videoIndex + 1;
+    if (videoIndex === 0) {
+      setDisabledBack(false)
+    }
+    setVideoIndex((prevIndex) => prevIndex + 1);
+    fetchVideo(COTD_VIDEO_URL, newId);
+  };
 
-  const requestNextVideo = () => fetchVideo(COTD_NEXT_VIDEO_URL);
-  const requestPreviousVideo = () => fetchVideo(COTD_PREVIOUS_VIDEO_URL);
+  const requestPreviousVideo = () => {
+    let newId = videoIndex - 1;
+    checkForDisabled(newId)
+    setVideoIndex((prevIndex) => prevIndex - 1);
+    fetchVideo(COTD_VIDEO_URL, newId);
+  };
+
+  const checkForDisabled = (videoId: number) => {
+    if (videoId - 1 < 0) setDisabledBack(true)
+  }
 
   const handleScreenTap = () => {
     if (buttonsVisible) return;
@@ -75,6 +93,8 @@ const CotdPage: React.FC = () => {
         >
           Your browser does not support the video tag.
         </video>
+
+        {/* Button component */}
         {buttonsVisible && (
           <MainButtonsComponent
             onGoBack={requestPreviousVideo}
@@ -82,7 +102,8 @@ const CotdPage: React.FC = () => {
             onToggleMute={toggleMute}
             onLike={likeVideo}
             isMuted={muted}
-            disabled={false}
+            disabledForward={disabledForward}
+            disabledBack={disabledBack}
           />
         )}
       </div>

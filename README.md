@@ -66,3 +66,9 @@ Build
   ```sh
   npm install -g @ionic/cli
   ```
+
+### Pages
+
+1. Cat of the day - working page with latest tech and server 
+2. Endless Cats - loaded from in app
+3. Therapy mode - test page

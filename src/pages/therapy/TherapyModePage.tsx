@@ -11,10 +11,12 @@ const TherapyModePage: React.FC = () => {
   const videoRef = useRef<HTMLVideoElement>(null);
   const [buttonsVisible, setButtonsVisible] = useState(true);
   const [muted, setMuted] = useState(false);
-  const [disabled, setDisabled] = useState(true);
+  const [disabled, setDisabled] = useState(false);
   const [catVideoArray, setCatVideoArray] = useState<CatVideo[]>(therapyVideos);
   const [currentVideoIndex, setCurrentVideoIndex] = useState(0);
-
+  const [disabledForward, setDisabledForward] = useState(false);
+  const [disabledBack, setDisabledBack] = useState(false);
+  
   useEffect(() => {
     // Timer to hide buttons after 5 seconds
     const timer = setTimeout(() => {
@@ -28,8 +30,8 @@ const TherapyModePage: React.FC = () => {
     // Update video source when currentVideoIndex changes
     if (videoRef.current) {
       videoRef.current.src = 'http://commondatastorage.googleapis.com/gtv-videos-bucket/sample/BigBuckBunny.mp4';
-      videoRef.current.load(); // Load the new video
-      videoRef.current.play(); // Play the new video
+      // videoRef.current.load(); // Load the new video
+      // videoRef.current.play(); // Play the new video
     }
   }, [currentVideoIndex, catVideoArray]);
 
@@ -75,7 +77,8 @@ const TherapyModePage: React.FC = () => {
             onToggleMute={toggleMute}
             onLike={likeVideo}
             isMuted={muted}
-            disabled={disabled}
+            disabledForward={disabledForward}
+            disabledBack={disabledBack}
           />
         )}
       </div>

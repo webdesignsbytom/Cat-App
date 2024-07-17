@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import { useHistory } from 'react-router';
+// Icons
 import { FaBackward, FaForward, FaVolumeMute, FaHome, FaVolumeUp } from 'react-icons/fa';
 import { FcLike } from 'react-icons/fc';
 
@@ -9,7 +10,8 @@ interface MainButtonsComponentProps {
   onToggleMute: () => void;
   onLike: () => void;
   isMuted: boolean;
-  disabled: boolean;
+  disabledForward: boolean;
+  disabledBack: boolean;
 }
 
 const MainButtonsComponent: React.FC<MainButtonsComponentProps> = ({
@@ -18,7 +20,8 @@ const MainButtonsComponent: React.FC<MainButtonsComponentProps> = ({
   onToggleMute,
   onLike: onLikeVideo,
   isMuted,
-  disabled
+  disabledForward,
+  disabledBack
 }) => {
   const history = useHistory();
   const [likeAnimation, setLikeAnimation] = useState(false);
@@ -42,7 +45,7 @@ const MainButtonsComponent: React.FC<MainButtonsComponentProps> = ({
   };
 
   const buttons = [
-    { onClick: onGoBack, icon: <FaBackward size={30} />, className: disabled ? 'hidden' : '' },
+    { onClick: onGoBack, icon: <FaBackward size={30} />, className: disabledBack ? 'hidden' : '' },
     { onClick: navigateHome, icon: <FaHome size={30} />, disabled: false },
     { 
       onClick: handleLikeClick, 
@@ -51,7 +54,7 @@ const MainButtonsComponent: React.FC<MainButtonsComponentProps> = ({
       className: likeAnimation || secondLikeAnimation || thirdLikeAnimation ? 'animate-like' : '' // Only the like button 
     },
     { onClick: onToggleMute, icon: isMuted ? <FaVolumeMute size={30} /> : <FaVolumeUp size={30} />,  disabled: false },
-    { onClick: onGoForward, icon: <FaForward size={30} />, className: disabled ? 'hidden' : '' },
+    { onClick: onGoForward, icon: <FaForward size={30} />, className: disabledForward ? 'hidden' : '' },
   ];
 
   return (
