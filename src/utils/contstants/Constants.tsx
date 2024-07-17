@@ -20,6 +20,7 @@ export const UPLOADVIDEO_URL: string = '/upload-video';
 export const MENU_URL: string = '/menu';
 export const REGISTERPAGE_URL: string = '/register';
 export const ADMINPAGE_URL: string = '/admin';
+export const TESTPAGE_URL: string = '/test';
 
 // Links
 export const SPONSORLINK = 'http://sponsor.com';

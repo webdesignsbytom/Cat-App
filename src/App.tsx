@@ -70,8 +70,10 @@ import {
   MENU_URL,
   REGISTERPAGE_URL,
   ADMINPAGE_URL,
+  TESTPAGE_URL,
 } from './utils/contstants/Constants';
 import AdminPage from './pages/admin/AdminPage';
+import TestPage from './pages/test/TestPage';
 
 setupIonicReact();
 
@@ -137,6 +139,9 @@ const App: React.FC = () => {
           </Route>
           <Route exact path={ADMINPAGE_URL}>
             <AdminPage />
+          </Route>
+          <Route exact path={TESTPAGE_URL}>
+            <TestPage />
           </Route>
           <Route exact path='/'>
             <Redirect to={HOMEPAGE_URL} />

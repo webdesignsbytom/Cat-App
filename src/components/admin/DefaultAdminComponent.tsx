@@ -8,7 +8,7 @@ import RedCat1 from '../../assets/images/background/small_cat_red_1.png';
 // Interfaces
 import { AdminCurrentView } from '../../utils/app/AppInterface';
 // Constants
-import { HOMEPAGE_URL } from '../../utils/contstants/Constants';
+import { HOMEPAGE_URL, TESTPAGE_URL } from '../../utils/contstants/Constants';
 
 const DefaultAdminComponent: React.FC<AdminCurrentView> = ({
   setCurrentView,
@@ -48,6 +48,12 @@ const DefaultAdminComponent: React.FC<AdminCurrentView> = ({
               </button>
             </div>
           ))}
+          <button
+            className='px-2 py-2 rounded-lg w-full h-[52px] bg-main-colour text-white text-2xl font-semibold active:scale-95 active:bg-main-colour-alt shadow-xl active:outline-[6px] active:outline-main-colour'
+            onClick={() => navigateTo(TESTPAGE_URL)}
+          >
+            Test Page
+          </button>
         </section>
 
         <section className='mb-10'>
