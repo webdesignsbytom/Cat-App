@@ -29,9 +29,11 @@ const CotdPage: React.FC = () => {
     return () => clearTimeout(timer);
   }, [buttonsVisible]);
 
-  const fetchVideo = async (url: string, videoId: number) => {
+  const fetchVideo = async (url: string, videoId: number, range?: string) => {
+    // Range of video to preload
+    const headers = range ? { Range: range } : {};
     client
-      .getVideo(`${url}/${videoId}`)
+      .getVideo(`${url}/${videoId}`, headers)
       .then((res) => {
         const videoUrl = URL.createObjectURL(res.data);
 
@@ -45,7 +47,7 @@ const CotdPage: React.FC = () => {
   };
 
   useEffect(() => {
-    fetchVideo(COTD_VIDEO_URL, videoIndex);
+    fetchVideo(COTD_VIDEO_URL, videoIndex, `bytes=0-902300`);
   }, []);
 
   const requestNextVideo = () => {
@@ -54,14 +56,14 @@ const CotdPage: React.FC = () => {
       setDisabledBack(false)
     }
     setVideoIndex((prevIndex) => prevIndex + 1);
-    fetchVideo(COTD_VIDEO_URL, newId);
+    fetchVideo(COTD_VIDEO_URL, newId, `bytes=0-1023`);
   };
 
   const requestPreviousVideo = () => {
     let newId = videoIndex - 1;
     checkForDisabled(newId)
     setVideoIndex((prevIndex) => prevIndex - 1);
-    fetchVideo(COTD_VIDEO_URL, newId);
+    fetchVideo(COTD_VIDEO_URL, newId, `bytes=0-1023`);
   };
 
   const checkForDisabled = (videoId: number) => {
