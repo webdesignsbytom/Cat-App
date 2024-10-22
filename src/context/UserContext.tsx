@@ -28,16 +28,17 @@ export const UserProvider: React.FC<React.PropsWithChildren<{}>> = ({
   children,
 }) => {
   const [token, setToken] = useState<UserToken | null>(null);
-  const [user, setUser] = useState<User | null>({
-    id: 'dev',
-    email: 'dev@dev.com',
-    password: '123',
-    role: 'DEVELOPER',
-    agreedToTerms: true,
-    createdEvents: [],
-    receivedEvents: [],
-    createdAt: new Date(),
-  });
+  const [user, setUser] = useState<User | null>(null);
+  // const [user, setUser] = useState<User | null>({
+  //   id: 'dev',
+  //   email: 'dev@dev.com',
+  //   password: '123',
+  //   role: 'DEVELOPER',
+  //   agreedToTerms: true,
+  //   createdEvents: [],
+  //   receivedEvents: [],
+  //   createdAt: new Date(),
+  // });
 
   console.log('STATE USER', user);
 
