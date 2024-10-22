@@ -1,7 +1,5 @@
-import React, { useState } from 'react';
-import {
-  IonPage,
-} from '@ionic/react';
+import React, { useEffect, useState } from 'react';
+import { IonPage } from '@ionic/react';
 import { useHistory } from 'react-router-dom';
 // Context
 import { useUser } from '../../context/UserContext';
@@ -14,12 +12,36 @@ import WhiteCat1 from '../../assets/images/background/small_cat_white_1.png';
 import WhiteCat2 from '../../assets/images/background/small_cat_white_2.png';
 import RedCat1 from '../../assets/images/background/small_cat_red_1.png';
 // Constants
-import { COTDPAGE_URL, ENDLESSPAGE_URL, THERAPYPAGE_URL, MENU_URL, ADMINPAGE_URL, DEVELOPER_ROLE, ADMIN_ROLE } from '../../utils/contstants/Constants';
+import {
+  COTDPAGE_URL,
+  ENDLESSPAGE_URL,
+  THERAPYPAGE_URL,
+  MENU_URL,
+  ADMINPAGE_URL,
+  DEVELOPER_ROLE,
+  ADMIN_ROLE,
+  COTD_PLAYLIST_URL,
+} from '../../utils/contstants/Constants';
+import client from '../../api/client';
+import { usePlaylist } from '../../context/PlaylistContext';
 
 const HomePage: React.FC = () => {
   const history = useHistory();
 
-  const { user } = useUser(); 
+  const { user } = useUser();
+  const { setCotdPlaylist } = usePlaylist();
+
+  useEffect(() => {
+    client
+      .get(COTD_PLAYLIST_URL, false)
+      .then((res) => {
+        setCotdPlaylist(res.data.playlist);
+        console.log('res.data.playlist', res.data.playlist);
+      })
+      .catch((err) => {
+        console.error(`Unable to get playlist`, err);
+      });
+  }, []);
 
   const [listOfButtons] = useState([
     {
@@ -66,18 +88,19 @@ const HomePage: React.FC = () => {
                 </div>
               ))}
             </section>
-            
+
             {/* Conditional Admin Button */}
-            {user && (user.role === ADMIN_ROLE || user.role === DEVELOPER_ROLE) && (
-              <div className='mt-4'>
-                <button
-                  className='px-2 py-2 rounded-lg w-full h-[52px] bg-red-600 text-white text-2xl font-semibold active:scale-95 active:bg-red-700 shadow-xl active:outline-[6px] active:outline-red-600'
-                  onClick={() => navigateTo(ADMINPAGE_URL)}
-                >
-                  Admin
-                </button>
-              </div>
-            )}
+            {user &&
+              (user.role === ADMIN_ROLE || user.role === DEVELOPER_ROLE) && (
+                <div className='mt-4'>
+                  <button
+                    className='px-2 py-2 rounded-lg w-full h-[52px] bg-red-600 text-white text-2xl font-semibold active:scale-95 active:bg-red-700 shadow-xl active:outline-[6px] active:outline-red-600'
+                    onClick={() => navigateTo(ADMINPAGE_URL)}
+                  >
+                    Admin
+                  </button>
+                </div>
+              )}
           </div>
 
           {/* Left */}

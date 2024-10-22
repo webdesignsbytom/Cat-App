@@ -1,9 +1,23 @@
 # Cat App
 
-## Table of contents
+## Table of Contents
 
-- [CatApp](#cat-app)
-  - [Table of contents](#table-of-contents)
+- [Project World](#project-world)
+  - [Table of Contents](#table-of-contents)
+  - [General Info](#general-info)
+  - [Features](#features)
+  - [Technologies](#technologies)
+  - [Setup](#setup)
+    - [Setup](#setup-1)
+  - [Running the Project](#running-the-project)
+  - [API Endpoints](#api-endpoints)
+    - [User Authentication](#user-authentication)
+    - [Countries](#countries)
+    - [Media Profiles](#media-profiles)
+    - [Slideshows and Posters](#slideshows-and-posters)
+  - [Testing](#testing)
+    - [API Tests](#api-tests)
+    - [Manual Tests](#manual-tests)
 
 ## Purpose
 
@@ -63,12 +77,9 @@ Build
 
 - **Node.js**: Ensure Node.js is installed. [Download Node.js](https://nodejs.org/)
 - **Ionic CLI**: Install the Ionic CLI globally.
-  ```sh
-  npm install -g @ionic/cli
-  ```
 
 ### Pages
 
-1. Cat of the day - working page with latest tech and server 
+1. Cat of the day - working page with latest tech and server
 2. Endless Cats - loaded from in app
 3. Therapy mode - test page

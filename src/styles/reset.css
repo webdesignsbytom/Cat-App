@@ -13,3 +13,32 @@
     -ms-user-select: none;
     user-select: none;
   }
+
+  .video-info-glass {
+    position: absolute;
+    top: 10px;
+    left: 10px;
+    padding: 20px;
+    width: 250px;
+    background: rgba(255, 255, 255, 0.2); /* Semi-transparent background */
+    border-radius: 15px;
+    backdrop-filter: blur(10px); /* The glass effect */
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    color: white;
+    font-size: 14px;
+    z-index: 1000; /* Make sure it is above the video */
+  }
+  
+  .video-info-glass h3 {
+    margin: 0;
+    padding-bottom: 10px;
+    font-size: 16px;
+    color: #ffffff;
+  }
+  
+  .video-info-glass p {
+    margin: 5px 0;
+    font-size: 14px;
+    color: #f0f0f0;
+  }
+  

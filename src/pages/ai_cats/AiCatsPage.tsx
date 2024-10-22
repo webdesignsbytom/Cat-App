@@ -4,9 +4,13 @@ import { useHistory } from 'react-router-dom';
 // Components
 import MainButtonsComponent from '../../components/buttons/MainButtonsComponent';
 // Images
-import { CatImage, arrayOfCatImages, slideshowImages } from '../../utils/images/CatImages';
+import {
+  CatImage,
+  arrayOfCatImages,
+  slideshowImages,
+} from '../../utils/images/CatImages';
 // Audio
-import audioFile from '../../assets/audio/slideshow/rossini_il_barbiere_di_siviglia_overture.mp3';
+import audioFile from '../../assets/Audio/slideshow/rossini_il_barbiere_di_siviglia_overture.mp3';
 // Constants
 import { BUTTON_TIMER } from '../../utils/contstants/Constants';
 
@@ -137,7 +141,8 @@ const AiCatsPage: React.FC = () => {
             onToggleMute={toggleMute}
             onLike={likeImage}
             isMuted={isMuted}
-            disabled={false}
+            disabledForward={true}
+            disabledBack={true}
           />
         )}
       </div>

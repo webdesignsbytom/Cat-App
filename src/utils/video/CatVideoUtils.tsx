@@ -7,6 +7,40 @@ import Video6 from '../../assets/video/cat_video6.mp4';
 import Video7 from '../../assets/video/cat_video7.mp4';
 import Video8 from '../../assets/video/cat_video8.mp4';
 
+// Enum for VideoStatus
+export enum VideoStatus {
+  PENDING = 'PENDING',
+  APPROVED = 'APPROVED',
+  DELETED = 'DELETED'
+}
+
+// Interface for Video
+export interface Video {
+  id: string;
+  label: string;
+  name: string;
+  videoStatus: VideoStatus;
+  path: string;
+  size: number;
+  duration: number; // in seconds or float representing duration
+  codec: string;
+  width?: number;  // optional
+  height?: number; // optional
+  isDelete: boolean;
+  playlists?: Playlist[]; // Many-to-many relation with Playlist
+  createdAt: Date;
+  updatedAt?: Date;
+}
+
+// Interface for Playlist
+export interface Playlist {
+  id: string;
+  name: string;
+  videos?: Video[]; // Many-to-many relation with Video
+  createdAt: Date;
+  updatedAt?: Date;
+}
+
 export interface CatVideo {
   id: number;
   name: string;

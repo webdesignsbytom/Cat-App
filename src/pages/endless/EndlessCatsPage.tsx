@@ -79,8 +79,8 @@ const EndlessCatsPage: React.FC = () => {
             onToggleMute={toggleMute}
             onLike={likeVideo}
             isMuted={muted}
-            disabled={false}
-          />
+            disabledForward={true}
+            disabledBack={true}          />
         )}
       </div>
     </IonPage>
