@@ -2,22 +2,18 @@
 
 ## Table of Contents
 
-- [Project World](#project-world)
+- [Cat App](#cat-app)
   - [Table of Contents](#table-of-contents)
-  - [General Info](#general-info)
+  - [Purpose](#purpose)
   - [Features](#features)
-  - [Technologies](#technologies)
-  - [Setup](#setup)
-    - [Setup](#setup-1)
-  - [Running the Project](#running-the-project)
-  - [API Endpoints](#api-endpoints)
-    - [User Authentication](#user-authentication)
-    - [Countries](#countries)
-    - [Media Profiles](#media-profiles)
-    - [Slideshows and Posters](#slideshows-and-posters)
-  - [Testing](#testing)
-    - [API Tests](#api-tests)
-    - [Manual Tests](#manual-tests)
+  - [License](#license)
+  - [Code Structure](#code-structure)
+    - [Directories](#directories)
+    - [Key Files](#key-files)
+  - [How to Run](#how-to-run)
+    - [Prerequisites](#prerequisites)
+    - [Pages](#pages)
+  - [Needs](#needs)
 
 ## Purpose
 
@@ -83,3 +79,9 @@ Build
 1. Cat of the day - working page with latest tech and server
 2. Endless Cats - loaded from in app
 3. Therapy mode - test page
+
+
+## Needs
+
+1. env control
+2. 
