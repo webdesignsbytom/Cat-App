@@ -23,19 +23,23 @@ const CotdPage: React.FC = () => {
   const { user } = useUser();
   const videos = cotdPlaylist?.videos || []; // Retrieve videos from the playlist context
 
-  // Update video when videoIndex changes
   useEffect(() => {
-    if (videos.length > 0 && videoRef.current) {
-      const currentVideo = videos[videoIndex];
-      videoRef.current.src = currentVideo.path;
-      videoRef.current.load();
-      videoRef.current.play();
+    console.log('CotdPage component has mounted');
+  }, []);
 
-      // Update forward/backward button states
-      setDisabledBack(videoIndex === 0);
-      setDisabledForward(videoIndex === videos.length - 1);
-    }
-  }, [videoIndex, videos]);
+  // Update video when videoIndex changes
+  // useEffect(() => {
+  //   if (videos.length > 0 && videoRef.current) {
+  //     const currentVideo = videos[videoIndex];
+  //     videoRef.current.src = currentVideo.path;
+  //     videoRef.current.load();
+  //     videoRef.current.play();
+
+  //     // Update forward/backward button states
+  //     setDisabledBack(videoIndex === 0);
+  //     setDisabledForward(videoIndex === videos.length - 1);
+  //   }
+  // }, [videoIndex, videos]);
 
   // Timer to hide buttons after a delay
   useEffect(() => {
@@ -62,39 +66,43 @@ const CotdPage: React.FC = () => {
 
   // Handle next video
   const requestNextVideo = () => {
-    if (videoIndex < videos.length - 1) {
-      setVideoIndex(videoIndex + 1);
-    }
+    // if (videoIndex < videos.length - 1) {
+    //   setVideoIndex(videoIndex + 1);
+    // }
   };
 
   // Handle previous video
   const requestPreviousVideo = () => {
-    if (videoIndex > 0) {
-      setVideoIndex(videoIndex - 1);
-    }
+    // if (videoIndex > 0) {
+    //   setVideoIndex(videoIndex - 1);
+    // }
   };
 
   return (
     <IonPage onClick={handleScreenTap}>
       <div className='video-container'>
-        {videos.length > 0 ? (
-          <video
-            ref={videoRef}
-            autoPlay
-            muted={muted}
-            controls
-            style={{ width: '100%', height: '100%', objectFit: 'cover' }}
-          >
-            Your browser does not support the video tag.
-          </video>
-        ) : (
+        {/* {videos.length > 0 ? ( */}
+        <video
+          autoPlay
+          muted={muted}
+          controls
+          style={{ width: '100%', height: '100%', objectFit: 'cover' }}
+          onError={(e) => console.error('Error loading video:', e)}
+        >
+          <source
+            src='http://localhost:4100/videos/get-video-stream?bucket=catapp&folder=videos%2Fdeleted&videoName=cat_video9.mp4'
+            type='video/mp4'
+          />
+        </video>
+        {/* ) : (
           <p>No videos available</p>
-        )}
+        )} */}
 
         {/* Display video data if the user role is "admin" or "developer" */}
         {(user?.role === 'ADMIN' || user?.role === 'DEVELOPER') &&
           videos.length > 0 && (
-            <VideoDataComponent video={videos[videoIndex]} />          )}
+            <VideoDataComponent video={videos[videoIndex]} />
+          )}
 
         {/* Button component */}
         {buttonsVisible && (
