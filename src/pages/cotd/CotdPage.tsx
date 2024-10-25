@@ -27,7 +27,7 @@ const CotdPage: React.FC = () => {
   useEffect(() => {
     if (videos.length > 0 && videoRef.current) {
       const currentVideo = videos[videoIndex];
-      const videoSrc = `http://localhost:4100/videos/get-video-stream?${currentVideo.path}`;
+      const videoSrc = `https://catapi.cat-app.app/videos/get-video-stream?${currentVideo.path}`;
       videoRef.current.src = videoSrc;
       videoRef.current.load();
       videoRef.current.play();
@@ -90,7 +90,7 @@ const CotdPage: React.FC = () => {
             onError={(e) => console.error('Error loading video:', e)}
           >
             <source
-              src={`http://localhost:4100/videos/get-video-stream?${videos[videoIndex].path}`}
+              src={`https://catapi.cat-app.app/videos/get-video-stream?${videos[videoIndex].path}`}
               type='video/mp4'
             />
           </video>
