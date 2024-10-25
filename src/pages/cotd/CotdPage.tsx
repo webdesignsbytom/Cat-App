@@ -12,9 +12,13 @@ import ReactHlsPlayer from 'react-hls-player';
 
 const CotdPage: React.FC = () => {
   const playerRef = useRef<HTMLVideoElement>(null);
+  // const [hlsUrl, setHlsUrl] = useState(
+  //   'http://localhost:4100/videos/get-video-stream?bucket=catapp&folder=videos%2Freview&videoName=1729863803132.m3u8'
+  // );
   const [hlsUrl, setHlsUrl] = useState(
-    'http://localhost:4100/videos/get-video-stream?bucket=catapp&folder=videos%2Freview&videoName=1729863803132.m3u8'
+    'https://test-streams.mux.dev/x36xhzz/x36xhzz.m3u8'
   );
+  
   const [videoIndex, setVideoIndex] = useState<number>(0);
   const [buttonsVisible, setButtonsVisible] = useState(true);
   const [muted, setMuted] = useState(false);
