@@ -27,7 +27,8 @@ const CotdPage: React.FC = () => {
   useEffect(() => {
     if (videos.length > 0 && videoRef.current) {
       const currentVideo = videos[videoIndex];
-      videoRef.current.src = currentVideo.path;
+      const videoSrc = `http://localhost:4100/videos/get-video-stream?${currentVideo.path}`;
+      videoRef.current.src = videoSrc;
       videoRef.current.load();
       videoRef.current.play();
 
@@ -54,6 +55,9 @@ const CotdPage: React.FC = () => {
 
   const toggleMute = () => {
     setMuted((prevMuted) => !prevMuted);
+    if (videoRef.current) {
+      videoRef.current.muted = !muted;
+    }
   };
 
   const likeVideo = () => {
@@ -81,11 +85,14 @@ const CotdPage: React.FC = () => {
           <video
             ref={videoRef}
             autoPlay
-            muted={muted}
-            controls
+            muted
             style={{ width: '100%', height: '100%', objectFit: 'cover' }}
+            onError={(e) => console.error('Error loading video:', e)}
           >
-            Your browser does not support the video tag.
+            <source
+              src={`http://localhost:4100/videos/get-video-stream?${videos[videoIndex].path}`}
+              type='video/mp4'
+            />
           </video>
         ) : (
           <p>No videos available</p>
@@ -94,7 +101,8 @@ const CotdPage: React.FC = () => {
         {/* Display video data if the user role is "admin" or "developer" */}
         {(user?.role === 'ADMIN' || user?.role === 'DEVELOPER') &&
           videos.length > 0 && (
-            <VideoDataComponent video={videos[videoIndex]} />          )}
+            <VideoDataComponent video={videos[videoIndex]} />
+          )}
 
         {/* Button component */}
         {buttonsVisible && (
