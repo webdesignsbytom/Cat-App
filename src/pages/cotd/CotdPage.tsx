@@ -1,5 +1,6 @@
 import React, { useState, useRef, useEffect } from 'react';
 import { IonPage } from '@ionic/react';
+import Hls from 'hls.js';
 // Components
 import MainButtonsComponent from '../../components/buttons/MainButtonsComponent';
 // Constants
@@ -9,8 +10,6 @@ import { useUser } from '../../context/UserContext';
 import VideoDataComponent from '../../components/admin/VideoDataComponent';
 
 const CotdPage: React.FC = () => {
-  const videoRef = useRef<HTMLVideoElement>(null);
-
   // State to manage the current video index
   const [videoIndex, setVideoIndex] = useState<number>(0);
   const [buttonsVisible, setButtonsVisible] = useState(true);
@@ -25,16 +24,25 @@ const CotdPage: React.FC = () => {
 
   // Update video when videoIndex changes
   useEffect(() => {
-    if (videos.length > 0 && videoRef.current) {
-      const currentVideo = videos[videoIndex];
-      const videoSrc = `https://catapi.cat-app.app/videos/get-video-stream?${currentVideo.path}`;
-      videoRef.current.src = videoSrc;
-      videoRef.current.load();
-      videoRef.current.play();
+    const video = document.getElementById(
+      'video-player'
+    ) as HTMLVideoElement | null;
+    const videoSrc = 'https://stream.cat-app.app/get-video';
 
-      // Update forward/backward button states
-      setDisabledBack(videoIndex === 0);
-      setDisabledForward(videoIndex === videos.length - 1);
+    if (!video) return; // Exit if video element is not found
+
+    if (Hls.isSupported()) {
+      const hls = new Hls();
+      hls.loadSource(videoSrc);
+      hls.attachMedia(video);
+      hls.on(Hls.Events.MANIFEST_PARSED, () => {
+        video.play();
+      });
+    } else if (video.canPlayType('application/vnd.apple.mpegurl')) {
+      video.src = videoSrc;
+      video.addEventListener('loadedmetadata', () => {
+        video.play();
+      });
     }
   }, [videoIndex, videos]);
 
@@ -50,13 +58,6 @@ const CotdPage: React.FC = () => {
   const handleScreenTap = () => {
     if (!buttonsVisible) {
       setButtonsVisible(true);
-    }
-  };
-
-  const toggleMute = () => {
-    setMuted((prevMuted) => !prevMuted);
-    if (videoRef.current) {
-      videoRef.current.muted = !muted;
     }
   };
 
@@ -81,22 +82,13 @@ const CotdPage: React.FC = () => {
   return (
     <IonPage onClick={handleScreenTap}>
       <div className='video-container'>
-        {videos.length > 0 ? (
-          <video
-            ref={videoRef}
-            autoPlay
-            muted
-            style={{ width: '100%', height: '100%', objectFit: 'cover' }}
-            onError={(e) => console.error('Error loading video:', e)}
-          >
-            <source
-              src={`https://catapi.cat-app.app/videos/get-video-stream?${videos[videoIndex].path}`}
-              type='video/mp4'
-            />
-          </video>
-        ) : (
-          <p>No videos available</p>
-        )}
+        <video
+          autoPlay
+          muted
+          id='video-player'
+          style={{ width: '100%', height: '100%', objectFit: 'cover' }}
+          onError={(e) => console.error('Error loading video:', e)}
+        ></video>
 
         {/* Display video data if the user role is "admin" or "developer" */}
         {(user?.role === 'ADMIN' || user?.role === 'DEVELOPER') &&
@@ -109,7 +101,7 @@ const CotdPage: React.FC = () => {
           <MainButtonsComponent
             onGoBack={requestPreviousVideo}
             onGoForward={requestNextVideo}
-            onToggleMute={toggleMute}
+            onToggleMute={requestNextVideo}
             onLike={likeVideo}
             isMuted={muted}
             disabledForward={disabledForward}

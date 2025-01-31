@@ -31,17 +31,17 @@ const HomePage: React.FC = () => {
   const { user } = useUser();
   const { setCotdPlaylist } = usePlaylist();
 
-  useEffect(() => {
-    client
-      .get(COTD_PLAYLIST_URL, false)
-      .then((res) => {
-        setCotdPlaylist(res.data.playlist);
-        console.log('res.data.playlist', res.data.playlist);
-      })
-      .catch((err) => {
-        console.error(`Unable to get playlist`, err);
-      });
-  }, []);
+  // useEffect(() => {
+  //   client
+  //     .get(COTD_PLAYLIST_URL, false)
+  //     .then((res) => {
+  //       setCotdPlaylist(res.data.playlist);
+  //       console.log('res.data.playlist', res.data.playlist);
+  //     })
+  //     .catch((err) => {
+  //       console.error(`Unable to get playlist`, err);
+  //     });
+  // }, []);
 
   const [listOfButtons] = useState([
     {

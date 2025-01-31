@@ -4,7 +4,7 @@ import { TOKEN_NAME } from '../utils/contstants/Constants';
 // const host: string | undefined = process.env.REACT_APP_API_URL;
 // const tokenKey: string | undefined = process.env.REACT_APP_USER_TOKEN;
 
-const host: string = 'https://catapi.cat-app.app'; // 'http://192.168.1.227:4100' // 'http://localhost:4100' 'http://192.168.1.227:4100'
+const host: string = 'https://stream.cat-app.app'; // 'http://192.168.1.227:4100' // 'http://localhost:4100' 'http://192.168.1.227:4100'
 const tokenKey: string = TOKEN_NAME;
 
 // Helper function to get Authorization headers

@@ -68,6 +68,7 @@ Add platforms
 
 Build
 `ionic build`
+npx vite preview
 
 ### Prerequisites
 
