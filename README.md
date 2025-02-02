@@ -106,3 +106,4 @@ npx vite preview
 `./gradlew assembleRelease`
 
 `cd .. && ionic build && ionic capacitor copy android && cd android && ./gradlew assembleDebug`
+`cd .. && ionic build && ionic capacitor copy android && cd android && ./gradlew assembleRelease`
