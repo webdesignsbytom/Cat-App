@@ -16,6 +16,7 @@
   - [Needs](#needs)
   - [Create APK](#create-apk)
     - [Rebuild apk](#rebuild-apk)
+  - [Notes](#notes)
 
 ## Purpose
 
@@ -107,3 +108,9 @@ npx vite preview
 
 `cd .. && ionic build && ionic capacitor copy android && cd android && ./gradlew assembleDebug`
 `cd .. && ionic build && ionic capacitor copy android && cd android && ./gradlew assembleRelease`
+
+
+## Notes 
+
+1. therapy mode has general loading
+2. Endless cats has keep alive mode

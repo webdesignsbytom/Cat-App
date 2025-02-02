@@ -1,31 +1,27 @@
 import React, { useState, useRef, useEffect } from 'react';
 import { IonPage } from '@ionic/react';
 import Hls from 'hls.js';
+
+// Components
+import MainButtonsComponent from '../../components/buttons/MainButtonsComponent';
 // Api
 import client from '../../api/client';
 // Constants
 import { BUTTON_TIMER } from '../../utils/contstants/Constants';
-// Interfaces
-import { VideoItem, VideoPlaylistItem, VideoStatus } from '../../interfaces';
-// Components
-import MainButtonsComponent from '../../components/buttons/MainButtonsComponent';
 
 const EndlessCatsPage: React.FC = () => {
   const videoRef = useRef<HTMLVideoElement>(null);
+  const preloadVideoRef = useRef<HTMLVideoElement>(null);
+  const hlsInstance = useRef<Hls | null>(null); // Persist HLS instance
 
   const [buttonsVisible, setButtonsVisible] = useState(true);
   const [muted, setMuted] = useState(false);
-  const [catVideoArray, setCatVideoArray] = useState<VideoItem[]>([]);
+  const [catVideoArray, setCatVideoArray] = useState<[]>([]);
   const [currentVideoIndex, setCurrentVideoIndex] = useState(0);
-  const [videoListState, setVideoListState] = useState<VideoPlaylistItem>({
-    id: 'endless-cats',
-    videoListData: {},
-    currentVideoIndex: 0,
-    videoList: [], // This will be populated with Video objects
-  });
+  const [videoList, setVideoList] = useState<string[]>([]);
 
-  
   useEffect(() => {
+    // Fetch video list from server
     const fetchVideoList = async () => {
       try {
         const response = await fetch('https://stream.cat-app.app/get-video-list');
@@ -33,33 +29,12 @@ const EndlessCatsPage: React.FC = () => {
           throw new Error(`HTTP error! status: ${response.status}`);
         }
         const data = await response.json();
-        console.log('>>> Data ', data);
         if (data.length === 0) {
           console.error('No videos available.');
         } else {
-          // Map the data to Video objects, assuming the response contains fields needed for Video interface
-          const videos: VideoItem[] = data.map((videoData: any) => ({
-            id: videoData.id,
-            label: videoData.label,
-            name: videoData.name,
-            videoStatus: VideoStatus.APPROVED, // Assuming all videos are approved for simplicity
-            path: videoData.path,
-            size: videoData.size,
-            duration: videoData.duration,
-            codec: videoData.codec,
-            isDelete: videoData.isDelete,
-            createdAt: new Date(videoData.createdAt),
-            updatedAt: videoData.updatedAt ? new Date(videoData.updatedAt) : undefined,
-          }));
-          
-          setVideoListState({
-            id: videoListState.id,
-            videoListData: data, // Assuming catVideo data is in the same response
-            currentVideoIndex: 0,
-            videoList: videos,
-          });
-
-          loadNextVideo(videos, 0); // Load the first video
+          setVideoList(data);
+          loadNextVideo(data, 0); // Load the first video
+          preloadNextVideo(1); // Preload the next video
         }
       } catch (error) {
         console.error('Error fetching video list:', error);
@@ -69,13 +44,13 @@ const EndlessCatsPage: React.FC = () => {
     fetchVideoList();
   }, []);
 
-  const loadNextVideo = (videoList: VideoItem[], index: number) => {
+  const loadNextVideo = (videoList: string[], index: number) => {
     if (videoList.length === 0) {
       console.error('No videos available.');
       return;
     }
 
-    const fullPath = videoList[index].path;
+    const fullPath = videoList[index];
     const pathParts = fullPath.split('/');
     const videoName = pathParts.pop();
     const videoDir = pathParts.join('/');
@@ -87,10 +62,18 @@ const EndlessCatsPage: React.FC = () => {
 
     if (video) {
       if (Hls.isSupported()) {
-        const hls = new Hls();
-        hls.loadSource(nextVideoSrc);
-        hls.attachMedia(video);
-        hls.on(Hls.Events.MANIFEST_PARSED, () => {
+        if (!hlsInstance.current) {
+          hlsInstance.current = new Hls();
+          hlsInstance.current.attachMedia(video);
+        } else {
+          hlsInstance.current.detachMedia();
+        }
+
+        hlsInstance.current.config.maxBufferLength = 1; // Lower buffer to 5s
+        hlsInstance.current.loadSource(nextVideoSrc);
+        hlsInstance.current.attachMedia(video);
+
+        hlsInstance.current.on(Hls.Events.MANIFEST_PARSED, () => {
           video.muted = muted;
           video.play().catch((error) => console.error('Playback error:', error));
         });
@@ -105,38 +88,38 @@ const EndlessCatsPage: React.FC = () => {
   };
 
   const handleVideoEnded = () => {
-    const nextIndex = (videoListState.currentVideoIndex + 1) % videoListState.videoList.length;
-    setVideoListState((prevState) => ({
-      ...prevState,
-      currentVideoIndex: nextIndex,
-    }));
-    loadNextVideo(videoListState.videoList, nextIndex);
+    const nextIndex = (currentVideoIndex + 1) % videoList.length;
+    setCurrentVideoIndex(nextIndex);
+    loadNextVideo(videoList, nextIndex);
+    preloadNextVideo((nextIndex + 1) % videoList.length); // Preload next video
+  };
+
+  const preloadNextVideo = (nextIndex: number) => {
+    if (videoList.length === 0) return;
+
+    const fullPath = videoList[nextIndex];
+    const pathParts = fullPath.split('/');
+    const videoName = pathParts.pop();
+    const videoDir = pathParts.join('/');
+
+    const nextVideoSrc = `https://stream.cat-app.app/get-videos/${videoDir}/${videoName}`;
+
+    if (preloadVideoRef.current) {
+      if (Hls.isSupported()) {
+        if (!hlsInstance.current) {
+          hlsInstance.current = new Hls();
+        }
+        hlsInstance.current.loadSource(nextVideoSrc);
+      } else {
+        preloadVideoRef.current.src = nextVideoSrc;
+        preloadVideoRef.current.load();
+      }
+    }
   };
 
   const handleScreenTap = () => {
     if (buttonsVisible) return;
-
     setButtonsVisible(true);
-  };
-
-  const goBack = () => {
-    setCurrentVideoIndex((prevIndex) =>
-      prevIndex === 0 ? catVideoArray.length - 1 : prevIndex - 1
-    );
-  };
-
-  const goForward = () => {
-    setCurrentVideoIndex((prevIndex) =>
-      prevIndex === catVideoArray.length - 1 ? 0 : prevIndex + 1
-    );
-  };
-
-  const toggleMute = () => {
-    setMuted((prevMuted) => !prevMuted);
-  };
-
-  const likeVideo = () => {
-    console.log('Video liked');
   };
 
   return (
@@ -145,27 +128,16 @@ const EndlessCatsPage: React.FC = () => {
         <video
           ref={videoRef}
           autoPlay
+          preload="auto"
           muted={muted}
           id="video-player"
           style={{ width: '100%', height: '100%', objectFit: 'cover' }}
           onEnded={handleVideoEnded}
           onError={(e) => console.error('Error loading video:', e)}
         ></video>
-
-        {buttonsVisible && (
-          <MainButtonsComponent
-            onGoBack={goBack}
-            onGoForward={goForward}
-            onToggleMute={toggleMute}
-            onLike={likeVideo}
-            isMuted={muted}
-            disabledForward={true}
-            disabledBack={true}
-          />
-        )}
       </div>
     </IonPage>
   );
 };
 
-export default EndlessCatsPage
+export default EndlessCatsPage;

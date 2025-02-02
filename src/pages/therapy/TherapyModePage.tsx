@@ -6,26 +6,18 @@ import MainButtonsComponent from '../../components/buttons/MainButtonsComponent'
 // Api
 import client from '../../api/client';
 // Videos
-import { CatVideo, cotdVideos } from '../../utils/video/CatVideoUtils';
 // Constants
 import { BUTTON_TIMER } from '../../utils/contstants/Constants';
 
 const TherapyModePage: React.FC = () => {
   const videoRef = useRef<HTMLVideoElement>(null);
+  const preloadVideoRef = useRef<HTMLVideoElement>(null);
+
   const [buttonsVisible, setButtonsVisible] = useState(true);
   const [muted, setMuted] = useState(false);
-  const [catVideoArray, setCatVideoArray] = useState<CatVideo[]>(cotdVideos);
+  const [catVideoArray, setCatVideoArray] = useState<[]>();
   const [currentVideoIndex, setCurrentVideoIndex] = useState(0);
   const [videoList, setVideoList] = useState<string[]>([]);
-
-  useEffect(() => {
-    // Timer to hide buttons after 5 seconds
-    const timer = setTimeout(() => {
-      setButtonsVisible(false);
-    }, BUTTON_TIMER);
-
-    return () => clearTimeout(timer);
-  }, [buttonsVisible]);
 
   useEffect(() => {
     // Fetch video list from server
@@ -89,32 +81,29 @@ const TherapyModePage: React.FC = () => {
     const nextIndex = (currentVideoIndex + 1) % videoList.length;
     setCurrentVideoIndex(nextIndex);
     loadNextVideo(videoList, nextIndex);
+    preloadNextVideo((nextIndex + 1) % videoList.length);
   };
 
+  const preloadNextVideo = (nextIndex: number) => {
+    if (videoList.length === 0) return;
+  
+    const fullPath = videoList[nextIndex];
+    const pathParts = fullPath.split('/');
+    const videoName = pathParts.pop();
+    const videoDir = pathParts.join('/');
+  
+    const nextVideoSrc = `https://stream.cat-app.app/get-videos/${videoDir}/${videoName}`;
+  
+    if (preloadVideoRef.current) {
+      preloadVideoRef.current.src = nextVideoSrc;
+      preloadVideoRef.current.load();
+    }
+  };
+  
   const handleScreenTap = () => {
     if (buttonsVisible) return;
 
     setButtonsVisible(true);
-  };
-
-  const goBack = () => {
-    setCurrentVideoIndex((prevIndex) =>
-      prevIndex === 0 ? catVideoArray.length - 1 : prevIndex - 1
-    );
-  };
-
-  const goForward = () => {
-    setCurrentVideoIndex((prevIndex) =>
-      prevIndex === catVideoArray.length - 1 ? 0 : prevIndex + 1
-    );
-  };
-
-  const toggleMute = () => {
-    setMuted((prevMuted) => !prevMuted);
-  };
-
-  const likeVideo = () => {
-    console.log('Video liked');
   };
 
   return (
@@ -123,24 +112,13 @@ const TherapyModePage: React.FC = () => {
         <video
           ref={videoRef}
           autoPlay
+          preload="auto"
           muted={muted}
           id="video-player"
           style={{ width: '100%', height: '100%', objectFit: 'cover' }}
           onEnded={handleVideoEnded}
           onError={(e) => console.error('Error loading video:', e)}
         ></video>
-
-        {buttonsVisible && (
-          <MainButtonsComponent
-            onGoBack={goBack}
-            onGoForward={goForward}
-            onToggleMute={toggleMute}
-            onLike={likeVideo}
-            isMuted={muted}
-            disabledForward={true}
-            disabledBack={true}
-          />
-        )}
       </div>
     </IonPage>
   );

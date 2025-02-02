@@ -28,4 +28,10 @@ export interface VideoPlaylistItem {
     currentVideoIndex: number;
     videoList: VideoItem[];
   }
+// export interface VideoPlaylistItem {
+//     id: string;
+//     videoListData: {};
+//     currentVideoIndex: number;
+//     videoList: VideoItem[];
+//   }
   

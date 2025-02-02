@@ -52,14 +52,14 @@ export const PlaylistProvider: React.FC<React.PropsWithChildren<{}>> = ({ childr
   // Fetch playlists from the API
   useEffect(() => {
     const fetchPlaylists = async () => {
-      client
-      .get(`${GET_BLOG_POSTS_API}?page=${currentPage}&limit=${postsPerPage}`)
-      .then((res) => {
-        setPosts(res.data.posts);
-      })
-      .catch((err) => {
-        console.error('Unable to retrieve user data', err);
-      });
+      // client
+      // .get(`${GET_BLOG_POSTS_API}?page=${currentPage}&limit=${postsPerPage}`)
+      // .then((res) => {
+      //   setPosts(res.data.posts);
+      // })
+      // .catch((err) => {
+      //   console.error('Unable to retrieve user data', err);
+      // });
 
       try {
         // Fetch playlist data from the API (replace with your actual API endpoint)
