@@ -14,6 +14,8 @@
     - [Prerequisites](#prerequisites)
     - [Pages](#pages)
   - [Needs](#needs)
+  - [Create APK](#create-apk)
+    - [Rebuild apk](#rebuild-apk)
 
 ## Purpose
 
@@ -81,8 +83,26 @@ npx vite preview
 2. Endless Cats - loaded from in app
 3. Therapy mode - test page
 
-
 ## Needs
 
 1. env control
-2. 
+
+## Create APK
+
+`ionic build`
+`ionic capacitor copy android`
+`ionic capacitor sync android`
+`cd android`
+`./gradlew assembleDebug`
+`./gradlew assembleRelease`
+
+### Rebuild apk
+
+`cd ..`
+`ionic build`
+`ionic capacitor copy android`
+`cd android`
+`./gradlew assembleDebug`
+`./gradlew assembleRelease`
+
+`cd .. && ionic build && ionic capacitor copy android && cd android && ./gradlew assembleDebug`
