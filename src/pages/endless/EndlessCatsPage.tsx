@@ -1,38 +1,31 @@
 import React, { useState, useRef, useEffect } from 'react';
 import { IonPage } from '@ionic/react';
-// Components
-import MainButtonsComponent from '../../components/buttons/MainButtonsComponent';
+import Hls from 'hls.js';
 // Api
 import client from '../../api/client';
-// Videos
-import { CatVideo, cotdVideos } from '../../utils/video/CatVideoUtils';
 // Constants
 import { BUTTON_TIMER } from '../../utils/contstants/Constants';
-import Hls from 'hls.js';
-
-const cotdVideoUrl = '/videos/video';
-const cotdNextVideoUrl = '/videos/next-video';
-const cotdPreviousVideoUrl = '/videos/previous-video';
+// Interfaces
+import { VideoItem, VideoPlaylistItem, VideoStatus } from '../../interfaces';
+// Components
+import MainButtonsComponent from '../../components/buttons/MainButtonsComponent';
 
 const EndlessCatsPage: React.FC = () => {
   const videoRef = useRef<HTMLVideoElement>(null);
+
   const [buttonsVisible, setButtonsVisible] = useState(true);
   const [muted, setMuted] = useState(false);
-  const [catVideoArray, setCatVideoArray] = useState<CatVideo[]>(cotdVideos);
+  const [catVideoArray, setCatVideoArray] = useState<VideoItem[]>([]);
   const [currentVideoIndex, setCurrentVideoIndex] = useState(0);
-  const [videoList, setVideoList] = useState<string[]>([]);
+  const [videoListState, setVideoListState] = useState<VideoPlaylistItem>({
+    id: 'endless-cats',
+    videoListData: {},
+    currentVideoIndex: 0,
+    videoList: [], // This will be populated with Video objects
+  });
 
+  
   useEffect(() => {
-    // Timer to hide buttons after 5 seconds
-    const timer = setTimeout(() => {
-      setButtonsVisible(false);
-    }, BUTTON_TIMER);
-
-    return () => clearTimeout(timer);
-  }, [buttonsVisible]);
-
-  useEffect(() => {
-    // Fetch video list from server
     const fetchVideoList = async () => {
       try {
         const response = await fetch('https://stream.cat-app.app/get-video-list');
@@ -40,11 +33,33 @@ const EndlessCatsPage: React.FC = () => {
           throw new Error(`HTTP error! status: ${response.status}`);
         }
         const data = await response.json();
+        console.log('>>> Data ', data);
         if (data.length === 0) {
           console.error('No videos available.');
         } else {
-          setVideoList(data);
-          loadNextVideo(data, 0); // Load the first video
+          // Map the data to Video objects, assuming the response contains fields needed for Video interface
+          const videos: VideoItem[] = data.map((videoData: any) => ({
+            id: videoData.id,
+            label: videoData.label,
+            name: videoData.name,
+            videoStatus: VideoStatus.APPROVED, // Assuming all videos are approved for simplicity
+            path: videoData.path,
+            size: videoData.size,
+            duration: videoData.duration,
+            codec: videoData.codec,
+            isDelete: videoData.isDelete,
+            createdAt: new Date(videoData.createdAt),
+            updatedAt: videoData.updatedAt ? new Date(videoData.updatedAt) : undefined,
+          }));
+          
+          setVideoListState({
+            id: videoListState.id,
+            videoListData: data, // Assuming catVideo data is in the same response
+            currentVideoIndex: 0,
+            videoList: videos,
+          });
+
+          loadNextVideo(videos, 0); // Load the first video
         }
       } catch (error) {
         console.error('Error fetching video list:', error);
@@ -54,13 +69,13 @@ const EndlessCatsPage: React.FC = () => {
     fetchVideoList();
   }, []);
 
-  const loadNextVideo = (videoList: string[], index: number) => {
+  const loadNextVideo = (videoList: VideoItem[], index: number) => {
     if (videoList.length === 0) {
       console.error('No videos available.');
       return;
     }
 
-    const fullPath = videoList[index];
+    const fullPath = videoList[index].path;
     const pathParts = fullPath.split('/');
     const videoName = pathParts.pop();
     const videoDir = pathParts.join('/');
@@ -90,9 +105,12 @@ const EndlessCatsPage: React.FC = () => {
   };
 
   const handleVideoEnded = () => {
-    const nextIndex = (currentVideoIndex + 1) % videoList.length;
-    setCurrentVideoIndex(nextIndex);
-    loadNextVideo(videoList, nextIndex);
+    const nextIndex = (videoListState.currentVideoIndex + 1) % videoListState.videoList.length;
+    setVideoListState((prevState) => ({
+      ...prevState,
+      currentVideoIndex: nextIndex,
+    }));
+    loadNextVideo(videoListState.videoList, nextIndex);
   };
 
   const handleScreenTap = () => {
